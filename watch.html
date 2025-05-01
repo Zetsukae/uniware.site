@@ -57,30 +57,28 @@
       font-size: 14px;
       margin-bottom: 10px;
     }
+    
+.goback {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 12px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+  backdrop-filter: blur(5px);
+  z-index: 1;
+  position: fixed; /* Pour garder le bouton fixé même avec le défilement */
+  bottom: 30px; /* Ajuste cette valeur pour la distance depuis le bas */
+  left: 50%;
+  transform: translateX(-50%); /* Permet de centrer horizontalement */
+}
 
-    /* Style du bouton "Retour" */
-    .goback {
-      position: absolute;
-      bottom: 20px;  /* 20px du bas de la page */
-      left: 50%;     /* Centre horizontalement */
-      transform: translateX(-50%); /* Ajuste la position pour centrer exactement */
-      background-color: rgba(255, 255, 255, 0.15);
-      color: white;
-      padding: 12px 24px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 16px;
-      transition: background-color 0.3s, transform 0.2s;
-      backdrop-filter: blur(5px);
-      z-index: 1;
-    }
-
-    .goback:hover {
-      background-color: rgba(255, 255, 255, 0.25);
-      transform: scale(1.05);
-      transform-origin:center;
-    }
+.goback:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05) translateX(-50%); /* Garde le bouton centré lors du survol */
+}
 
   </style>
 </head>
