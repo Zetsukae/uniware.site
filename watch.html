@@ -55,6 +55,24 @@
       width: 100%;
       border-radius: 8px;
     }
+
+    .goback {
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+    }
+
+    .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -67,6 +85,7 @@
       <video id="player" controls>
         <source src="https://ia801905.us.archive.org/35/items/a-silent-voice-vostfr/A%20Silent%20Voice%20-%20VOSTFR.mp4" type="video/mp4" />
       </video>
+      <a href="index.html" class="goback">Retour</a>
     </div>
   </div>
 
