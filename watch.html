@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="https://i.imgur.com/rUv9aQr.jpeg" type="image/jpeg">
   <meta charset="UTF-8">
-  <title>Accueil – Uniware</title>
+  <title>Watch – Uniware</title>
   <style>
     body {
       margin: 0;
@@ -58,6 +57,30 @@
       font-size: 14px;
       margin-bottom: 10px;
     }
+
+    /* Style du bouton "Retour" */
+    .goback {
+      position: absolute;
+      bottom: 20px;  /* 20px du bas de la page */
+      left: 50%;     /* Centre horizontalement */
+      transform: translateX(-50%); /* Ajuste la position pour centrer exactement */
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+      z-index: 1;
+    }
+
+    .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
   </style>
 </head>
 <body>
@@ -67,6 +90,9 @@
   <h1>A Silent Voice</h1>
   <h2>VOSTFR</h2>
 </a>
+
+<!-- Le bouton "Retour" centré en bas -->
+<a href="https://uniware.site" class="goback">Retour</a>
 
 <script>
   const canvas = document.getElementById('boidsCanvas');
