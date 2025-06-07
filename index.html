@@ -50,7 +50,7 @@
       font-size: 16px;
       opacity: 0.8;
     }
-    .more {
+    .more, .goback {
       background-color: rgba(255, 255, 255, 0.15);
       color: white;
       padding: 12px 24px;
@@ -62,30 +62,50 @@
       backdrop-filter: blur(5px);
       z-index: 1;
     }
-    .more:hover {
+    .more:hover, .goback:hover {
       background-color: rgba(255, 255, 255, 0.25);
       transform: scale(1.05);
     }
-    .goback {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
-  padding: 12px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 16px;
-  transition: background-color 0.3s, transform 0.2s;
-  backdrop-filter: blur(5px);
-  z-index: 1;
-}
-.goback:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05);
-}
+
+    .github-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 10px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      backdrop-filter: blur(5px);
+      transition: background-color 0.3s, transform 0.2s;
+      z-index: 2;
+    }
+
+    .github-button:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .github-button img {
+      width: 20px;
+      height: 20px;
+      filter: invert(100%);
+    }
   </style>
 </head>
 <body>
 <canvas id="boidsCanvas"></canvas>
+
+<!-- Bouton GitHub -->
+<a href="https://github.com/Zetsukae/uniware.site" class="github-button" target="_blank" rel="noopener">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub Logo">
+  GitHub
+</a>
 
 <div class="container">
   <div class="box">
@@ -95,7 +115,7 @@
   </div>
   <div class="box">
     <h2>Uniware - Store</h2>
-    <p>Notre store est <span style="color: green;">Ouvert</span> à cette adresse : <a href="https://uniware.mycommerce.shop">Uniware Store</a></p>
+    <p>Notre store est <span style="color: green;">Ouvert</span> à cette adresse : <a href="https://uniware.mycommerce.shop" style="color: #00ffcc;">Uniware Store</a></p>
   </div>
   <a href="watch/" class="more">Accédez à Uniware Watch</a>
   <a href="more/" class="more">Plus d'info</a>
@@ -235,7 +255,7 @@ class Boid {
         count++;
       }
     }
-
+    
     if (count > 0) {
       sum.x /= count;
       sum.y /= count;
@@ -262,7 +282,10 @@ class Boid {
   draw() {
     ctx.beginPath();
     ctx.moveTo(this.position.x, this.position.y);
-    ctx.lineTo(this.position.x - this.velocity.x * 5, this.position.y - this.velocity.y * 5);
+    ctx.lineTo(
+      this.position.x - this.velocity.x * 5,
+      this.position.y - this.velocity.y * 5
+    );
     ctx.strokeStyle = 'white';
     ctx.stroke();
   }
