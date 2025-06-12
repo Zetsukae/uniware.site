@@ -16,13 +16,30 @@
       display: block;
     }
 
+    .section-title {
+      position: absolute;
+      left: 40px;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 8px 16px;
+      border-radius: 8px;
+      z-index: 2;
+    }
+
+    .films-title {
+      top: 20px;
+    }
+
+    .series-title {
+      top: 380px;
+    }
+
     .banner {
       position: absolute;
-      top: 40px;
-      left: 40px;
       width: 200px;
       height: 300px;
-      background-image: url('https://i.imgur.com/1Rs6zmV.jpeg');
       background-size: cover;
       background-position: center;
       border-radius: 10px;
@@ -33,12 +50,12 @@
       flex-direction: column;
       justify-content: flex-end;
       text-decoration: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition smooth */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .banner:hover {
-      transform: scale(1.05); /* Agrandit légèrement le rectangle */
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.4); /* Effet de surbrillance */
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
     }
 
     .banner h1,
@@ -50,7 +67,7 @@
     }
 
     .banner h1 {
-      font-size: 24px; /* Réduit la taille du titre */
+      font-size: 24px;
       font-weight: bold;
     }
 
@@ -58,40 +75,66 @@
       font-size: 14px;
       margin-bottom: 10px;
     }
-    
-.goback {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
-  padding: 12px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 16px;
-  transition: background-color 0.3s, transform 0.2s;
-  backdrop-filter: blur(5px);
-  z-index: 1;
-  position: fixed; /* Pour garder le bouton fixé même avec le défilement */
-  bottom: 30px; /* Ajuste cette valeur pour la distance depuis le bas */
-  left: 50%;
-  transform: translateX(-50%); /* Permet de centrer horizontalement */
-}
 
-.goback:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05) translateX(-50%); /* Garde le bouton centré lors du survol */
-}
+    .films {
+      position: absolute;
+      top: 60px;
+      left: 40px;
+    }
 
+    .series {
+      position: absolute;
+      top: 420px;
+      left: 40px;
+    }
+
+    .goback {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+      z-index: 1;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05) translateX(-50%);
+    }
   </style>
 </head>
 <body>
 <canvas id="boidsCanvas"></canvas>
 
-<a href="a-silent-voice-vostfr/" class="banner">
-  <h1>A Silent Voice</h1>
-  <h2>VOSTFR</h2>
-</a>
+<!-- Titres des sections -->
+<div class="section-title films-title">Films</div>
+<div class="section-title series-title">Séries</div>
 
-<!-- Le bouton "Retour" centré en bas -->
+<!-- Films -->
+<div class="films">
+  <a href="a-silent-voice-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/1Rs6zmV.jpeg');">
+    <h1>A Silent Voice</h1>
+    <h2>VOSTFR</h2>
+  </a>
+</div>
+
+<!-- Séries -->
+<div class="series">
+  <a href="infinitytrain-vf/" class="banner" style="background-image: url('https://i.imgur.com/4k0gOI1.jpeg'); left: 0;">
+    <h1>Infinity Train</h1>
+    <h2>1 Saison / VF</h2>
+  </a>
+</div>
+
+<!-- Le bouton "Retour" -->
 <a href="https://uniware.site" class="goback">Retour</a>
 
 <script>
