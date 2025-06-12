@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
+  <meta charset="UTF-8">
+  <title>A Silent Voice VOSTFR</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .overlay {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    h2 {
+      margin: 10px 0 5px;
+      font-weight: normal;
+      font-size: 16px;
+      color: #aaa;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: 28px;
+    }
+
+    .video-wrapper {
+      width: 80%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    /* Style pour la barre défilante (select) */
+    #episodeSelect {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 150px;
+      user-select: none;
+    }
+
+    #episodeSelect:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+      color: white;
+    }
+
+    #episodeSelect option {
+      background-color: #000;
+      color: white;
+    }
+
+    #episodeSelect option:hover {
+      background-color: #222;
+      color: white;
+    }
+
+    .goback {
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+    }
+
+    .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="boidsCanvas"></canvas>
+
+  <div class="overlay">
+    <h2>Uniware – Made by Zetsukae, all rights reserved</h2>
+    <h1>Infinity Train VF</h1>
+    <h2>Les épisodes sont en cours d'admission, merci d'attendre.</h2>
+    <div class="video-wrapper">
+
+      <!-- Barre défilante pour choisir l'épisode -->
+      <select id="episodeSelect">
+        <option value="https://exemple.com/ep01.mp4">EP 01</option>
+        <option value="https://exemple.com/ep02.mp4">EP 02</option>
+        <option value="https://exemple.com/ep03.mp4">EP 03</option>
+        <option value="https://exemple.com/ep04.mp4">EP 04</option>
+        <option value="https://exemple.com/ep05.mp4">EP 05</option>
+        <option value="https://exemple.com/ep06.mp4">EP 06</option>
+        <option value="https://exemple.com/ep07.mp4">EP 07</option>
+        <option value="https://exemple.com/ep08.mp4">EP 08</option>
+        <option value="https://exemple.com/ep09.mp4">EP 09</option>
+        <option value="https://exemple.com/ep10.mp4">EP 10</option>
+      </select>
+
+      <video id="player" controls>
+        <source src="https://exemple.com/ep01.mp4" type="video/mp4" />
+        Votre navigateur ne supporte pas la balise vidéo.
+      </video>
+
+      <a href="https://uniware.site/watch/" class="goback">Retour</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script>
+    const player = new Plyr('#player');
+    const episodeSelect = document.getElementById('episodeSelect');
+    const video = document.getElementById('player');
+
+    episodeSelect.addEventListener('change', () => {
+      const newSrc = episodeSelect.value;
+      // Change la source de la vidéo
+      video.querySelector('source').src = newSrc;
+      // Recharge la vidéo
+      video.load();
+      video.play();
+    });
+
+    // --- Le code boids (insectes qui volent) ---
+    const canvas = document.getElementById('boidsCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Boid {
+      constructor() {
+        this.position = {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height
+        };
+        this.velocity = {
+          x: Math.random() * 2 - 1,
+          y: Math.random() * 2 - 1
+        };
+        this.acceleration = {x: 0, y: 0};
+        this.maxSpeed = 4;
+        this.maxForce = 0.05;
+      }
+
+      update() {
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+        this.velocity.x += this.acceleration.x;
+        this.velocity.y += this.acceleration.y;
+
+        const speed = Math.hypot(this.velocity.x, this.velocity.y);
+        if (speed > this.maxSpeed) {
+          this.velocity.x = (this.velocity.x / speed) * this.maxSpeed;
+          this.velocity.y = (this.velocity.y / speed) * this.maxSpeed;
+        }
+
+        this.acceleration.x = 0;
+        this.acceleration.y = 0;
+
+        if (this.position.x > canvas.width) this.position.x = 0;
+        if (this.position.x < 0) this.position.x = canvas.width;
+        if (this.position.y > canvas.height) this.position.y = 0;
+        if (this.position.y < 0) this.position.y = canvas.height;
+      }
+
+      applyForce(force) {
+        this.acceleration.x += force.x;
+        this.acceleration.y += force.y;
+      }
+
+      flock(boids) {
+        const separation = this.separate(boids);
+        const alignment = this.align(boids);
+        const cohesion = this.cohesion(boids);
+        this.applyForce(separation);
+        this.applyForce(alignment);
+        this.applyForce(cohesion);
+      }
+
+      separate(boids) {
+        const desiredSeparation = 25;
+        let steer = {x: 0, y: 0};
+        let count = 0;
+
+        for (let other of boids) {
+          const d = distance(this.position, other.position);
+          if (d > 0 && d < desiredSeparation) {
+            let diff = {
+              x: this.position.x - other.position.x,
+              y: this.position.y - other.position.y
+            };
+            diff.x /= d;
+            diff.y /= d;
+            steer.x += diff.x;
+            steer.y += diff.y;
+            count++;
+          }
+        }
+
+        if (count > 0) {
+          steer.x /= count;
+          steer.y /= count;
+        }
+
+        if (magnitude(steer) > 0) {
+          steer = setMagnitude(steer, this.maxSpeed);
+          steer.x -= this.velocity.x;
+          steer.y -= this.velocity.y;
+          steer = limit(steer, this.maxForce);
+        }
+        return steer;
+      }
+
+      align(boids) {
+        const neighborDist = 50;
+        let sum = {x: 0, y: 0};
+        let count = 0;
+
+        for (let other of boids) {
+          const d = distance(this.position, other.position);
+          if (d > 0 && d < neighborDist) {
+            sum.x += other.velocity.x;
+            sum.y += other.velocity.y;
+            count++;
+          }
+        }
+
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          sum = setMagnitude(sum, this.maxSpeed);
+          let steer = {
+            x: sum.x - this.velocity.x,
+            y: sum.y - this.velocity.y
+          };
+          steer = limit(steer, this.maxForce);
+          return steer;
+        } else {
+          return {x: 0, y: 0};
+        }
+      }
+
+      cohesion(boids) {
+        const neighborDist = 50;
+        let sum = {x: 0, y: 0};
+        let count = 0;
+
+        for (let other of boids) {
+          const d = distance(this.position, other.position);
+          if (d > 0 && d < neighborDist) {
+            sum.x += other.position.x;
+            sum.y += other.position.y;
+            count++;
+          }
+        }
+
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          return this.seek(sum);
+        } else {
+          return {x: 0, y: 0};
+        }
+      }
+
+      seek(target) {
+        let desired = {
+          x: target.x - this.position.x,
+          y: target.y - this.position.y
+        };
+        desired = setMagnitude(desired, this.maxSpeed);
+        let steer = {
+          x: desired.x - this.velocity.x,
+          y: desired.y - this.velocity.y
+        };
+        steer = limit(steer, this.maxForce);
+        return steer;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.position.x, this.position.y);
+        ctx.lineTo(this.position.x - this.velocity.x * 5, this.position.y - this.velocity.y * 5);
+        ctx.strokeStyle = 'white';
+        ctx.stroke();
+      }
+    }
+
+    function distance(a, b) {
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    }
+
+    function magnitude(v) {
+      return Math.hypot(v.x, v.y);
+    }
+
+    function setMagnitude(v, mag) {
+      const m = magnitude(v);
+      if (m > 0) {
+        v.x = (v.x / m) * mag;
+        v.y = (v.y / m) * mag;
+      }
+      return v;
+    }
+
+    function limit(v, max) {
+      if (magnitude(v) > max) {
+        v = setMagnitude(v, max);
+      }
+      return v;
+    }
+
+    const boids = [];
+    for (let i = 0; i < 100; i++) {
+      boids.push(new Boid());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let boid of boids) {
+        boid.flock(boids);
+        boid.update();
+        boid.draw();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
