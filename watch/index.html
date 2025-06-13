@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
   <meta charset="UTF-8">
   <title>Watch – Uniware</title>
@@ -109,6 +110,17 @@
       background-color: rgba(255, 255, 255, 0.25);
       transform: scale(1.05) translateX(-50%);
     }
+    /* Quand la largeur max est de 600px (mobile) */
+@media (max-width: 500px) {
+  .more, .goback, .box {
+    font-size: 24px;      /* bouton plus grand */
+    padding: 20px 40px;   /* padding plus gros aussi */
+  }
+  .github-button, .consoleplus-button {
+    font-size: 20px;
+    padding: 15px 25px;
+  }
+}
   </style>
 </head>
 <body>
