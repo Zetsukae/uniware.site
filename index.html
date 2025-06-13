@@ -96,6 +96,30 @@
       height: 20px;
       filter: invert(100%);
     }
+
+    .consoleplus-button {
+      position: absolute;
+      top: 70px; /* juste en dessous du bouton GitHub */
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      transition: background-color 0.3s, transform 0.2s;
+      z-index: 2;
+    }
+
+    .consoleplus-button:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .consoleplus-button img {
+      width: 20px;
+      height: 20px;
+      filter: invert(100%);
+    }
   </style>
 </head>
 <body>
@@ -105,6 +129,11 @@
 <a href="https://github.com/Zetsukae/uniware.site" class="github-button" target="_blank" rel="noopener">
   <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub Logo">
   GitHub
+</a>
+
+<!-- Bouton Console+ sous GitHub -->
+<a href="consoleplus/" class="consoleplus-button" target="_blank" rel="noopener">
+  <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Abonnement Icon">
 </a>
 
 <div class="container">
@@ -118,7 +147,6 @@
     <p>Notre store est <span style="color: green;">Ouvert</span> à cette adresse : <a href="https://uniware.mycommerce.shop" style="color: #00ffcc;">Uniware Store</a></p>
   </div>
   <a href="watch/" class="more">Accédez à Uniware Watch</a>
-  <a href="consoleplus/" class="more">Abonnement Console +</a>
   <a href="more/" class="more">Plus d'info</a>
 </div>
 
