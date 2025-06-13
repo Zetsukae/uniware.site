@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Uniware - By Zetsukae</title>
+  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
   <style>
     body { 
       margin: 0; 
@@ -30,6 +31,7 @@
       flex-direction: column;
       align-items: center;
       gap: 20px;
+      padding: 20px;
     }
     .box {
       background: rgba(255, 255, 255, 0.1);
@@ -50,22 +52,46 @@
       font-size: 16px;
       opacity: 0.8;
     }
+    .box a {
+      color: #fff;
+      text-decoration: underline;
+    }
     .goback {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
-  padding: 12px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 16px;
-  transition: background-color 0.3s, transform 0.2s;
-  backdrop-filter: blur(5px);
-  z-index: 1;
-}
-.goback:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-  transform: scale(1.05);
-}
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+      z-index: 1;
+    }
+    .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 600px) {
+      .box {
+        padding: 15px 20px;
+        font-size: 14px;
+        min-width: unset;
+        width: 90%;
+      }
+      .box h2 {
+        font-size: 20px;
+      }
+      .box p {
+        font-size: 14px;
+      }
+      .goback {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+    }
   </style>
 </head>
 <body>
