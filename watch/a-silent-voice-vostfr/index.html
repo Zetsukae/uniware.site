@@ -3,12 +3,13 @@
 <head>
   <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Silent Voice VOSTFR</title>
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
       background: #000;
       font-family: Arial, sans-serif;
       color: white;
@@ -29,9 +30,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       text-align: center;
-      padding: 20px;
+      padding: 60px 20px 40px;
       background: rgba(0, 0, 0, 0.4);
     }
 
@@ -50,15 +51,16 @@
     .video-wrapper {
       width: 80%;
       max-width: 800px;
+      margin-top: 20px;
     }
 
     video {
       width: 100%;
       border-radius: 8px;
+      margin-bottom: 16px;
     }
 
     .goback {
-      margin-top: 20px;
       background-color: rgba(255, 255, 255, 0.15);
       color: white;
       padding: 12px 24px;
@@ -73,6 +75,38 @@
     .goback:hover {
       background-color: rgba(255, 255, 255, 0.25);
       transform: scale(1.05);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        overflow-y: auto;
+      }
+
+      .overlay {
+        justify-content: flex-start;
+      }
+
+      .video-wrapper {
+        width: 100%;
+        max-width: 90%;
+      }
+
+      h1 {
+        font-size: 22px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 12px;
+      }
+
+      .goback {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 15px;
+      }
     }
   </style>
 </head>
@@ -94,7 +128,7 @@
   <script>
     const player = new Plyr('#player');
 
-    // Boids simulation
+    // Boids animation
     const canvas = document.getElementById('boidsCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -142,12 +176,9 @@
       }
 
       flock(boids) {
-        const separation = this.separate(boids);
-        const alignment = this.align(boids);
-        const cohesion = this.cohesion(boids);
-        this.applyForce(separation);
-        this.applyForce(alignment);
-        this.applyForce(cohesion);
+        this.applyForce(this.separate(boids));
+        this.applyForce(this.align(boids));
+        this.applyForce(this.cohesion(boids));
       }
 
       separate(boids) {
@@ -173,9 +204,6 @@
         if (count > 0) {
           steer.x /= count;
           steer.y /= count;
-        }
-
-        if (magnitude(steer) > 0) {
           steer = setMagnitude(steer, this.maxSpeed);
           steer.x -= this.velocity.x;
           steer.y -= this.velocity.y;
@@ -246,8 +274,7 @@
           x: desired.x - this.velocity.x,
           y: desired.y - this.velocity.y
         };
-        steer = limit(steer, this.maxForce);
-        return steer;
+        return limit(steer, this.maxForce);
       }
 
       draw() {
@@ -278,7 +305,7 @@
 
     function limit(v, max) {
       if (magnitude(v) > max) {
-        v = setMagnitude(v, max);
+        return setMagnitude(v, max);
       }
       return v;
     }
