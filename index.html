@@ -120,6 +120,23 @@
       height: 20px;
       filter: invert(100%);
     }
+    /* Quand la largeur max est de 600px (mobile) */
+@media (max-width: 600px) {
+  .more, .goback {
+    font-size: 24px;      /* bouton plus grand */
+    padding: 20px 40px;   /* padding plus gros aussi */
+  }
+
+  .box {
+    min-width: 90vw; /* prend presque toute la largeur de l’écran */
+    padding: 30px 40px;
+  }
+
+  .github-button, .consoleplus-button {
+    font-size: 20px;
+    padding: 15px 25px;
+  }
+}
   </style>
 </head>
 <body>
