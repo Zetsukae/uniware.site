@@ -68,56 +68,73 @@
       transform: scale(1.05);
     }
 
-    .github-button {
+    .github-button, .download-button {
       position: absolute;
       top: 20px;
-      right: 20px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
       background-color: rgba(255, 255, 255, 0.15);
-      color: white;
-      padding: 10px 18px;
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 8px;
       text-decoration: none;
-      font-size: 16px;
-      backdrop-filter: blur(5px);
       transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
       z-index: 2;
+      padding: 0;
     }
 
-    .github-button:hover {
+    .github-button:hover, .download-button:hover {
       background-color: rgba(255, 255, 255, 0.25);
-      transform: scale(1.05);
+      transform: scale(1.1);
     }
 
-    .github-button img {
-      width: 20px;
-      height: 20px;
+    .github-button {
+      right: 20px;
+    }
+
+    .download-button {
+      right: 80px; /* plus d’espace (60px entre) */
+    }
+
+    .github-button img, .download-button svg {
+      width: 24px;
+      height: 24px;
       filter: invert(100%);
+      display: block;
     }
 
-    /* Quand la largeur max est de 600px (mobile) */
-@media (max-width: 500px) {
-  .more, .goback, .box {
-    font-size: 24px;      /* bouton plus grand */
-    padding: 20px 40px;   /* padding plus gros aussi */
-  }
-  .github-button, .consoleplus-button {
-    font-size: 20px;
-    padding: 15px 25px;
-  }
-}
+    @media (max-width: 500px) {
+      .more, .goback, .box {
+        font-size: 24px;
+        padding: 20px 40px;
+      }
+      .github-button, .download-button {
+        width: 50px;
+        height: 50px;
+      }
+      .github-button img, .download-button svg {
+        width: 28px;
+        height: 28px;
+      }
+    }
   </style>
 </head>
 <body>
 <canvas id="boidsCanvas"></canvas>
 
+<!-- Bouton Téléchargement -->
+<a href="downloads/" class="download-button" title="Téléchargements" aria-label="Téléchargements">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" >
+    <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v6h6.66v-6h3.34L12 2z"/>
+  </svg>
+</a>
+
 <!-- Bouton GitHub -->
-<a href="https://github.com/Zetsukae/uniware.site" class="github-button" target="_blank" rel="noopener">
+<a href="https://github.com/Zetsukae/uniware.site" class="github-button" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
   <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub Logo">
-  GitHub
 </a>
 
 <div class="container">
