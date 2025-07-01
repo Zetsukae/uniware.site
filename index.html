@@ -1,56 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Uniware - By Zetsukae</title>
-  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg-color: #0f2e22;
+      --text-color: #f2f2f2;
+      --box-bg: #163c2d;
+      --box-border: #1d4c3a;
+      --box-shadow: rgba(0, 0, 0, 0.4);
+      --button-bg: #1a4434;
+      --button-text: #ffffff;
+      --hover-bg: #25664c;
+      --icon-filter: invert(100%);
+      --download-fill: #ffffff; /* Blanc en mode sombre */
+    }
+
+    body.light {
+      --bg-color: #f6f6f7;
+      --text-color: #1f1f1f;
+      --box-bg: #ffffff;
+      --box-border: #e6e6e6;
+      --box-shadow: rgba(0, 0, 0, 0.05);
+      --button-bg: #111827;
+      --button-text: #ffffff;
+      --hover-bg: #0e1628;
+      --icon-filter: invert(0%);
+      --download-fill: #000000; /* Noir en mode clair */
+    }
+
     body {
       margin: 0;
-      overflow: hidden;
-      background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+      padding: 0;
+      background-color: var(--bg-color);
       font-family: 'Inter', sans-serif;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
+      color: var(--text-color);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
-      text-align: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Feuilles qui tombent */
+    .leaf {
+      position: fixed;
+      top: -50px;
+      width: 30px;
+      height: 30px;
+      pointer-events: none;
+      background-image: url('https://i.imgur.com/z9xrCPT.png'); /* Ta texture */
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.7;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 10;
+      position: relative;
     }
 
     .box {
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(8px);
-      padding: 24px 32px;
+      background: var(--box-bg);
+      padding: 24px 28px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      max-width: 90vw;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 24px var(--box-shadow);
+      border: 1px solid var(--box-border);
+      transition: box-shadow 0.2s ease, background 0.3s ease;
+      text-align: center; /* Centré */
+    }
+
+    .box:hover {
+      box-shadow: 0 12px 28px var(--box-shadow);
     }
 
     .box h2 {
-      margin: 0 0 10px;
-      font-size: 24px;
+      margin: 0 0 12px;
+      font-size: 22px;
       font-weight: 600;
     }
 
@@ -58,151 +111,174 @@
       margin: 0;
       font-size: 15px;
       line-height: 1.6;
-      opacity: 0.85;
     }
 
     a.more {
-      margin-top: 10px;
-      background: #00ffc3;
-      color: black;
-      padding: 12px 28px;
-      border-radius: 10px;
-      font-weight: bold;
+      background: var(--button-bg);
+      color: var(--button-text);
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-weight: 500;
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      transition: background 0.2s ease;
+      display: inline-block;
+      margin: 10px auto 0;
+      max-width: 250px;
     }
 
     a.more:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0, 255, 195, 0.5);
+      background: var(--hover-bg);
     }
 
-    .github-button, .download-button {
-      position: absolute;
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+      align-items: center;
+    }
+
+    .top-buttons {
+      position: fixed;
       top: 20px;
-      width: 44px;
-      height: 44px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
+      right: 20px;
+      display: flex;
+      gap: 12px;
+      z-index: 20;
+      align-items: center;
+    }
+
+    .top-buttons a,
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      background-color: var(--box-bg);
+      border: 1px solid var(--box-border);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(8px);
-      transition: transform 0.2s, background-color 0.3s;
+      box-shadow: 0 4px 10px var(--box-shadow);
+      transition: transform 0.2s ease, background 0.3s ease;
+      cursor: pointer;
     }
 
-    .github-button:hover, .download-button:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
+    .top-buttons a:hover,
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      background: var(--hover-bg);
     }
 
-    .github-button img, .download-button svg {
-      width: 24px;
-      height: 24px;
-      filter: invert(100%);
+    .top-buttons img,
+    .top-buttons svg,
+    .theme-toggle svg {
+      width: 22px;
+      height: 22px;
+      filter: var(--icon-filter);
+      pointer-events: none;
     }
 
-    .download-button {
-      right: 80px;
+    /* Le téléchargement SVG prend la couleur selon thème */
+    .download-button svg path {
+      fill: var(--download-fill);
+      filter: none !important;
     }
 
-    .github-button {
-      right: 20px;
+    .theme-toggle {
+      margin-right: auto;
+      margin-left: 20px;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       .box {
         padding: 20px;
       }
       a.more {
-        font-size: 18px;
-        padding: 14px 26px;
+        padding: 12px 20px;
+        font-size: 16px;
       }
     }
   </style>
 </head>
 <body>
-<canvas id="boidsCanvas"></canvas>
 
-<!-- Download -->
-<a href="downloads/" class="download-button" title="Téléchargement">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
-    <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v6h6.66v-6h3.34L12 2z"/>
-  </svg>
-</a>
+<!-- Feuilles qui tombent -->
+<script>
+  const NB_LEAVES = 25;
 
-<!-- GitHub -->
-<a href="https://github.com/Zetsukae/uniware.site" class="github-button" target="_blank" title="Voir le GitHub">
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub">
-</a>
+  function createLeaf() {
+    const leaf = document.createElement('div');
+    leaf.classList.add('leaf');
+    leaf.style.left = Math.random() * window.innerWidth + 'px';
+    leaf.style.animationDuration = (15 + Math.random() * 15) + 's'; // 15-30s
+    leaf.style.animationDelay = Math.random() * 30 + 's';
+    leaf.style.opacity = 0.6 + Math.random() * 0.4;
+    leaf.style.transformOrigin = 'center';
+    leaf.style.animationTimingFunction = 'linear';
+    return leaf;
+  }
 
+  for (let i = 0; i < NB_LEAVES; i++) {
+    document.body.appendChild(createLeaf());
+  }
+</script>
+
+<!-- Boutons fixes -->
+<div class="top-buttons">
+  <div class="theme-toggle" title="Changer le thème">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.8 1.8-1.8zm10.48 0l1.8-1.79 1.79 1.79-1.8 1.8-1.79-1.8zM12 4V1h-1v3h1zm0 16v3h-1v-3h1zm8-8h3v-1h-3v1zM1 12h3v-1H1v1zm15.24 7.16l1.79 1.8 1.8-1.8-1.8-1.79-1.79 1.79zM4.84 17.24l-1.79 1.8 1.79 1.79 1.8-1.79-1.8-1.8z"/>
+      <circle cx="12" cy="12" r="5"/>
+    </svg>
+  </div>
+  <a href="https://github.com/Zetsukae/uniware.site" target="_blank" title="GitHub">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" />
+  </a>
+  <a href="downloads/" class="download-button" title="Téléchargement">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v6h6.66v-6h3.34L12 2z" />
+    </svg>
+  </a>
+</div>
+
+<!-- Contenu principal -->
 <div class="container">
   <div class="box">
-    <h2>📰 Uniware - News</h2>
+    <h2>Uniware - News</h2>
     <p>Ajout de <b>Infinity Train</b>, refonte de <b>Uniware Watch</b>. Nouveau design responsive !</p>
     <p><i>13.06.25 à 13:58 (UTC+2)</i></p>
   </div>
   <div class="box">
-    <h2>🛒 Uniware - Store</h2>
-    <p>Le store est <span style="color: #00ffcc;">ouvert</span> : <a href="https://uniware.mycommerce.shop" style="color: #00ffc3;">Accéder au Store</a></p>
+    <h2>Uniware - Store</h2>
+    <p>Le store est <span style="color: #34d399;">ouvert</span> : 
+      <a href="https://uniware.mycommerce.shop" style="color: #6ee7b7; text-decoration: underline;">Accéder au Store</a>
+    </p>
   </div>
-  <a href="watch/" class="more">▶ Lancer Uniware Watch</a>
-  <a href="more/" class="more">ℹ En savoir plus</a>
+
+  <div class="actions">
+    <a href="watch/" class="more">Lancer Uniware Watch</a>
+    <a href="more/" class="more">En savoir plus</a>
+  </div>
 </div>
 
 <script>
-const canvas = document.getElementById('boidsCanvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  const toggleBtn = document.querySelector('.theme-toggle');
+  const body = document.body;
 
-class Boid {
-  constructor() {
-    this.position = {x: Math.random() * canvas.width, y: Math.random() * canvas.height};
-    this.velocity = {x: Math.random() * 2 - 1, y: Math.random() * 2 - 1};
-    this.acceleration = {x: 0, y: 0};
-    this.maxSpeed = 4;
-    this.maxForce = 0.05;
+  // Charger le thème stocké
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    body.classList.add('light');
   }
-  update() {
-    this.velocity.x += this.acceleration.x;
-    this.velocity.y += this.acceleration.y;
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-    this.acceleration.x = 0;
-    this.acceleration.y = 0;
 
-    if (this.position.x > canvas.width) this.position.x = 0;
-    if (this.position.x < 0) this.position.x = canvas.width;
-    if (this.position.y > canvas.height) this.position.y = 0;
-    if (this.position.y < 0) this.position.y = canvas.height;
-  }
-  applyForce(force) {
-    this.acceleration.x += force.x;
-    this.acceleration.y += force.y;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.moveTo(this.position.x, this.position.y);
-    ctx.lineTo(this.position.x - this.velocity.x * 5, this.position.y - this.velocity.y * 5);
-    ctx.strokeStyle = '#00ffc3';
-    ctx.stroke();
-  }
-}
-
-const boids = Array.from({length: 90}, () => new Boid());
-
-function animate() {
-  ctx.fillStyle = "rgba(0,0,0,0.2)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  boids.forEach(boid => {
-    boid.update();
-    boid.draw();
+  // Changer de thème
+  toggleBtn.addEventListener('click', () => {
+    body.classList.toggle('light');
+    const theme = body.classList.contains('light') ? 'light' : 'dark';
+    localStorage.setItem('theme', theme);
   });
-  requestAnimationFrame(animate);
-}
-animate();
 </script>
+
 </body>
 </html>
