@@ -10,27 +10,27 @@
     :root {
       --bg-color: #0f2e22;
       --text-color: #f2f2f2;
-      --box-bg: #163c2d;
+      --box-bg: rgba(22, 60, 45, 0.3); /* demi-transparent */
       --box-border: #1d4c3a;
       --box-shadow: rgba(0, 0, 0, 0.4);
       --button-bg: #1a4434;
       --button-text: #ffffff;
       --hover-bg: #25664c;
       --icon-filter: invert(100%);
-      --download-fill: #ffffff; /* Blanc en mode sombre */
+      --download-fill: #ffffff;
     }
 
     body.light {
       --bg-color: #f6f6f7;
       --text-color: #1f1f1f;
-      --box-bg: #ffffff;
+      --box-bg: rgba(255, 255, 255, 0.3); /* demi-transparent clair */
       --box-border: #e6e6e6;
       --box-shadow: rgba(0, 0, 0, 0.05);
       --button-bg: #111827;
       --button-text: #ffffff;
       --hover-bg: #0e1628;
       --icon-filter: invert(0%);
-      --download-fill: #000000; /* Noir en mode clair */
+      --download-fill: #000000;
     }
 
     body {
@@ -49,14 +49,13 @@
       position: relative;
     }
 
-    /* Feuilles qui tombent */
     .leaf {
       position: fixed;
       top: -50px;
       width: 30px;
       height: 30px;
       pointer-events: none;
-      background-image: url('https://i.imgur.com/z9xrCPT.png'); /* Ta texture */
+      background-image: url('https://i.imgur.com/z9xrCPT.png');
       background-size: contain;
       background-repeat: no-repeat;
       opacity: 0.7;
@@ -94,7 +93,7 @@
       box-shadow: 0 8px 24px var(--box-shadow);
       border: 1px solid var(--box-border);
       transition: box-shadow 0.2s ease, background 0.3s ease;
-      text-align: center; /* Centré */
+      text-align: center;
     }
 
     .box:hover {
@@ -179,7 +178,6 @@
       pointer-events: none;
     }
 
-    /* Le téléchargement SVG prend la couleur selon thème */
     .download-button svg path {
       fill: var(--download-fill);
       filter: none !important;
@@ -211,11 +209,10 @@
     const leaf = document.createElement('div');
     leaf.classList.add('leaf');
     leaf.style.left = Math.random() * window.innerWidth + 'px';
-    leaf.style.animationDuration = (15 + Math.random() * 15) + 's'; // 15-30s
-    leaf.style.animationDelay = Math.random() * 30 + 's';
+    leaf.style.animationDuration = (14 + Math.random() * 14) + 's'; // vitesse augmentée
+    leaf.style.animationDelay = Math.random() * 28 + 's';
     leaf.style.opacity = 0.6 + Math.random() * 0.4;
     leaf.style.transformOrigin = 'center';
-    leaf.style.animationTimingFunction = 'linear';
     return leaf;
   }
 
@@ -251,7 +248,7 @@
   </div>
   <div class="box">
     <h2>Uniware - Store</h2>
-    <p>Le store est <span style="color: #34d399;">ouvert</span> : 
+    <p>Le store est <span style="color: #34d399;">ouvert</span> :
       <a href="https://uniware.mycommerce.shop" style="color: #6ee7b7; text-decoration: underline;">Accéder au Store</a>
     </p>
   </div>
@@ -266,13 +263,11 @@
   const toggleBtn = document.querySelector('.theme-toggle');
   const body = document.body;
 
-  // Charger le thème stocké
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     body.classList.add('light');
   }
 
-  // Changer de thème
   toggleBtn.addEventListener('click', () => {
     body.classList.toggle('light');
     const theme = body.classList.contains('light') ? 'light' : 'dark';
