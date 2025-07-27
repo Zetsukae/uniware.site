@@ -499,6 +499,36 @@
       left: 40px;
     }
 
+    /* Badge "EN COURS" */
+    .en-cours-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+      z-index: 10;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+      }
+      50% {
+        box-shadow: 0 2px 15px rgba(255, 107, 53, 0.8);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+      }
+    }
+
     @media (max-width: 500px) {
       .more, .goback, .box {
         font-size: 14px;
@@ -523,6 +553,12 @@
       }
       .separator-bottom {
         top: 530px;
+      }
+      .en-cours-badge {
+        top: 8px;
+        right: 8px;
+        padding: 4px 8px;
+        font-size: 10px;
       }
     }
   </style>
@@ -569,6 +605,7 @@
     </a>
     
     <a href="tougen-anki-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/Z7t1KfA.jpeg'); left: 220px;">
+      <div class="en-cours-badge">EN COURS</div>
       <h1>Tougen Anki</h1>
       <h2>1 Saison / VOSTFR</h2>
     </a>
