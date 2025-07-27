@@ -319,48 +319,11 @@
       transform: scale(1.05) translateX(-50%);
     }
 
-    /* Media query pour agrandir sur mobile */
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 36px;
-      }
-      h2 {
-        font-size: 18px;
-      }
-      .controls-container {
-        flex-direction: column;
-        gap: 10px;
-      }
-      #episodeSelect, #playerSelect {
-        width: 90%;
-        font-size: 20px;
-        padding: 12px 16px;
-      }
-      .video-wrapper {
-        width: 95%;
-        max-width: none;
-      }
-      video {
-        border-radius: 12px;
-      }
-      .goback {
-        font-size: 18px;
-        padding: 14px 28px;
-      }
-    }
-
     #videoFrame {
       width: 100%;
       height: 450px;
       border-radius: 8px;
       border: none;
-    }
-
-    @media (max-width: 500px) {
-      #videoFrame {
-        height: 250px;
-        border-radius: 12px;
-      }
     }
 
     /* Style pour le message d'erreur */
@@ -390,20 +353,6 @@
       font-size: 48px;
       margin-bottom: 15px;
       display: block;
-    }
-
-    @media (max-width: 500px) {
-      #errorMessage {
-        height: 250px;
-        border-radius: 12px;
-      }
-      #errorMessage .error-content {
-        font-size: 16px;
-      }
-      #errorMessage .error-icon {
-        font-size: 36px;
-        margin-bottom: 10px;
-      }
     }
 
     /* Lignes de séparation */
@@ -559,36 +508,146 @@
       }
     }
 
+    /* Media query pour mobile */
     @media (max-width: 500px) {
-      .more, .goback, .box {
-        font-size: 14px;
-        padding: 10px 20px;
+      body {
+        overflow-x: auto;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
       }
-      .github-button, .consoleplus-button {
+
+      h1 {
+        font-size: 36px;
+      }
+      h2 {
         font-size: 18px;
-        padding: 12px 20px;
       }
-      .banner {
-        width: 140px;
-        height: 210px;
+      .controls-container {
+        flex-direction: column;
+        gap: 10px;
       }
-      .series {
-        top: 300px;
+      #episodeSelect, #playerSelect {
+        width: 90%;
+        font-size: 20px;
+        padding: 12px 16px;
       }
-      .series-title {
-        top: 270px;
+      .video-wrapper {
+        width: 95%;
+        max-width: none;
       }
+      video {
+        border-radius: 12px;
+      }
+      .goback {
+        font-size: 18px;
+        padding: 14px 28px;
+        position: relative;
+        transform: none;
+        left: auto;
+        bottom: auto;
+        margin: 20px auto;
+        display: block;
+        width: fit-content;
+      }
+
+      #videoFrame {
+        height: 250px;
+        border-radius: 12px;
+      }
+
+      #errorMessage {
+        height: 250px;
+        border-radius: 12px;
+      }
+      #errorMessage .error-content {
+        font-size: 16px;
+      }
+      #errorMessage .error-icon {
+        font-size: 36px;
+        margin-bottom: 10px;
+      }
+
+      /* Ajustements pour mobile */
+      .separator-line {
+        left: 10px;
+        right: 10px;
+      }
+
+      .separator-top {
+        top: 10px;
+      }
+
       .separator-middle {
-        top: 250px;
+        top: 280px;
       }
+
       .separator-bottom {
-        top: 530px;
+        top: 520px;
       }
-      .en-cours-badge, .bientot-badge {
-        top: 8px;
-        right: 8px;
-        padding: 4px 8px;
+
+      .section-title {
+        left: 10px;
+        font-size: 24px;
+      }
+
+      .films-title {
+        top: 20px;
+      }
+
+      .series-title {
+        top: 290px;
+      }
+
+      .banner {
+        width: 100px;
+        height: 150px;
+        position: relative;
+        display: inline-block;
+        margin: 5px;
+      }
+
+      .banner h1 {
+        font-size: 14px;
+        padding: 3px 5px;
+      }
+
+      .banner h2 {
         font-size: 10px;
+        padding: 2px 5px;
+        margin-bottom: 5px;
+      }
+
+      .films {
+        position: relative;
+        top: 50px;
+        left: 10px;
+        right: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 10px;
+        margin-bottom: 40px;
+      }
+
+      .series {
+        position: relative;
+        top: 320px;
+        left: 10px;
+        right: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 10px;
+        margin-bottom: 80px;
+      }
+
+      .en-cours-badge, .bientot-badge {
+        top: 5px;
+        right: 5px;
+        padding: 3px 6px;
+        font-size: 8px;
+        border-radius: 10px;
       }
     }
   </style>
