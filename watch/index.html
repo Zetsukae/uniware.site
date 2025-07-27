@@ -517,6 +517,24 @@
       animation: pulse 2s infinite;
     }
 
+    /* Badge "BIENTÔT DISPO" */
+    .bientot-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      z-index: 10;
+      animation: glow 2s infinite;
+    }
+
     @keyframes pulse {
       0% {
         box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
@@ -526,6 +544,18 @@
       }
       100% {
         box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+      }
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      }
+      50% {
+        box-shadow: 0 2px 15px rgba(99, 102, 241, 0.8);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
       }
     }
 
@@ -554,7 +584,7 @@
       .separator-bottom {
         top: 530px;
       }
-      .en-cours-badge {
+      .en-cours-badge, .bientot-badge {
         top: 8px;
         right: 8px;
         padding: 4px 8px;
@@ -611,6 +641,7 @@
     </a>
     
     <a href="await/" class="banner" style="background-image: url('https://i.imgur.com/uYNNSsp.jpeg'); left: 440px;">
+      <div class="bientot-badge">BIENTÔT DISPO</div>
       <h1>CyberPunk Edgerunners</h1>
       <h2>1 Saison / VOSTFR</h2>
     </a>
