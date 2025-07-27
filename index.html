@@ -1,279 +1,573 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Uniware - By Zetsukae</title>
-  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg-color: #0f2e22;
-      --text-color: #f2f2f2;
-      --box-bg: rgba(22, 60, 45, 0.3); /* demi-transparent */
-      --box-border: #1d4c3a;
-      --box-shadow: rgba(0, 0, 0, 0.4);
-      --button-bg: #1a4434;
-      --button-text: #ffffff;
-      --hover-bg: #25664c;
-      --icon-filter: invert(100%);
-      --download-fill: #ffffff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champ d'étoiles</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+    <style>
+        /* Defs */
+        @property --angle-1 {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: -75deg;
+        }
+        @property --angle-2 {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: -45deg;
+        }
+        :root {
+            --global--size: clamp(1rem, 2vw, 2.5rem);
+            --anim--hover-time: 400ms;
+            --anim--hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
+        }
 
-    body.light {
-      --bg-color: #f6f6f7;
-      --text-color: #1f1f1f;
-      --box-bg: rgba(255, 255, 255, 0.3); /* demi-transparent clair */
-      --box-border: #e6e6e6;
-      --box-shadow: rgba(0, 0, 0, 0.05);
-      --button-bg: #111827;
-      --button-text: #ffffff;
-      --hover-bg: #0e1628;
-      --icon-filter: invert(0%);
-      --download-fill: #000000;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-color);
-      font-family: 'Inter', sans-serif;
-      color: var(--text-color);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      transition: background 0.3s, color 0.3s;
-      overflow-x: hidden;
-      position: relative;
-    }
+        html, body {
+            height: 100%;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    .leaf {
-      position: fixed;
-      top: -50px;
-      width: 30px;
-      height: 30px;
-      pointer-events: none;
-      background-image: url('https://i.imgur.com/z9xrCPT.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      opacity: 0.7;
-      animation-name: fall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-    }
+        #stars, #stars2, #stars3, #stars4 {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
-    @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.7;
-      }
-      100% {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
+        #stars {
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow: 
+                300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+                600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+                500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+                350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+                150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+                250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+                1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+                1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+                1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+                1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+                850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+                1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+                50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+                400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+                900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+                100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+                450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+                550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+                1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+                1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+                320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+                520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+                620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+                370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+                170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+            animation: animStar 60s linear infinite;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 800px;
-      margin: 60px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      z-index: 10;
-      position: relative;
-    }
+        #stars:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow: 
+                300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+                600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+                500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+                350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+                150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+                250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+                1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+                1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+                1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+                1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+                850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+                1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+                50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+                400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+                900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+                100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+                450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+                550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+                1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+                1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+                320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+                520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+                620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+                370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+                170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+        }
 
-    .box {
-      background: var(--box-bg);
-      padding: 24px 28px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px var(--box-shadow);
-      border: 1px solid var(--box-border);
-      transition: box-shadow 0.2s ease, background 0.3s ease;
-      text-align: center;
-    }
+        #stars2 {
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            box-shadow: 
+                500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+                700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+                1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+                350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+                150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+                250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+                1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+                1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+                520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+                620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+                1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+                370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+            animation: animStar 90s linear infinite;
+        }
 
-    .box:hover {
-      box-shadow: 0 12px 28px var(--box-shadow);
-    }
+        #stars2:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            box-shadow: 
+                500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+                700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+                1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+                350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+                150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+                250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+                1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+                1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+                520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+                620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+                1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+                370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+        }
 
-    .box h2 {
-      margin: 0 0 12px;
-      font-size: 22px;
-      font-weight: 600;
-    }
+        #stars3 {
+            width: 3px;
+            height: 3px;
+            background: transparent;
+            box-shadow: 
+                600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+                200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+                300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+                450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+                150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+                250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+                620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+                220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+                320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+            animation: animStar 140s linear infinite;
+        }
 
-    .box p {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.6;
-    }
+        #stars3:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 3px;
+            height: 3px;
+            background: transparent;
+            box-shadow: 
+                600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+                200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+                300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+                450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+                150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+                250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+                620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+                220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+                320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+        }
 
-    a.more {
-      background: var(--button-bg);
-      color: var(--button-text);
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-weight: 500;
-      text-decoration: none;
-      text-align: center;
-      transition: background 0.2s ease;
-      display: inline-block;
-      margin: 10px auto 0;
-      max-width: 250px;
-    }
+        #stars4 {
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow: 
+                160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+                660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+                360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+                1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+                860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+                180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+                680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+                380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+            animation: animStar 45s linear infinite;
+        }
 
-    a.more:hover {
-      background: var(--hover-bg);
-    }
+        #stars4:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow: 
+                160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+                660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+                360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+                1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+                860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+                180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+                680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+                380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+        }
 
-    .actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 12px;
-      align-items: center;
-    }
+        @keyframes animStar {
+            from {
+                transform: translateY(0px);
+            }
+            to {
+                transform: translateY(-2000px);
+            }
+        }
 
-    .top-buttons {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      gap: 12px;
-      z-index: 20;
-      align-items: center;
-    }
+        .title-container {
+            position: absolute;
+            top: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+        }
 
-    .top-buttons a,
-    .theme-toggle {
-      width: 42px;
-      height: 42px;
-      background-color: var(--box-bg);
-      border: 1px solid var(--box-border);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 10px var(--box-shadow);
-      transition: transform 0.2s ease, background 0.3s ease;
-      cursor: pointer;
-    }
+        .welcome-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: rgba(74, 158, 255, 0.9);
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px rgba(74, 158, 255, 0.3);
+            letter-spacing: 2px;
+        }
 
-    .top-buttons a:hover,
-    .theme-toggle:hover {
-      transform: scale(1.05);
-      background: var(--hover-bg);
-    }
+        .brand-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: rgba(107, 182, 255, 0.95);
+            letter-spacing: 8px;
+            text-shadow: 0 0 8px rgba(107, 182, 255, 0.4);
+            margin-bottom: 40px;
+        }
 
-    .top-buttons img,
-    .top-buttons svg,
-    .theme-toggle svg {
-      width: 22px;
-      height: 22px;
-      filter: var(--icon-filter);
-      pointer-events: none;
-    }
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .download-button svg path {
-      fill: var(--download-fill);
-      filter: none !important;
-    }
+        /* ========== BUTTON ========== */
+        /* Button Wrap Container */
+        .button-wrap {
+            position: relative;
+            z-index: 2;
+            border-radius: 999vw;
+            background: transparent;
+            pointer-events: none;
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+        }
 
-    .theme-toggle {
-      margin-right: auto;
-      margin-left: 20px;
-    }
+        /* Button Shadow Container */
+        .button-shadow {
+            --shadow-cuttoff-fix: 2em;
+            position: absolute;
+            width: calc(100% + var(--shadow-cuttoff-fix));
+            height: calc(100% + var(--shadow-cuttoff-fix));
+            top: calc(0% - var(--shadow-cuttoff-fix) / 2);
+            left: calc(0% - var(--shadow-cuttoff-fix) / 2);
+            filter: blur(clamp(2px, 0.125em, 12px));
+            -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+            -moz-filter: blur(clamp(2px, 0.125em, 12px));
+            -ms-filter: blur(clamp(2px, 0.125em, 12px));
+            overflow: visible;
+            pointer-events: none;
+        }
 
-    @media (max-width: 600px) {
-      .box {
-        padding: 20px;
-      }
-      a.more {
-        padding: 12px 20px;
-        font-size: 16px;
-      }
-    }
-  </style>
+        /* Shadow */
+        .button-shadow::after {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            inset: 0;
+            border-radius: 999vw;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
+            width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+            height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+            top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+            left: calc(var(--shadow-cuttoff-fix) - 0.875em);
+            padding: 0.125em;
+            box-sizing: border-box;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+            overflow: visible;
+            opacity: 1;
+        }
+
+        /* ========== BUTTON BASE STYLES ========== */
+        button {
+            /* Basic Styling */
+            --border-width: clamp(1px, 0.0625em, 4px);
+            all: unset;
+            cursor: pointer;
+            position: relative;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            pointer-events: auto;
+            z-index: 3;
+            background: linear-gradient(
+                -75deg,
+                rgba(255, 255, 255, 0.05),
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0.05)
+            );
+            border-radius: 999vw;
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+                0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+                0 0 0 0 rgba(255, 255, 255, 1);
+            backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -webkit-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -moz-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            -ms-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+        }
+
+        button:hover {
+            transform: scale(0.975);
+            backdrop-filter: blur(0.01em);
+            -webkit-backdrop-filter: blur(0.01em);
+            -moz-backdrop-filter: blur(0.01em);
+            -ms-backdrop-filter: blur(0.01em);
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+                0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5),
+                0 0 0 0 rgba(255, 255, 255, 1);
+        }
+
+        /* Button Text */
+        button span {
+            position: relative;
+            display: block;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            font-family: 'Lato', sans-serif;
+            letter-spacing: -0.05em;
+            font-weight: 400;
+            font-size: var(--global--size);
+            color: rgba(255, 255, 255, 0.9);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-shadow: 0em 0.25em 0.05em rgba(0, 0, 0, 0.1);
+            transition: all var(--anim--hover-time) var(--anim--hover-ease);
+            padding-inline: 1.5em;
+            padding-block: 0.875em;
+        }
+
+        button:hover span {
+            text-shadow: 0.025em 0.025em 0.025em rgba(0, 0, 0, 0.12);
+        }
+
+        /* Text */
+        button span::after {
+            content: "";
+            display: block;
+            position: absolute;
+            z-index: 1;
+            width: calc(100% - var(--border-width));
+            height: calc(100% - var(--border-width));
+            top: calc(0% + var(--border-width) / 2);
+            left: calc(0% + var(--border-width) / 2);
+            box-sizing: border-box;
+            border-radius: 999vw;
+            overflow: clip;
+            background: linear-gradient(
+                var(--angle-2),
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.5) 40% 50%,
+                rgba(255, 255, 255, 0) 55%
+            );
+            z-index: 3;
+            mix-blend-mode: screen;
+            pointer-events: none;
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+            background-repeat: no-repeat;
+            transition: background-position calc(var(--anim--hover-time) * 1.25)
+                    var(--anim--hover-ease),
+                --angle-2 calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease);
+        }
+
+        button:hover span::after {
+            background-position: 25% 50%;
+        }
+
+        button:active span::after {
+            background-position: 50% 15%;
+            --angle-2: -15deg;
+        }
+
+        /* Touch Devices */
+        @media (hover: none) and (pointer: coarse) {
+            button span::after,
+            button:active span::after {
+                --angle-2: -45deg;
+            }
+        }
+
+        /* ========== BUTTON OUTLINE ========== */
+        /* Outline */
+        button::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            border-radius: 999vw;
+            width: calc(100% + var(--border-width));
+            height: calc(100% + var(--border-width));
+            top: calc(0% - var(--border-width) / 2);
+            left: calc(0% - var(--border-width) / 2);
+            padding: var(--border-width);
+            box-sizing: border-box;
+            background: conic-gradient(
+                    from var(--angle-1) at 50% 50%,
+                    rgba(0, 0, 0, 0.5),
+                    rgba(0, 0, 0, 0) 5% 40%,
+                    rgba(0, 0, 0, 0.5) 50%,
+                    rgba(0, 0, 0, 0) 60% 95%,
+                    rgba(0, 0, 0, 0.5)
+                ),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            transition: all var(--anim--hover-time) var(--anim--hover-ease),
+                --angle-1 500ms ease;
+            box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255, 255, 255, 0.5);
+        }
+
+        button:hover::after {
+            --angle-1: -125deg;
+        }
+
+        button:active::after {
+            --angle-1: -75deg;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            button::after,
+            button:hover::after,
+            button:active::after {
+                --angle-1: -75deg;
+            }
+        }
+
+        /* Shadow Hover */
+        .button-wrap:has(button:hover) .button-shadow {
+            filter: blur(clamp(2px, 0.0625em, 6px));
+            -webkit-filter: blur(clamp(2px, 0.0625em, 6px));
+            -moz-filter: blur(clamp(2px, 0.0625em, 6px));
+            -ms-filter: blur(clamp(2px, 0.0625em, 6px));
+            transition: filter var(--anim--hover-time) var(--anim--hover-ease);
+        }
+
+        .button-wrap:has(button:hover) .button-shadow::after {
+            top: calc(var(--shadow-cuttoff-fix) - 0.875em);
+            opacity: 1;
+        }
+
+        /* Rotation */
+        .button-wrap:has(button:active) {
+            transform: rotate3d(1, 0, 0, 25deg);
+        }
+
+        .button-wrap:has(button:active) button {
+            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+                0 0.125em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+                0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+                0 0.225em 0.05em 0 rgba(0, 0, 0, 0.05),
+                0 0.25em 0 0 rgba(255, 255, 255, 0.75),
+                inset 0 0.25em 0.05em 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .button-wrap:has(button:active) .button-shadow {
+            filter: blur(clamp(2px, 0.125em, 12px));
+            -webkit-filter: blur(clamp(2px, 0.125em, 12px));
+            -moz-filter: blur(clamp(2px, 0.125em, 12px));
+            -ms-filter: blur(clamp(2px, 0.125em, 12px));
+        }
+
+        .button-wrap:has(button:active) .button-shadow::after {
+            top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+            opacity: 0.75;
+        }
+
+        .button-wrap:has(button:active) span {
+            text-shadow: 0.025em 0.25em 0.05em rgba(0, 0, 0, 0.12);
+        }
+    </style>
 </head>
 <body>
-
-<!-- Feuilles qui tombent -->
-<script>
-  const NB_LEAVES = 25;
-
-  function createLeaf() {
-    const leaf = document.createElement('div');
-    leaf.classList.add('leaf');
-    leaf.style.left = Math.random() * window.innerWidth + 'px';
-    leaf.style.animationDuration = (14 + Math.random() * 14) + 's'; // vitesse augmentée
-    leaf.style.animationDelay = Math.random() * 28 + 's';
-    leaf.style.opacity = 0.6 + Math.random() * 0.4;
-    leaf.style.transformOrigin = 'center';
-    return leaf;
-  }
-
-  for (let i = 0; i < NB_LEAVES; i++) {
-    document.body.appendChild(createLeaf());
-  }
-</script>
-
-<!-- Boutons fixes -->
-<div class="top-buttons">
-  <div class="theme-toggle" title="Changer le thème">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.8 1.8-1.8zm10.48 0l1.8-1.79 1.79 1.79-1.8 1.8-1.79-1.8zM12 4V1h-1v3h1zm0 16v3h-1v-3h1zm8-8h3v-1h-3v1zM1 12h3v-1H1v1zm15.24 7.16l1.79 1.8 1.8-1.8-1.8-1.79-1.79 1.79zM4.84 17.24l-1.79 1.8 1.79 1.79 1.8-1.79-1.8-1.8z"/>
-      <circle cx="12" cy="12" r="5"/>
+    <!-- Background -->
+    <svg style="position: absolute; width: 100%; height: 100%; z-index: 0;" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <pattern id="dottedGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.05)" />
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#dottedGrid)" />
     </svg>
-  </div>
-  <a href="https://github.com/Zetsukae/uniware.site" target="_blank" title="GitHub">
-    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" />
-  </a>
-  <a href="downloads/" class="download-button" title="Téléchargement">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.34v6h6.66v-6h3.34L12 2z" />
-    </svg>
-  </a>
-</div>
 
-<!-- Contenu principal -->
-<div class="container">
-  <div class="box">
-    <h2>Uniware - News</h2>
-    <p>Ajout de <b>Infinity Train</b>, refonte de <b>Uniware Watch</b>. Nouveau design responsive !</p>
-    <p><i>13.06.25 à 13:58 (UTC+2)</i></p>
-  </div>
-  <div class="box">
-    <h2>Uniware - Store</h2>
-    <p>Le store est <span style="color: #34d399;">ouvert</span> :
-      <a href="https://uniware.mycommerce.shop" style="color: #6ee7b7; text-decoration: underline;">Accéder au Store</a>
-    </p>
-  </div>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div id="stars4"></div>
+    
+    <div class="title-container">
+        <h2 class="welcome-text">Bienvenu chez</h2>
+        <h1 class="brand-text">UNIWARE</h1>
+        
+        <div class="buttons-container">
+            <!-- Button 1 -->
+            <div class="button-wrap">
+                <button onclick="window.location.href='watch/'">
+                    <span>WATCH</span>
+                </button>
+                <div class="button-shadow"></div>
+            </div>
 
-  <div class="actions">
-    <a href="watch/" class="more">Lancer Uniware Watch</a>
-    <a href="more/" class="more">En savoir plus</a>
-  </div>
-</div>
+            <!-- Button 2 -->
+            <div class="button-wrap">
+                <button onclick="window.location.href='https://uniware.mycommerce.shop/'">
+                    <span>SHOP</span>
+                </button>
+                <div class="button-shadow"></div>
+            </div>
 
-<script>
-  const toggleBtn = document.querySelector('.theme-toggle');
-  const body = document.body;
-
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'light') {
-    body.classList.add('light');
-  }
-
-  toggleBtn.addEventListener('click', () => {
-    body.classList.toggle('light');
-    const theme = body.classList.contains('light') ? 'light' : 'dark';
-    localStorage.setItem('theme', theme);
-  });
-</script>
-
+            <!-- Button 3 -->
+            <div class="button-wrap">
+                <button onclick="window.location.href='more/'">
+                    <span>PLUS ...</span>
+                </button>
+                <div class="button-shadow"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
