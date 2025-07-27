@@ -6,12 +6,14 @@
   <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
   <meta charset="UTF-8">
   <title>Uniware WATCH</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
     body {
       margin: 0;
       overflow: hidden;
       background: #000;
       font-family: sans-serif;
+      color: white;
       height: 100vh;
     }
 
@@ -211,6 +213,207 @@
       }
     }
 
+    .overlay {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    h2 {
+      margin: 10px 0 5px;
+      font-weight: normal;
+      font-size: 16px;
+      color: #aaa;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font-size: 28px;
+    }
+
+    .video-wrapper {
+      width: 80%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* Conteneur pour les deux barres déroulantes */
+    .controls-container {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    /* Style pour les barres défilantes (select) */
+    #episodeSelect, #playerSelect {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 150px;
+      user-select: none;
+    }
+
+    #episodeSelect:hover, #playerSelect:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+      color: white;
+    }
+
+    #episodeSelect option, #playerSelect option {
+      background-color: #000;
+      color: white;
+    }
+
+    #episodeSelect option:hover, #playerSelect option:hover {
+      background-color: #222;
+      color: white;
+    }
+
+    .goback {
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+      z-index: 1;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05) translateX(-50%);
+    }
+
+    /* Media query pour agrandir sur mobile */
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 36px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .controls-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      #episodeSelect, #playerSelect {
+        width: 90%;
+        font-size: 20px;
+        padding: 12px 16px;
+      }
+
+      .video-wrapper {
+        width: 95%;
+        max-width: none;
+      }
+
+      video {
+        border-radius: 12px;
+      }
+
+      .goback {
+        font-size: 18px;
+        padding: 14px 28px;
+      }
+    }
+
+    #videoFrame {
+      width: 100%;
+      height: 450px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    @media (max-width: 500px) {
+      #videoFrame {
+        height: 250px;
+        border-radius: 12px;
+      }
+    }
+
+    /* Style pour le message d'erreur */
+    #errorMessage {
+      width: 100%;
+      height: 450px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      backdrop-filter: blur(5px);
+    }
+
+    #errorMessage .error-content {
+      color: #ff6b6b;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    #errorMessage .error-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    @media (max-width: 500px) {
+      #errorMessage {
+        height: 250px;
+        border-radius: 12px;
+      }
+
+      #errorMessage .error-content {
+        font-size: 16px;
+      }
+
+      #errorMessage .error-icon {
+        font-size: 36px;
+        margin-bottom: 10px;
+      }
+    }
+
     /* Lignes de séparation */
     .separator-line {
       position: absolute;
@@ -304,28 +507,6 @@
       left: 40px;
     }
 
-    .goback {
-      background-color: rgba(255, 255, 255, 0.15);
-      color: white;
-      padding: 12px 24px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 16px;
-      transition: background-color 0.3s, transform 0.2s;
-      backdrop-filter: blur(5px);
-      z-index: 1;
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .goback:hover {
-      background-color: rgba(255, 255, 255, 0.25);
-      transform: scale(1.05) translateX(-50%);
-    }
-
     @media (max-width: 500px) {
       .more, .goback, .box {
         font-size: 14px;
@@ -383,6 +564,11 @@
     <a href="infinitytrain-VF/" class="banner" style="background-image: url('https://i.imgur.com/4k0gOI1.jpeg'); left: 0;">
       <h1>Infinity Train</h1>
       <h2>1 Saison / VF</h2>
+    </a>
+    
+    <a href="tougen-anki-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/Z7t1KfA.jpeg '); left: 220px;">
+      <h1>Tougen Anki</h1>
+      <h2>1 Saison / VOSTFR</h2>
     </a>
   </div>
 
