@@ -246,7 +246,7 @@
       gap: 15px;
     }
 
-    /* Conteneur pour la barre déroulante */
+    /* Conteneur pour les barres déroulantes */
     .controls-container {
       display: flex;
       gap: 15px;
@@ -260,8 +260,8 @@
       border-radius: 8px;
     }
 
-    /* Style pour la barre défilante (select) */
-    #playerSelect {
+    /* Style pour les barres défilantes (select) */
+    #languageSelect, #playerSelect {
       background-color: rgba(255, 255, 255, 0.1);
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -279,18 +279,18 @@
       user-select: none;
     }
 
-    #playerSelect:hover {
+    #languageSelect:hover, #playerSelect:hover {
       background-color: rgba(255, 255, 255, 0.2);
       border-color: rgba(255, 255, 255, 0.6);
       color: white;
     }
 
-    #playerSelect option {
+    #languageSelect option, #playerSelect option {
       background-color: #000;
       color: white;
     }
 
-    #playerSelect option:hover {
+    #languageSelect option:hover, #playerSelect option:hover {
       background-color: #222;
       color: white;
     }
@@ -328,7 +328,7 @@
         gap: 10px;
       }
 
-      #playerSelect {
+      #languageSelect, #playerSelect {
         width: 90%;
         font-size: 20px;
         padding: 12px 16px;
@@ -421,8 +421,14 @@
     <h1>5 Centimètres par seconde - VOSTFR</h1>
     
     <div class="video-wrapper">
-      <!-- Conteneur pour la barre déroulante -->
+      <!-- Conteneur pour les barres déroulantes -->
       <div class="controls-container">
+        <!-- Barre défilante pour choisir la langue -->
+        <select id="languageSelect">
+          <option value="vostfr" selected>VOSTFR</option>
+          <option value="vf">VF</option>
+        </select>
+        
         <!-- Barre défilante pour choisir le lecteur -->
         <select id="playerSelect">
           <option value="sibnet" selected>SIBNET</option>
@@ -444,6 +450,7 @@
   </div>
 
   <script>
+    const languageSelect = document.getElementById('languageSelect');
     const playerSelect = document.getElementById('playerSelect');
     const videoFrame = document.getElementById('videoFrame');
     const errorMessage = document.getElementById('errorMessage');
@@ -453,7 +460,14 @@
 
     // Fonction pour mettre à jour la source vidéo
     function updateVideoSource() {
+      const language = languageSelect.value;
       const playerType = playerSelect.value;
+      
+      // Si VF est sélectionné, rediriger vers la page VF
+      if (language === 'vf') {
+        window.location.href = '5cm-par-seconde-vf/';
+        return;
+      }
       
       // Masquer tous les éléments d'abord
       videoFrame.style.display = 'none';
@@ -468,7 +482,8 @@
       }
     }
 
-    // Écouteur d'événement pour le sélecteur
+    // Écouteurs d'événements pour les sélecteurs
+    languageSelect.addEventListener('change', updateVideoSource);
     playerSelect.addEventListener('change', updateVideoSource);
 
     // Charger la vidéo par défaut
