@@ -210,16 +210,37 @@
       }
     }
 
+    /* Lignes de séparation */
+    .separator-line {
+      position: absolute;
+      left: 40px;
+      right: 40px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+      z-index: 2;
+    }
+
+    .separator-top {
+      top: 10px;
+    }
+
+    .separator-middle {
+      top: 370px;
+    }
+
+    .separator-bottom {
+      top: 730px;
+    }
+
     .section-title {
       position: absolute;
       left: 40px;
       color: white;
       font-size: 28px;
       font-weight: bold;
-      background: rgba(0, 0, 0, 0.5);
       padding: 8px 16px;
-      border-radius: 8px;
       z-index: 2;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     }
 
     .films-title {
@@ -323,6 +344,12 @@
       .series-title {
         top: 270px;
       }
+      .separator-middle {
+        top: 250px;
+      }
+      .separator-bottom {
+        top: 530px;
+      }
     }
   </style>
 </head>
@@ -332,6 +359,11 @@
   <div id="stars2"></div>
   <div id="stars3"></div>
   <div id="stars4"></div>
+
+  <!-- Lignes de séparation -->
+  <div class="separator-line separator-top"></div>
+  <div class="separator-line separator-middle"></div>
+  <div class="separator-line separator-bottom"></div>
 
   <!-- Titres des sections -->
   <div class="section-title films-title">Films</div>
