@@ -362,6 +362,51 @@
         border-radius: 12px;
       }
     }
+
+    /* Style pour le message d'erreur */
+    #errorMessage {
+      width: 100%;
+      height: 450px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      backdrop-filter: blur(5px);
+    }
+
+    #errorMessage .error-content {
+      color: #ff6b6b;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    #errorMessage .error-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    @media (max-width: 500px) {
+      #errorMessage {
+        height: 250px;
+        border-radius: 12px;
+      }
+
+      #errorMessage .error-content {
+        font-size: 16px;
+      }
+
+      #errorMessage .error-icon {
+        font-size: 36px;
+        margin-bottom: 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -372,7 +417,7 @@
   <div id="stars4"></div>
 
   <div class="overlay">
-    <h2>Copyright - Malheuresement nous y travaillons pour tout re-upload. Merci de patientez !</h2>
+    <h2>Created by Owen Dennis - Trademark of The Cartoon Network, Inc.</h2>
     <h1>Infinity Train VF - Saison 1</h1>
     
     <div class="video-wrapper">
@@ -395,11 +440,19 @@
         <!-- Barre défilante pour choisir le lecteur -->
         <select id="playerSelect">
           <option value="sibnet" selected>SIBNET</option>
-          <option value="uniware">Uniware (Revoke)</option>
+          <option value="uniware">Uniware (Revoked)</option>
         </select>
       </div>
 
       <iframe id="videoFrame" width="100%" height="450" src="" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; display: none;"></iframe>
+      
+      <!-- Message d'erreur pour Uniware -->
+      <div id="errorMessage">
+        <div class="error-content">
+          <span class="error-icon">⚠️</span>
+          Malheureusement ce lecteur à été supprimé pour cause de droits d'auteurs.
+        </div>
+      </div>
             
       <a href="https://uniware.site/watch/" class="goback">Retour</a>
     </div>
@@ -409,33 +462,20 @@
     const episodeSelect = document.getElementById('episodeSelect');
     const playerSelect = document.getElementById('playerSelect');
     const videoFrame = document.getElementById('videoFrame');
+    const errorMessage = document.getElementById('errorMessage');
 
     // URLs SIBNET pour chaque épisode
     const sibnetUrls = {
       '1': 'https://video.sibnet.ru/shell.php?videoid=5976582',
       '2': 'https://video.sibnet.ru/shell.php?videoid=5976584',
-      '3': 'https://video.sibnet.ru/shell.php?videoid=1234567',
-      '4': 'https://video.sibnet.ru/shell.php?videoid=1234567',
-      '5': 'https://video.sibnet.ru/shell.php?videoid=1234567',
-      '6': 'https://video.sibnet.ru/shell.php?videoid=1234567',
-      '7': 'https://video.sibnet.ru/shell.php?videoid=1234567',
-      '8': 'https://video.sibnet.ru/shell.php?videoid=1234567',
-      '9': 'https://video.sibnet.ru/shell.php?videoid=1234567',
-      '10': 'https://video.sibnet.ru/shell.php?videoid=1234567'
-    };
-
-    // URLs Uniware pour chaque épisode (à personnaliser)
-    const uniwareUrls = {
-      '1': '', // Ajoutez vos URLs Uniware ici
-      '2': '',
-      '3': '',
-      '4': '',
-      '5': '',
-      '6': '',
-      '7': '',
-      '8': '',
-      '9': '',
-      '10': ''
+      '3': 'https://video.sibnet.ru/shell.php?videoid=5976595',
+      '4': 'https://video.sibnet.ru/shell.php?videoid=5976597',
+      '5': 'https://video.sibnet.ru/shell.php?videoid=5976600',
+      '6': 'https://video.sibnet.ru/shell.php?videoid=5976601',
+      '7': 'https://video.sibnet.ru/shell.php?videoid=5976605',
+      '8': 'https://video.sibnet.ru/shell.php?videoid=5976606',
+      '9': 'https://video.sibnet.ru/shell.php?videoid=5976608',
+      '10': 'https://video.sibnet.ru/shell.php?videoid=5976611'
     };
 
     // Fonction pour mettre à jour la source vidéo
@@ -443,21 +483,21 @@
       const episode = episodeSelect.value;
       const playerType = playerSelect.value;
       
-      let newSrc = '';
+      // Masquer tous les éléments d'abord
+      videoFrame.style.display = 'none';
+      errorMessage.style.display = 'none';
       
       if (episode) {
         if (playerType === 'sibnet') {
-          newSrc = sibnetUrls[episode];
+          const newSrc = sibnetUrls[episode];
+          if (newSrc) {
+            videoFrame.src = newSrc;
+            videoFrame.style.display = 'block';
+          }
         } else if (playerType === 'uniware') {
-          newSrc = uniwareUrls[episode];
+          // Afficher le message d'erreur pour Uniware
+          errorMessage.style.display = 'flex';
         }
-      }
-      
-      if (newSrc) {
-        videoFrame.src = newSrc;
-        videoFrame.style.display = 'block';
-      } else {
-        videoFrame.style.display = 'none';
       }
     }
 
