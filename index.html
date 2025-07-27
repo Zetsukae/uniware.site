@@ -31,7 +31,7 @@
             width: 1px;
             height: 1px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
                 600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
                 500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
@@ -67,7 +67,7 @@
             width: 1px;
             height: 1px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
                 600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
                 500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
@@ -99,7 +99,7 @@
             width: 2px;
             height: 2px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
                 700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
                 1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
@@ -122,7 +122,7 @@
             width: 2px;
             height: 2px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
                 700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
                 1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
@@ -141,7 +141,7 @@
             width: 3px;
             height: 3px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
                 200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
                 300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
@@ -161,7 +161,7 @@
             width: 3px;
             height: 3px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
                 200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
                 300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
@@ -177,7 +177,7 @@
             width: 1px;
             height: 1px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
                 660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
                 360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
@@ -196,7 +196,7 @@
             width: 1px;
             height: 1px;
             background: transparent;
-            box-shadow: 
+            box-shadow:
                 160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
                 660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
                 360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
@@ -215,6 +215,63 @@
                 transform: translateY(-2000px);
             }
         }
+
+        /* Settings Icon Styles */
+        .settings-container {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            z-index: 20;
+        }
+
+        .settings-button {
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .settings-button:active {
+            transform: scale(0.95);
+        }
+
+        .settings-icon {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        /* Animation des lignes de l'icône */
+        .settings-icon line {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .settings-button:hover .line1 { transform: translateX(-4px); }
+        .settings-button:hover .line2 { transform: translateX(-5px); }
+        .settings-button:hover .line3 { transform: translateX(6px); }
+        .settings-button:hover .line4 { transform: translateX(5px); }
+        .settings-button:hover .line5 { transform: translateX(-8px); }
+        .settings-button:hover .line6 { transform: translateX(-8px); }
+        .settings-button:hover .line7 { transform: translateX(-5px); }
+        .settings-button:hover .line8 { transform: translateX(6px); }
+        .settings-button:hover .line9 { transform: translateX(-8px); }
 
         .title-container {
             position: absolute;
@@ -300,6 +357,11 @@
                 font-size: 14px;
                 padding: 10px 20px;
             }
+
+            .settings-container {
+                top: 16px;
+                right: 16px;
+            }
         }
 
         @media (max-width: 500px) {
@@ -319,6 +381,23 @@
     <div id="stars2"></div>
     <div id="stars3"></div>
     <div id="stars4"></div>
+
+    <!-- Settings Button -->
+    <div class="settings-container">
+        <div class="settings-button" onclick="goToSettings()">
+            <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <line class="line1" x1="21" x2="14" y1="4" y2="4"/>
+                <line class="line2" x1="10" x2="3" y1="4" y2="4"/>
+                <line class="line3" x1="21" x2="12" y1="12" y2="12"/>
+                <line class="line4" x1="8" x2="3" y1="12" y2="12"/>
+                <line class="line5" x1="3" x2="12" y1="20" y2="20"/>
+                <line class="line6" x1="16" x2="21" y1="20" y2="20"/>
+                <line class="line7" x1="14" x2="14" y1="2" y2="6"/>
+                <line class="line8" x1="8" x2="8" y1="10" y2="14"/>
+                <line class="line9" x1="16" x2="16" y1="18" y2="22"/>
+            </svg>
+        </div>
+    </div>
     
     <div class="title-container">
         <h2 class="welcome-text">Bienvenu chez</h2>
@@ -330,5 +409,19 @@
             <a href="more/" class="button-link">PLUS</a>
         </div>
     </div>
+
+    <script>
+        function goToSettings() {
+            window.location.href = 'settings/';
+        }
+
+        // Animation supplémentaire pour l'icône au clic
+        document.querySelector('.settings-button').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    </script>
 </body>
 </html>
