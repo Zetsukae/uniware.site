@@ -13,14 +13,203 @@
       background: #000;
       font-family: Arial, sans-serif;
       color: white;
+      height: 100vh;
     }
 
-    canvas {
-      display: block;
+    /* Styles pour les étoiles */
+    #stars, #stars2, #stars3, #stars4 {
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 0;
+    }
+
+    #stars {
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+        600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+        500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+        350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+        150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+        250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+        1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+        1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+        1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+        1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+        850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+        1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+        50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+        400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+        900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+        100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+        450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+        550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+        1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+        1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+        320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+        520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+        620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+        370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+        170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+      animation: animStar 60s linear infinite;
+    }
+
+    #stars:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+        600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+        500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+        350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+        150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+        250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+        1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+        1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+        1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+        1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+        850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+        1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+        50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+        400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+        900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+        100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+        450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+        550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+        1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+        1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+        320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+        520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+        620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+        370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+        170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+    }
+
+    #stars2 {
+      width: 2px;
+      height: 2px;
+      background: transparent;
+      box-shadow:
+        500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+        700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+        1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+        350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+        150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+        250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+        1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+        1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+        520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+        620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+        1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+        370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+      animation: animStar 90s linear infinite;
+    }
+
+    #stars2:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 2px;
+      height: 2px;
+      background: transparent;
+      box-shadow:
+        500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+        700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+        1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+        350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+        150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+        250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+        1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+        1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+        520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+        620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+        1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+        370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+    }
+
+    #stars3 {
+      width: 3px;
+      height: 3px;
+      background: transparent;
+      box-shadow:
+        600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+        200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+        300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+        450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+        150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+        250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+        620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+        220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+        320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+      animation: animStar 140s linear infinite;
+    }
+
+    #stars3:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 3px;
+      height: 3px;
+      background: transparent;
+      box-shadow:
+        600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+        200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+        300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+        450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+        150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+        250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+        620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+        220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+        320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+    }
+
+    #stars4 {
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+        660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+        360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+        1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+        860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+        180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+        680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+        380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+      animation: animStar 45s linear infinite;
+    }
+
+    #stars4:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+        660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+        360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+        1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+        860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+        180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+        680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+        380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+    }
+
+    @keyframes animStar {
+      from {
+        transform: translateY(0px);
+      }
+      to {
+        transform: translateY(-2000px);
+      }
     }
 
     .overlay {
@@ -120,26 +309,21 @@
       h1 {
         font-size: 36px;
       }
-
       h2 {
         font-size: 18px;
       }
-
       #episodeSelect {
         width: 90%;
         font-size: 20px;
         padding: 12px 16px;
       }
-
       .video-wrapper {
         width: 95%;
         max-width: none;
       }
-
       video {
         border-radius: 12px;
       }
-
       .goback {
         font-size: 18px;
         padding: 14px 28px;
@@ -148,13 +332,16 @@
   </style>
 </head>
 <body>
-  <canvas id="boidsCanvas"></canvas>
+  <!-- Fond d'étoiles -->
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+  <div id="stars4"></div>
 
   <div class="overlay">
     <h2>Copyright - Malheuresement nous y travaillons pour tout re-upload. Merci de patientez !</h2>
     <h1>Infinity Train VF - Saison 1</h1>
     <div class="video-wrapper">
-
       <!-- Barre défilante pour choisir l'épisode -->
       <select id="episodeSelect">
         <option value="">EP 01</option>
@@ -168,7 +355,6 @@
         <option value="">EP 09</option>
         <option value="">EP 10</option>
       </select>
-
       <video id="player" controls>
         <source src="aucune source trouvé" />
         Votre navigateur ne supporte pas la balise vidéo.
@@ -191,215 +377,6 @@
       // Recharge la vidéo
       video.load();
       video.play();
-    });
-
-    // --- Le code boids (insectes qui volent) ---
-    const canvas = document.getElementById('boidsCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    class Boid {
-      constructor() {
-        this.position = {
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height
-        };
-        this.velocity = {
-          x: Math.random() * 2 - 1,
-          y: Math.random() * 2 - 1
-        };
-        this.acceleration = {x: 0, y: 0};
-        this.maxSpeed = 4;
-        this.maxForce = 0.05;
-      }
-
-      update() {
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
-        this.velocity.x += this.acceleration.x;
-        this.velocity.y += this.acceleration.y;
-
-        const speed = Math.hypot(this.velocity.x, this.velocity.y);
-        if (speed > this.maxSpeed) {
-          this.velocity.x = (this.velocity.x / speed) * this.maxSpeed;
-          this.velocity.y = (this.velocity.y / speed) * this.maxSpeed;
-        }
-
-        this.acceleration.x = 0;
-        this.acceleration.y = 0;
-
-        if (this.position.x > canvas.width) this.position.x = 0;
-        if (this.position.x < 0) this.position.x = canvas.width;
-        if (this.position.y > canvas.height) this.position.y = 0;
-        if (this.position.y < 0) this.position.y = canvas.height;
-      }
-
-      applyForce(force) {
-        this.acceleration.x += force.x;
-        this.acceleration.y += force.y;
-      }
-
-      flock(boids) {
-        const separation = this.separate(boids);
-        const alignment = this.align(boids);
-        const cohesion = this.cohesion(boids);
-        this.applyForce(separation);
-        this.applyForce(alignment);
-        this.applyForce(cohesion);
-      }
-
-      separate(boids) {
-        const desiredSeparation = 25;
-        let steer = {x: 0, y: 0};
-        let count = 0;
-
-        for (let other of boids) {
-          const d = distance(this.position, other.position);
-          if (d > 0 && d < desiredSeparation) {
-            let diff = {
-              x: this.position.x - other.position.x,
-              y: this.position.y - other.position.y
-            };
-            diff.x /= d;
-            diff.y /= d;
-            steer.x += diff.x;
-            steer.y += diff.y;
-            count++;
-          }
-        }
-
-        if (count > 0) {
-          steer.x /= count;
-          steer.y /= count;
-        }
-
-        if (magnitude(steer) > 0) {
-          steer = setMagnitude(steer, this.maxSpeed);
-          steer.x -= this.velocity.x;
-          steer.y -= this.velocity.y;
-          steer = limit(steer, this.maxForce);
-        }
-        return steer;
-      }
-
-      align(boids) {
-        const neighborDist = 50;
-        let sum = {x: 0, y: 0};
-        let count = 0;
-
-        for (let other of boids) {
-          const d = distance(this.position, other.position);
-          if (d > 0 && d < neighborDist) {
-            sum.x += other.velocity.x;
-            sum.y += other.velocity.y;
-            count++;
-          }
-        }
-
-        if (count > 0) {
-          sum.x /= count;
-          sum.y /= count;
-          sum = setMagnitude(sum, this.maxSpeed);
-          let steer = {
-            x: sum.x - this.velocity.x,
-            y: sum.y - this.velocity.y
-          };
-          steer = limit(steer, this.maxForce);
-          return steer;
-        } else {
-          return {x: 0, y: 0};
-        }
-      }
-
-      cohesion(boids) {
-        const neighborDist = 50;
-        let sum = {x: 0, y: 0};
-        let count = 0;
-
-        for (let other of boids) {
-          const d = distance(this.position, other.position);
-          if (d > 0 && d < neighborDist) {
-            sum.x += other.position.x;
-            sum.y += other.position.y;
-            count++;
-          }
-        }
-
-        if (count > 0) {
-          sum.x /= count;
-          sum.y /= count;
-          return this.seek(sum);
-        } else {
-          return {x: 0, y: 0};
-        }
-      }
-
-      seek(target) {
-        let desired = {
-          x: target.x - this.position.x,
-          y: target.y - this.position.y
-        };
-        desired = setMagnitude(desired, this.maxSpeed);
-        let steer = {
-          x: desired.x - this.velocity.x,
-          y: desired.y - this.velocity.y
-        };
-        steer = limit(steer, this.maxForce);
-        return steer;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.moveTo(this.position.x, this.position.y);
-        ctx.lineTo(this.position.x - this.velocity.x * 5, this.position.y - this.velocity.y * 5);
-        ctx.strokeStyle = 'white';
-        ctx.stroke();
-      }
-    }
-
-    function distance(a, b) {
-      return Math.hypot(a.x - b.x, a.y - b.y);
-    }
-
-    function magnitude(v) {
-      return Math.hypot(v.x, v.y);
-    }
-
-    function setMagnitude(v, mag) {
-      const m = magnitude(v);
-      if (m === 0) return {x: 0, y: 0};
-      return {x: (v.x / m) * mag, y: (v.y / m) * mag};
-    }
-
-    function limit(v, max) {
-      const m = magnitude(v);
-      if (m > max) {
-        return {x: (v.x / m) * max, y: (v.y / m) * max};
-      }
-      return v;
-    }
-
-    const boids = [];
-    for (let i = 0; i < 150; i++) {
-      boids.push(new Boid());
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let boid of boids) {
-        boid.flock(boids);
-        boid.update();
-        boid.draw();
-      }
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
     });
   </script>
 </body>
