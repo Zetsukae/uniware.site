@@ -3,39 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Champ d'étoiles</title>
+    <title>Uniware HOME</title>
     <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
     <style>
-        /* Defs */
-        @property --angle-1 {
-            syntax: "<angle>";
-            inherits: false;
-            initial-value: -75deg;
-        }
-        @property --angle-2 {
-            syntax: "<angle>";
-            inherits: false;
-            initial-value: -45deg;
-        }
-        :root {
-            --global--size: clamp(1rem, 2vw, 2.5rem);
-            --anim--hover-time: 400ms;
-            --anim--hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        body {
+            margin: 0;
             overflow: hidden;
+            background: #000;
             font-family: 'Lato', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            height: 100vh;
         }
 
         #stars, #stars2, #stars3, #stars4 {
@@ -235,9 +217,9 @@
 
         .title-container {
             position: absolute;
-            top: 8%;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             text-align: center;
             z-index: 10;
         }
@@ -246,9 +228,9 @@
             font-family: 'Lato', sans-serif;
             font-size: 2.2rem;
             font-weight: 300;
-            color: rgba(74, 158, 255, 0.9);
+            color: rgba(255, 255, 255, 0.9);
             margin-bottom: 10px;
-            text-shadow: 0 0 5px rgba(74, 158, 255, 0.3);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
             letter-spacing: 2px;
         }
 
@@ -256,9 +238,9 @@
             font-family: 'Lato', sans-serif;
             font-size: 3.5rem;
             font-weight: 300;
-            color: rgba(107, 182, 255, 0.95);
+            color: rgba(255, 255, 255, 0.95);
             letter-spacing: 8px;
-            text-shadow: 0 0 8px rgba(107, 182, 255, 0.4);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
             margin-bottom: 40px;
         }
 
@@ -267,273 +249,71 @@
             gap: 20px;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
         }
 
-        /* ========== BUTTON ========== */
-        /* Button Wrap Container */
-        .button-wrap {
-            position: relative;
-            z-index: 2;
-            border-radius: 999vw;
-            background: transparent;
-            pointer-events: none;
-            transition: all var(--anim--hover-time) var(--anim--hover-ease);
-        }
-
-        /* Button Shadow Container */
-        .button-shadow {
-            --shadow-cuttoff-fix: 2em;
-            position: absolute;
-            width: calc(100% + var(--shadow-cuttoff-fix));
-            height: calc(100% + var(--shadow-cuttoff-fix));
-            top: calc(0% - var(--shadow-cuttoff-fix) / 2);
-            left: calc(0% - var(--shadow-cuttoff-fix) / 2);
-            filter: blur(clamp(2px, 0.125em, 12px));
-            -webkit-filter: blur(clamp(2px, 0.125em, 12px));
-            -moz-filter: blur(clamp(2px, 0.125em, 12px));
-            -ms-filter: blur(clamp(2px, 0.125em, 12px));
-            overflow: visible;
-            pointer-events: none;
-        }
-
-        /* Shadow */
-        .button-shadow::after {
-            content: "";
-            position: absolute;
-            z-index: 0;
-            inset: 0;
-            border-radius: 999vw;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
-            width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
-            height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
-            top: calc(var(--shadow-cuttoff-fix) - 0.5em);
-            left: calc(var(--shadow-cuttoff-fix) - 0.875em);
-            padding: 0.125em;
-            box-sizing: border-box;
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask-composite: exclude;
-            transition: all var(--anim--hover-time) var(--anim--hover-ease);
-            overflow: visible;
-            opacity: 1;
-        }
-
-        /* ========== BUTTON BASE STYLES ========== */
-        button {
-            /* Basic Styling */
-            --border-width: clamp(1px, 0.0625em, 4px);
-            all: unset;
-            cursor: pointer;
-            position: relative;
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-            pointer-events: auto;
-            z-index: 3;
-            background: linear-gradient(
-                -75deg,
-                rgba(255, 255, 255, 0.05),
-                rgba(255, 255, 255, 0.2),
-                rgba(255, 255, 255, 0.05)
-            );
-            border-radius: 999vw;
-            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
-                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
-                0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
-                0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
-                0 0 0 0 rgba(255, 255, 255, 1);
-            backdrop-filter: blur(clamp(1px, 0.125em, 4px));
-            -webkit-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
-            -moz-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
-            -ms-backdrop-filter: blur(clamp(1px, 0.125em, 4px));
-            transition: all var(--anim--hover-time) var(--anim--hover-ease);
-        }
-
-        button:hover {
-            transform: scale(0.975);
-            backdrop-filter: blur(0.01em);
-            -webkit-backdrop-filter: blur(0.01em);
-            -moz-backdrop-filter: blur(0.01em);
-            -ms-backdrop-filter: blur(0.01em);
-            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
-                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
-                0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
-                0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5),
-                0 0 0 0 rgba(255, 255, 255, 1);
-        }
-
-        /* Button Text */
-        button span {
-            position: relative;
-            display: block;
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+        .button-link {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 12px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
             font-family: 'Lato', sans-serif;
-            letter-spacing: -0.05em;
             font-weight: 400;
-            font-size: var(--global--size);
-            color: rgba(255, 255, 255, 0.9);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-shadow: 0em 0.25em 0.05em rgba(0, 0, 0, 0.1);
-            transition: all var(--anim--hover-time) var(--anim--hover-ease);
-            padding-inline: 1.5em;
-            padding-block: 0.875em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: inline-block;
+            letter-spacing: 1px;
         }
 
-        button:hover span {
-            text-shadow: 0.025em 0.025em 0.025em rgba(0, 0, 0, 0.12);
+        .button-link:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
-        /* Text */
-        button span::after {
-            content: "";
-            display: block;
-            position: absolute;
-            z-index: 1;
-            width: calc(100% - var(--border-width));
-            height: calc(100% - var(--border-width));
-            top: calc(0% + var(--border-width) / 2);
-            left: calc(0% + var(--border-width) / 2);
-            box-sizing: border-box;
-            border-radius: 999vw;
-            overflow: clip;
-            background: linear-gradient(
-                var(--angle-2),
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.5) 40% 50%,
-                rgba(255, 255, 255, 0) 55%
-            );
-            z-index: 3;
-            mix-blend-mode: screen;
-            pointer-events: none;
-            background-size: 200% 200%;
-            background-position: 0% 50%;
-            background-repeat: no-repeat;
-            transition: background-position calc(var(--anim--hover-time) * 1.25)
-                    var(--anim--hover-ease),
-                --angle-2 calc(var(--anim--hover-time) * 1.25) var(--anim--hover-ease);
+        .button-link:active {
+            transform: scale(0.98);
         }
 
-        button:hover span::after {
-            background-position: 25% 50%;
-        }
-
-        button:active span::after {
-            background-position: 50% 15%;
-            --angle-2: -15deg;
-        }
-
-        /* Touch Devices */
-        @media (hover: none) and (pointer: coarse) {
-            button span::after,
-            button:active span::after {
-                --angle-2: -45deg;
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 1.8rem;
+            }
+            
+            .brand-text {
+                font-size: 2.8rem;
+                letter-spacing: 4px;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .button-link {
+                font-size: 14px;
+                padding: 10px 20px;
             }
         }
 
-        /* ========== BUTTON OUTLINE ========== */
-        /* Outline */
-        button::after {
-            content: "";
-            position: absolute;
-            z-index: 1;
-            inset: 0;
-            border-radius: 999vw;
-            width: calc(100% + var(--border-width));
-            height: calc(100% + var(--border-width));
-            top: calc(0% - var(--border-width) / 2);
-            left: calc(0% - var(--border-width) / 2);
-            padding: var(--border-width);
-            box-sizing: border-box;
-            background: conic-gradient(
-                    from var(--angle-1) at 50% 50%,
-                    rgba(0, 0, 0, 0.5),
-                    rgba(0, 0, 0, 0) 5% 40%,
-                    rgba(0, 0, 0, 0.5) 50%,
-                    rgba(0, 0, 0, 0) 60% 95%,
-                    rgba(0, 0, 0, 0.5)
-                ),
-                linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask-composite: exclude;
-            transition: all var(--anim--hover-time) var(--anim--hover-ease),
-                --angle-1 500ms ease;
-            box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255, 255, 255, 0.5);
-        }
-
-        button:hover::after {
-            --angle-1: -125deg;
-        }
-
-        button:active::after {
-            --angle-1: -75deg;
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            button::after,
-            button:hover::after,
-            button:active::after {
-                --angle-1: -75deg;
+        @media (max-width: 500px) {
+            .welcome-text {
+                font-size: 1.5rem;
             }
-        }
-
-        /* Shadow Hover */
-        .button-wrap:has(button:hover) .button-shadow {
-            filter: blur(clamp(2px, 0.0625em, 6px));
-            -webkit-filter: blur(clamp(2px, 0.0625em, 6px));
-            -moz-filter: blur(clamp(2px, 0.0625em, 6px));
-            -ms-filter: blur(clamp(2px, 0.0625em, 6px));
-            transition: filter var(--anim--hover-time) var(--anim--hover-ease);
-        }
-
-        .button-wrap:has(button:hover) .button-shadow::after {
-            top: calc(var(--shadow-cuttoff-fix) - 0.875em);
-            opacity: 1;
-        }
-
-        /* Rotation */
-        .button-wrap:has(button:active) {
-            transform: rotate3d(1, 0, 0, 25deg);
-        }
-
-        .button-wrap:has(button:active) button {
-            box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
-                inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
-                0 0.125em 0.125em -0.125em rgba(0, 0, 0, 0.2),
-                0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
-                0 0.225em 0.05em 0 rgba(0, 0, 0, 0.05),
-                0 0.25em 0 0 rgba(255, 255, 255, 0.75),
-                inset 0 0.25em 0.05em 0 rgba(0, 0, 0, 0.15);
-        }
-
-        .button-wrap:has(button:active) .button-shadow {
-            filter: blur(clamp(2px, 0.125em, 12px));
-            -webkit-filter: blur(clamp(2px, 0.125em, 12px));
-            -moz-filter: blur(clamp(2px, 0.125em, 12px));
-            -ms-filter: blur(clamp(2px, 0.125em, 12px));
-        }
-
-        .button-wrap:has(button:active) .button-shadow::after {
-            top: calc(var(--shadow-cuttoff-fix) - 0.5em);
-            opacity: 0.75;
-        }
-
-        .button-wrap:has(button:active) span {
-            text-shadow: 0.025em 0.25em 0.05em rgba(0, 0, 0, 0.12);
+            
+            .brand-text {
+                font-size: 2.2rem;
+                letter-spacing: 2px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Background -->
-    <svg style="position: absolute; width: 100%; height: 100%; z-index: 0;" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <pattern id="dottedGrid" width="30" height="30" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.05)" />
-            </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#dottedGrid)" />
-    </svg>
-
     <div id="stars"></div>
     <div id="stars2"></div>
     <div id="stars3"></div>
@@ -544,29 +324,9 @@
         <h1 class="brand-text">UNIWARE</h1>
         
         <div class="buttons-container">
-            <!-- Button 1 -->
-            <div class="button-wrap">
-                <button onclick="window.location.href='watch/'">
-                    <span>WATCH</span>
-                </button>
-                <div class="button-shadow"></div>
-            </div>
-
-            <!-- Button 2 -->
-            <div class="button-wrap">
-                <button onclick="window.location.href='https://uniware.mycommerce.shop/'">
-                    <span>SHOP</span>
-                </button>
-                <div class="button-shadow"></div>
-            </div>
-
-            <!-- Button 3 -->
-            <div class="button-wrap">
-                <button onclick="window.location.href='more/'">
-                    <span>PLUS ...</span>
-                </button>
-                <div class="button-shadow"></div>
-            </div>
+            <a href="watch/" class="button-link">WATCH</a>
+            <a href="https://uniware.mycommerce.shop/" class="button-link">SHOP</a>
+            <a href="more/" class="button-link">PLUS</a>
         </div>
     </div>
 </body>
