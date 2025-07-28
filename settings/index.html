@@ -404,10 +404,6 @@
             border-radius: 12px;
             padding: 16px;
             text-align: center;
-            transition: all 0.3s ease;
-        }
-        .stat-card.hidden {
-            display: none;
         }
         .stat-title {
             font-family: 'Lato', sans-serif;
@@ -421,45 +417,6 @@
             font-weight: 600;
             color: rgba(255, 255, 255, 0.9);
         }
-
-        /* Message quand aucune donnée */
-        .no-data-message {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 32px;
-            text-align: center;
-            margin-top: 16px;
-            display: none;
-        }
-        .no-data-message.show {
-            display: block;
-        }
-        .no-data-text {
-            font-family: 'Lato', sans-serif;
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-style: italic;
-            letter-spacing: 0.5px;
-            line-height: 1.5;
-        }
-
-        /* Tip en dehors de la box des statistiques */
-        .stats-tip {
-            margin-top: 24px;
-            text-align: center;
-            font-family: 'Lato', sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-style: italic;
-            letter-spacing: 0.5px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            backdrop-filter: blur(5px);
-        }
-
         /* Styles spéciaux pour la section Planning */
         .planning-info {
             background-color: rgba(255, 255, 255, 0.08);
@@ -558,6 +515,32 @@
             background-color: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        /* Style pour le tip */
+        .tip-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            text-align: center;
+            padding: 12px 0;
+        }
+        /* Style pour le message d'absence de données */
+        .no-data-message {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .no-data-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
         /* Responsive */
         @media (max-width: 768px) {
@@ -659,7 +642,7 @@
                 <h1 class="sidebar-title">PARAMÈTRES</h1>
                 <p class="sidebar-subtitle">Configuration Uniware</p>
             </div>
-                        
+                                
             <a href="#" class="menu-item active" onclick="showSection('general')">Général</a>
             <a href="#" class="menu-item" onclick="showSection('planning')">Planning</a>
             <a href="#" class="menu-item" onclick="showSection('legal')">Légal</a>
@@ -672,7 +655,7 @@
                     <h2 class="content-title">Général</h2>
                     <p class="content-subtitle">Paramètres généraux de l'application</p>
                 </div>
-                
+                            
                 <div class="setting-group">
                     <h3>Stockage des données</h3>
                     <div class="setting-item">
@@ -690,58 +673,37 @@
                         <button class="action-button danger" onclick="clearAllWatchData()">Effacer tout</button>
                     </div>
                 </div>
-
                 <div class="setting-group">
                     <h3>Statistiques de visionnage</h3>
                     <div id="statsContainer">
-                        <!-- Message quand aucune donnée -->
-                        <div id="noDataMessage" class="no-data-message">
-                            <div class="no-data-text">
-                                📊 Aucune donnée ou l'utilisation du localStorage est désactivée
-                            </div>
-                        </div>
-                        
-                        <!-- Grille des statistiques -->
-                        <div class="stats-grid" id="statsGrid">
-                            <div class="stat-card hidden" id="cyberpunkCard">
+                        <div class="stats-grid">
+                            <div class="stat-card" id="cyberpunkCard">
                                 <div class="stat-title">Cyberpunk: Edgerunners</div>
-                                <div class="stat-value" id="cyberpunkStats">1 ep vu</div>
+                                <div class="stat-value" id="cyberpunkStats">0</div>
                             </div>
-                            <div class="stat-card hidden" id="gachiakutaCard">
+                            <div class="stat-card" id="gachiakutaCard">
                                 <div class="stat-title">Gachiakuta</div>
-                                <div class="stat-value" id="gachiakutaStats">1 ep vu</div>
+                                <div class="stat-value" id="gachiakutaStats">0</div>
                             </div>
-                            <div class="stat-card hidden" id="infinityTrainCard">
+                            <div class="stat-card" id="infinityTrainCard">
                                 <div class="stat-title">Infinity Train</div>
-                                <div class="stat-value" id="infinityTrainStats">1 ep vu</div>
+                                <div class="stat-value" id="infinityTrainStats">0</div>
                             </div>
-                            <div class="stat-card hidden" id="tougenAnkiCard">
+                            <div class="stat-card" id="tougenAnkiCard">
                                 <div class="stat-title">Tougen Anki</div>
-                                <div class="stat-value" id="tougenAnkiStats">1 ep vu</div>
+                                <div class="stat-value" id="tougenAnkiStats">0</div>
                             </div>
                         </div>
+                        <div id="noDataMessage" class="no-data-message" style="display: none;">
+                            <div class="no-data-text">Aucune donnée(s) ou le LocalStorage est désactivé !</div>
+                        </div>
                     </div>
-                    
-                    <!-- Tip en dehors de la box -->
-                    <div class="stats-tip">
-                        💡 TIPS : utilisez un adblock !
-                    </div>
-                    
                     <div class="setting-item">
-                        <div>
-                            <div class="setting-label">Actions individuelles</div>
-                            <div class="setting-description">Effacer les données d'une série spécifique</div>
-                        </div>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <button class="action-button" onclick="clearSeriesData('cyberpunk')">Cyberpunk</button>
-                            <button class="action-button" onclick="clearSeriesData('gachiakuta')">Gachiakuta</button>
-                            <button class="action-button" onclick="clearSeriesData('infinitytrain')">Infinity Train</button>
-                            <button class="action-button" onclick="clearSeriesData('tougenanki')">Tougen Anki</button>
-                        </div>
+                        <div class="tip-text">TIPS: Utilisez un adblock</div>
                     </div>
                 </div>
             </div>
-            
+                        
             <!-- Section Planning -->
             <div id="planning" class="content-section">
                 <div class="content-header">
@@ -761,7 +723,7 @@
                     <a href="https://uniware.site/watch/gachiakuta-vostfr/" class="access-link" target="_blank">Accédez →</a>
                 </div>
             </div>
-            
+                        
             <!-- Section Légal -->
             <div id="legal" class="content-section">
                 <div class="content-header">
@@ -802,15 +764,15 @@
         const SERIES_STORAGE_KEYS = {
             cyberpunk: [
                 'cyberpunk_current_episode',
-                'cyberpunk_selected_player', 
-                'cyberpunk_last_visit',
+                'cyberpunk_selected_player',
+                 'cyberpunk_last_visit',
                 'cyberpunk_watch_history'
             ],
             gachiakuta: [
                 'gachiakuta_current_episode',
                 'gachiakuta_selected_player',
-                'gachiakuta_last_visit', 
-                'gachiakuta_watch_history'
+                'gachiakuta_last_visit',
+                 'gachiakuta_watch_history'
             ],
             infinitytrain: [
                 'infinitytrain_current_episode',
@@ -825,13 +787,11 @@
                 'tougenanki_watch_history'
             ]
         };
-
         // Gestionnaire localStorage amélioré
         class UniwareStorageManager {
             constructor() {
                 this.localStorageEnabled = this.getLocalStorageStatus();
             }
-
             // Vérifier si localStorage est activé
             getLocalStorageStatus() {
                 try {
@@ -841,7 +801,6 @@
                     return true;
                 }
             }
-
             // Activer/désactiver localStorage
             setLocalStorageStatus(enabled) {
                 try {
@@ -854,40 +813,19 @@
                     return false;
                 }
             }
-
-            // Obtenir les statistiques d'une série (amélioré)
+            // Obtenir les statistiques d'une série
             getSeriesStats(seriesKey) {
-                if (!this.localStorageEnabled) return { episodes: 0, lastVisit: null, displayText: 'Aucun épisode', hasData: false };
-                
+                if (!this.localStorageEnabled) return { episodes: 0, lastVisit: null };
+                            
                 try {
                     const keys = SERIES_STORAGE_KEYS[seriesKey] || [];
-                    let currentEpisode = 0;
+                    let episodes = 0;
                     let lastVisit = null;
-                    let displayText = 'Aucun épisode';
-                    let hasData = false;
-
                     keys.forEach(key => {
                         const data = localStorage.getItem(key);
                         if (data) {
                             if (key.includes('current_episode')) {
-                                try {
-                                    const episodeNum = JSON.parse(data);
-                                    if (typeof episodeNum === 'string' || typeof episodeNum === 'number') {
-                                        currentEpisode = parseInt(episodeNum);
-                                        if (currentEpisode > 0) {
-                                            displayText = `${currentEpisode} ep vu${currentEpisode > 1 ? 's' : ''}`;
-                                            hasData = true;
-                                        }
-                                    }
-                                } catch (e) {
-                                    // Si ce n'est pas du JSON, essayer de parser directement
-                                    const episodeNum = parseInt(data);
-                                    if (!isNaN(episodeNum) && episodeNum > 0) {
-                                        currentEpisode = episodeNum;
-                                        displayText = `${currentEpisode} ep vu${currentEpisode > 1 ? 's' : ''}`;
-                                        hasData = true;
-                                    }
-                                }
+                                episodes = 1; // Au moins un épisode regardé
                             }
                             if (key.includes('last_visit')) {
                                 try {
@@ -897,23 +835,30 @@
                                     lastVisit = data;
                                 }
                             }
+                            if (key.includes('watch_history')) {
+                                try {
+                                    const history = JSON.parse(data);
+                                    if (Array.isArray(history)) {
+                                        episodes = Math.max(episodes, history.length);
+                                    }
+                                } catch (e) {
+                                    // Ignore parsing errors
+                                }
+                            }
                         }
                     });
-
-                    return { episodes: currentEpisode, lastVisit, displayText, hasData };
+                    return { episodes, lastVisit };
                 } catch (error) {
                     console.error(`Erreur lors de la récupération des stats pour ${seriesKey}:`, error);
-                    return { episodes: 0, lastVisit: null, displayText: 'Aucun épisode', hasData: false };
+                    return { episodes: 0, lastVisit: null };
                 }
             }
-
             // Effacer les données d'une série spécifique
             clearSeriesData(seriesKey) {
                 if (!SERIES_STORAGE_KEYS[seriesKey]) {
                     console.error(`Série inconnue: ${seriesKey}`);
                     return false;
                 }
-
                 try {
                     const keys = SERIES_STORAGE_KEYS[seriesKey];
                     keys.forEach(key => {
@@ -926,7 +871,6 @@
                     return false;
                 }
             }
-
             // Effacer toutes les données de toutes les séries
             clearAllSeriesData() {
                 try {
@@ -940,7 +884,6 @@
                     return false;
                 }
             }
-
             // Obtenir toutes les statistiques
             getAllStats() {
                 const stats = {};
@@ -950,50 +893,42 @@
                 return stats;
             }
         }
-
         // Initialiser le gestionnaire
         const storageManager = new UniwareStorageManager();
-
         // Fonctions pour l'interface
         function showSection(sectionId) {
             // Masquer toutes les sections
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => section.classList.remove('active'));
-                        
+                                
             // Afficher la section sélectionnée
             document.getElementById(sectionId).classList.add('active');
-                        
+                                
             // Mettre à jour le menu actif
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(item => item.classList.remove('active'));
             event.target.classList.add('active');
-
             // Mettre à jour les statistiques si on affiche la section générale
             if (sectionId === 'general') {
                 updateStats();
             }
         }
-
         function toggleLocalStorage(element) {
             const newStatus = !storageManager.localStorageEnabled;
             const success = storageManager.setLocalStorageStatus(newStatus);
-            
+                    
             if (success) {
                 element.classList.toggle('active', newStatus);
-                
+                            
                 if (newStatus) {
                     showNotification('localStorage activé', 'success');
                 } else {
                     showNotification('localStorage désactivé - Les données ne seront plus sauvegardées', 'warning');
                 }
-                
-                // Mettre à jour l'affichage des statistiques
-                updateStats();
             } else {
                 showNotification('Erreur lors de la modification des paramètres', 'error');
             }
         }
-
         function clearAllWatchData() {
             if (confirm('⚠️ ATTENTION ⚠️\n\nCette action va effacer TOUTES les données de visionnage de TOUTES les séries :\n\n• Cyberpunk: Edgerunners\n• Gachiakuta\n• Infinity Train\n• Tougen Anki\n\nCette action est IRRÉVERSIBLE.\n\nÊtes-vous absolument sûr de vouloir continuer ?')) {
                 const success = storageManager.clearAllSeriesData();
@@ -1005,76 +940,45 @@
                 }
             }
         }
-
-        function clearSeriesData(seriesKey) {
-            const seriesNames = {
-                cyberpunk: 'Cyberpunk: Edgerunners',
-                gachiakuta: 'Gachiakuta',
-                infinitytrain: 'Infinity Train',
-                tougenanki: 'Tougen Anki'
-            };
-
-            const seriesName = seriesNames[seriesKey] || seriesKey;
-            
-            if (confirm(`Êtes-vous sûr de vouloir effacer toutes les données de "${seriesName}" ?\n\nCela inclut :\n• Épisode actuel\n• Lecteur sélectionné\n• Historique de visionnage\n\nCette action est irréversible.`)) {
-                const success = storageManager.clearSeriesData(seriesKey);
-                if (success) {
-                    updateStats();
-                    showNotification(`Données de "${seriesName}" effacées avec succès`, 'success');
-                } else {
-                    showNotification(`Erreur lors de l'effacement des données de "${seriesName}"`, 'error');
-                }
-            }
-        }
-
         function updateStats() {
             const stats = storageManager.getAllStats();
+            
+            // Mettre à jour les statistiques affichées
+            document.getElementById('cyberpunkStats').textContent = stats.cyberpunk.episodes;
+            document.getElementById('gachiakutaStats').textContent = stats.gachiakuta.episodes;
+            document.getElementById('infinityTrainStats').textContent = stats.infinitytrain.episodes;
+            document.getElementById('tougenAnkiStats').textContent = stats.tougenanki.episodes;
+            
+            // Vérifier si toutes les stats sont à 0
+            const allStatsZero = stats.cyberpunk.episodes === 0 && 
+                                stats.gachiakuta.episodes === 0 && 
+                                stats.infinitytrain.episodes === 0 && 
+                                stats.tougenanki.episodes === 0;
+            
+            // Références aux éléments
+            const statsGrid = document.querySelector('.stats-grid');
             const noDataMessage = document.getElementById('noDataMessage');
-            const statsGrid = document.getElementById('statsGrid');
-            
-            // Vérifier s'il y a des données
-            const hasAnyData = Object.values(stats).some(stat => stat.hasData);
-            
-            if (!hasAnyData || !storageManager.localStorageEnabled) {
-                // Afficher le message "aucune donnée" et cacher toutes les cartes
-                noDataMessage.classList.add('show');
-                document.getElementById('cyberpunkCard').classList.add('hidden');
-                document.getElementById('gachiakutaCard').classList.add('hidden');
-                document.getElementById('infinityTrainCard').classList.add('hidden');
-                document.getElementById('tougenAnkiCard').classList.add('hidden');
-            } else {
-                // Cacher le message "aucune donnée"
-                noDataMessage.classList.remove('show');
-                
-                // Afficher/cacher les cartes selon les données et mettre à jour le contenu
-                const cardMappings = {
-                    cyberpunk: { card: 'cyberpunkCard', stats: 'cyberpunkStats' },
-                    gachiakuta: { card: 'gachiakutaCard', stats: 'gachiakutaStats' },
-                    infinitytrain: { card: 'infinityTrainCard', stats: 'infinityTrainStats' },
-                    tougenanki: { card: 'tougenAnkiCard', stats: 'tougenAnkiStats' }
-                };
-                
-                Object.keys(cardMappings).forEach(seriesKey
-                };
-                
-                Object.keys(cardMappings).forEach(seriesKey => {
-                    const mapping = cardMappings[seriesKey];
-                    const seriesStats = stats[seriesKey];
-                    const card = document.getElementById(mapping.card);
-                    const statsElement = document.getElementById(mapping.stats);
-                    
-                    if (seriesStats.hasData) {
-                        // Afficher la carte et mettre à jour les stats
-                        card.classList.remove('hidden');
-                        statsElement.textContent = seriesStats.displayText;
-                    } else {
-                        // Cacher la carte
-                        card.classList.add('hidden');
-                    }
-                });
-            }
-        }
-
+            const cyberpunkCard = document.getElementById('cyberpunkCard');
+            const gachiakutaCard = document.getElementById('gachiakutaCard');
+            const infinityTrainCard = document.getElementById('infinityTrainCard');
+            const tougenAnkiCard = document.getElementById('tougenAnkiCard');
+    
+    if (allStatsZero) {
+        // Masquer la grille des stats et afficher le message
+        statsGrid.style.display = 'none';
+        noDataMessage.style.display = 'block';
+    } else {
+        // Afficher la grille des stats et masquer le message
+        statsGrid.style.display = 'grid';
+        noDataMessage.style.display = 'none';
+        
+        // Afficher/masquer chaque carte selon sa valeur
+        cyberpunkCard.style.display = stats.cyberpunk.episodes > 0 ? 'block' : 'none';
+        gachiakutaCard.style.display = stats.gachiakuta.episodes > 0 ? 'block' : 'none';
+        infinityTrainCard.style.display = stats.infinitytrain.episodes > 0 ? 'block' : 'none';
+        tougenAnkiCard.style.display = stats.tougenanki.episodes > 0 ? 'block' : 'none';
+    }
+}
         function showNotification(message, type = 'info') {
             // Créer une notification temporaire
             const notification = document.createElement('div');
@@ -1082,10 +986,10 @@
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' : 
-                            type === 'warning' ? 'rgba(255, 193, 7, 0.9)' : 
-                            type === 'error' ? 'rgba(244, 67, 54, 0.9)' : 
-                            'rgba(33, 150, 243, 0.9)'};
+                background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' :
+                             type === 'warning' ? 'rgba(255, 193, 7, 0.9)' :
+                             type === 'error' ? 'rgba(244, 67, 54, 0.9)' :
+                             'rgba(33, 150, 243, 0.9)'};
                 color: white;
                 padding: 16px 24px;
                 border-radius: 8px;
@@ -1097,10 +1001,10 @@
                 backdrop-filter: blur(10px);
                 animation: slideIn 0.3s ease;
             `;
-            
+                    
             notification.textContent = message;
             document.body.appendChild(notification);
-            
+                    
             // Supprimer la notification après 4 secondes
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease';
@@ -1111,7 +1015,6 @@
                 }, 300);
             }, 4000);
         }
-
         // Ajouter les animations CSS pour les notifications
         const style = document.createElement('style');
         style.textContent = `
@@ -1125,22 +1028,6 @@
             }
         `;
         document.head.appendChild(style);
-
-        // Fonction pour simuler des données de test (pour démonstration)
-        function simulateTestData() {
-            // Simuler que l'utilisateur a regardé l'épisode 7 de Cyberpunk
-            localStorage.setItem('cyberpunk_current_episode', '7');
-            localStorage.setItem('cyberpunk_last_visit', JSON.stringify(new Date().toISOString()));
-            
-            // Simuler d'autres données
-            localStorage.setItem('gachiakuta_current_episode', '3');
-            localStorage.setItem('infinitytrain_current_episode', '10');
-            localStorage.setItem('tougenanki_current_episode', '2');
-            
-            updateStats();
-            showNotification('Données de test ajoutées pour démonstration', 'info');
-        }
-
         // Initialisation au chargement de la page
         window.addEventListener('load', function() {
             // Mettre à jour l'état du toggle localStorage
@@ -1148,23 +1035,20 @@
             if (toggle) {
                 toggle.classList.toggle('active', storageManager.localStorageEnabled);
             }
-            
+                    
             // Mettre à jour les statistiques
             updateStats();
-            
+                    
             console.log('Uniware Settings initialisé');
             console.log('État localStorage:', storageManager.localStorageEnabled);
             console.log('Statistiques:', storageManager.getAllStats());
         });
-
         // Exposer les fonctions utiles pour le debug
         window.uniwareSettings = {
             storageManager: storageManager,
             updateStats: updateStats,
             clearAll: clearAllWatchData,
-            clearSeries: clearSeriesData,
-            toggleStorage: toggleLocalStorage,
-            simulateTest: simulateTestData // Fonction pour tester
+            toggleStorage: toggleLocalStorage
         };
     </script>
 </body>
