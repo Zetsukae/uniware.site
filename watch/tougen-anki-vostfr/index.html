@@ -244,6 +244,7 @@
       flex-direction: column;
       align-items: center;
       gap: 15px;
+      position: relative;
     }
 
     /* Conteneur pour les deux barres déroulantes */
@@ -318,35 +319,35 @@
       h1 {
         font-size: 36px;
       }
-
       h2 {
         font-size: 18px;
       }
-
       .controls-container {
         flex-direction: column;
         gap: 10px;
       }
-
       #episodeSelect, #playerSelect {
         width: 90%;
         font-size: 20px;
         padding: 12px 16px;
       }
-
       .video-wrapper {
         width: 95%;
         max-width: none;
       }
-
       video {
         border-radius: 12px;
       }
-
       .goback {
         font-size: 18px;
         padding: 14px 28px;
       }
+    }
+
+    /* Conteneur pour la vidéo avec position relative pour les boutons */
+    .video-container {
+      position: relative;
+      width: 100%;
     }
 
     #videoFrame {
@@ -354,12 +355,133 @@
       height: 450px;
       border-radius: 8px;
       border: none;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     @media (max-width: 500px) {
       #videoFrame {
         height: 250px;
         border-radius: 12px;
+      }
+    }
+
+    /* Animations pour les flèches */
+    @keyframes arrowLeftMove {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(-3px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes arrowRightMove {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(3px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Boutons de navigation des épisodes avec flèches animées */
+    .episode-nav-btn {
+      position: absolute;
+      bottom: 5px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      white-space: nowrap;
+      z-index: 10;
+      opacity: 0.8;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .episode-nav-btn:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+      border-color: rgba(255, 255, 255, 0.6);
+      opacity: 1;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .episode-nav-btn:active {
+      transform: scale(0.98);
+    }
+
+    .episode-nav-btn.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Bouton précédent (gauche) */
+    .prev-episode {
+      left: 15px;
+    }
+
+    /* Bouton suivant (droite) */
+    .next-episode {
+      right: 15px;
+    }
+
+    /* Styles pour les SVG des flèches */
+    .arrow-svg {
+      width: 20px;
+      height: 20px;
+      transition: all 0.4s ease;
+    }
+
+    .episode-nav-btn:hover .arrow-left {
+      animation: arrowLeftMove 0.4s ease;
+    }
+
+    .episode-nav-btn:hover .arrow-right {
+      animation: arrowRightMove 0.4s ease;
+    }
+
+    /* Texte complet au survol */
+    .episode-nav-btn .short-text {
+      display: inline;
+    }
+
+    .episode-nav-btn .full-text {
+      display: none;
+    }
+
+    .episode-nav-btn:hover .short-text {
+      display: none;
+    }
+
+    .episode-nav-btn:hover .full-text {
+      display: inline;
+    }
+
+    /* Responsive pour les boutons sur mobile */
+    @media (max-width: 500px) {
+      .episode-nav-btn {
+        bottom: 3px;
+        padding: 6px 10px;
+        font-size: 12px;
+        gap: 6px;
+      }
+      
+      .prev-episode {
+        left: 10px;
+      }
+      
+      .next-episode {
+        right: 10px;
+      }
+
+      .arrow-svg {
+        width: 16px;
+        height: 16px;
       }
     }
 
@@ -397,13 +519,63 @@
         height: 250px;
         border-radius: 12px;
       }
-
       #errorMessage .error-content {
         font-size: 16px;
       }
-
       #errorMessage .error-icon {
         font-size: 36px;
+        margin-bottom: 10px;
+      }
+    }
+
+    /* Indicateur de chargement */
+    .loading-indicator {
+      width: 100%;
+      height: 450px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      backdrop-filter: blur(5px);
+    }
+
+    .loading-content {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 500px) {
+      .loading-indicator {
+        height: 250px;
+        border-radius: 12px;
+      }
+      .loading-content {
+        font-size: 14px;
+      }
+      .spinner {
+        width: 30px;
+        height: 30px;
         margin-bottom: 10px;
       }
     }
@@ -429,14 +601,42 @@
           <option value="2">EP 02</option>
           <option value="3">EP 03</option>
         </select>
-
         <!-- Barre défilante pour choisir le lecteur -->
         <select id="playerSelect">
           <option value="sibnet" selected>SIBNET</option>
         </select>
       </div>
 
-      <iframe id="videoFrame" width="100%" height="450" src="" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; display: none;"></iframe>
+      <!-- Indicateur de chargement -->
+      <div id="loadingIndicator" class="loading-indicator">
+        <div class="loading-content">
+          <div class="spinner"></div>
+          Chargement du lecteur vidéo...
+        </div>
+      </div>
+
+      <!-- Conteneur pour la vidéo avec boutons de navigation -->
+      <div class="video-container">
+        <!-- Iframe pour la vidéo -->
+        <iframe id="videoFrame" width="100%" height="450" src="" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; display: none;"></iframe>
+        
+        <!-- Boutons de navigation des épisodes avec flèches animées -->
+        <button id="prevEpisodeBtn" class="episode-nav-btn prev-episode">
+          <svg class="arrow-svg arrow-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15h-6v4l-7-7 7-7v4h6v6z"/>
+          </svg>
+          <span class="short-text">Précédent</span>
+          <span class="full-text">Précédent épisode</span>
+        </button>
+        
+        <button id="nextEpisodeBtn" class="episode-nav-btn next-episode">
+          <span class="short-text">Suivant</span>
+          <span class="full-text">Prochain épisode</span>
+          <svg class="arrow-svg arrow-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9h6V5l7 7-7 7v-4H6V9z"/>
+          </svg>
+        </button>
+      </div>
       
       <!-- Message d'erreur pour Uniware -->
       <div id="errorMessage">
@@ -445,7 +645,7 @@
           Malheureusement ce lecteur à été supprimé pour cause de droits d'auteurs.
         </div>
       </div>
-            
+      
       <a href="https://uniware.site/watch/" class="goback">Retour</a>
     </div>
   </div>
@@ -455,6 +655,9 @@
     const playerSelect = document.getElementById('playerSelect');
     const videoFrame = document.getElementById('videoFrame');
     const errorMessage = document.getElementById('errorMessage');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const prevEpisodeBtn = document.getElementById('prevEpisodeBtn');
+    const nextEpisodeBtn = document.getElementById('nextEpisodeBtn');
 
     // URLs SIBNET pour chaque épisode
     const sibnetUrls = {
@@ -470,36 +673,152 @@
       '10': 'https://video.sibnet.ru/shell.php?videoid=5976611'
     };
 
+    // Fonction pour mettre à jour l'état des boutons de navigation
+    function updateNavigationButtons() {
+      const currentEpisode = parseInt(episodeSelect.value);
+      const totalEpisodes = 3; // Seulement 3 épisodes disponibles pour Tougen Anki
+      
+      // Bouton précédent
+      if (currentEpisode <= 1) {
+        prevEpisodeBtn.classList.add('disabled');
+      } else {
+        prevEpisodeBtn.classList.remove('disabled');
+      }
+      
+      // Bouton suivant
+      if (currentEpisode >= totalEpisodes) {
+        nextEpisodeBtn.classList.add('disabled');
+      } else {
+        nextEpisodeBtn.classList.remove('disabled');
+      }
+    }
+
+    // Fonction pour afficher l'indicateur de chargement
+    function showLoading() {
+      videoFrame.style.display = 'none';
+      errorMessage.style.display = 'none';
+      loadingIndicator.style.display = 'flex';
+      // Masquer les boutons pendant le chargement
+      prevEpisodeBtn.style.display = 'none';
+      nextEpisodeBtn.style.display = 'none';
+    }
+
+    // Fonction pour afficher la vidéo
+    function showVideo() {
+      loadingIndicator.style.display = 'none';
+      errorMessage.style.display = 'none';
+      videoFrame.style.display = 'block';
+      // Afficher les boutons quand la vidéo est chargée
+      prevEpisodeBtn.style.display = 'flex';
+      nextEpisodeBtn.style.display = 'flex';
+      updateNavigationButtons();
+    }
+
+    // Fonction pour afficher l'erreur
+    function showError() {
+      loadingIndicator.style.display = 'none';
+      videoFrame.style.display = 'none';
+      errorMessage.style.display = 'flex';
+      // Masquer les boutons en cas d'erreur
+      prevEpisodeBtn.style.display = 'none';
+      nextEpisodeBtn.style.display = 'none';
+    }
+
     // Fonction pour mettre à jour la source vidéo
     function updateVideoSource() {
       const episode = episodeSelect.value;
       const playerType = playerSelect.value;
       
-      // Masquer tous les éléments d'abord
-      videoFrame.style.display = 'none';
-      errorMessage.style.display = 'none';
+      console.log('Épisode sélectionné:', episode, 'Lecteur:', playerType);
       
       if (episode) {
         if (playerType === 'sibnet') {
           const newSrc = sibnetUrls[episode];
           if (newSrc) {
-            videoFrame.src = newSrc;
-            videoFrame.style.display = 'block';
+            showLoading();
+            
+            // Simuler un délai de chargement
+            setTimeout(() => {
+              videoFrame.src = newSrc;
+              
+              // Attendre que l'iframe soit chargée
+              videoFrame.onload = function() {
+                console.log('Iframe chargée avec succès');
+                showVideo();
+              };
+              
+              // Gérer les erreurs de chargement
+              videoFrame.onerror = function() {
+                console.log('Erreur de chargement de l\'iframe');
+                showError();
+              };
+              
+              // Timeout de sécurité
+              setTimeout(() => {
+                if (loadingIndicator.style.display !== 'none') {
+                  console.log('Timeout - affichage de la vidéo');
+                  showVideo();
+                }
+              }, 3000);
+              
+            }, 500);
+          } else {
+            console.log('URL non trouvée pour l\'épisode:', episode);
+            showError();
           }
         } else if (playerType === 'uniware') {
           // Afficher le message d'erreur pour Uniware
-          errorMessage.style.display = 'flex';
+          showError();
         }
       }
     }
 
-    // Écouteurs d'événements pour les deux sélecteurs
+    // Fonction pour aller à l'épisode précédent
+    function goToPreviousEpisode() {
+      const currentEpisode = parseInt(episodeSelect.value);
+      if (currentEpisode > 1) {
+        episodeSelect.value = (currentEpisode - 1).toString();
+        updateVideoSource();
+      }
+    }
+
+    // Fonction pour aller à l'épisode suivant
+    function goToNextEpisode() {
+      const currentEpisode = parseInt(episodeSelect.value);
+      const totalEpisodes = 3; // Seulement 3 épisodes disponibles
+      if (currentEpisode < totalEpisodes) {
+        episodeSelect.value = (currentEpisode + 1).toString();
+        updateVideoSource();
+      }
+    }
+
+    // Écouteurs d'événements pour les sélecteurs
     episodeSelect.addEventListener('change', updateVideoSource);
     playerSelect.addEventListener('change', updateVideoSource);
 
-    // Charger l'épisode 1 par défaut
-    episodeSelect.value = '1';
-    updateVideoSource();
+    // Écouteurs d'événements pour les boutons de navigation
+    prevEpisodeBtn.addEventListener('click', goToPreviousEpisode);
+    nextEpisodeBtn.addEventListener('click', goToNextEpisode);
+
+    // Navigation au clavier (optionnel)
+    document.addEventListener('keydown', function(event) {
+      // Flèche gauche pour épisode précédent
+      if (event.key === 'ArrowLeft' && !prevEpisodeBtn.classList.contains('disabled')) {
+        goToPreviousEpisode();
+      }
+      // Flèche droite pour épisode suivant
+      else if (event.key === 'ArrowRight' && !nextEpisodeBtn.classList.contains('disabled')) {
+        goToNextEpisode();
+      }
+    });
+
+    // Charger l'épisode 1 par défaut au chargement de la page
+    window.addEventListener('load', function() {
+      console.log('Page chargée - initialisation');
+      episodeSelect.value = '1';
+      playerSelect.value = 'sibnet';
+      updateVideoSource();
+    });
   </script>
 </body>
 </html>
