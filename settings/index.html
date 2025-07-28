@@ -12,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             margin: 0;
             overflow-x: hidden;
@@ -20,14 +19,12 @@
             font-family: 'Lato', sans-serif;
             height: 100vh;
         }
-
         #stars, #stars2, #stars3, #stars4 {
             position: fixed;
             top: 0;
             left: 0;
             z-index: 1;
         }
-
         #stars {
             width: 1px;
             height: 1px;
@@ -60,7 +57,6 @@
                 170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
             animation: animStar 60s linear infinite;
         }
-
         #stars:after {
             content: " ";
             position: absolute;
@@ -95,7 +91,6 @@
                 370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
                 170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
         }
-
         #stars2 {
             width: 2px;
             height: 2px;
@@ -115,7 +110,6 @@
                 370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
             animation: animStar 90s linear infinite;
         }
-
         #stars2:after {
             content: " ";
             position: absolute;
@@ -137,7 +131,6 @@
                 1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
                 370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
         }
-
         #stars3 {
             width: 3px;
             height: 3px;
@@ -154,7 +147,6 @@
                 320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
             animation: animStar 140s linear infinite;
         }
-
         #stars3:after {
             content: " ";
             position: absolute;
@@ -173,7 +165,6 @@
                 220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
                 320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
         }
-
         #stars4 {
             width: 1px;
             height: 1px;
@@ -189,7 +180,6 @@
                 380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
             animation: animStar 45s linear infinite;
         }
-
         #stars4:after {
             content: " ";
             position: absolute;
@@ -207,7 +197,6 @@
                 680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
                 380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
         }
-
         @keyframes animStar {
             from {
                 transform: translateY(0px);
@@ -216,7 +205,6 @@
                 transform: translateY(-2000px);
             }
         }
-
         /* Interface principale */
         .settings-container {
             position: relative;
@@ -231,7 +219,6 @@
             border-radius: 24px;
             overflow: hidden;
         }
-
         /* Sidebar gauche */
         .sidebar {
             width: 280px;
@@ -241,13 +228,11 @@
             display: flex;
             flex-direction: column;
         }
-
         .sidebar-header {
             padding: 0 30px 30px 30px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 30px;
         }
-
         .sidebar-title {
             font-family: 'Lato', sans-serif;
             font-size: 1.8rem;
@@ -256,7 +241,6 @@
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
         .sidebar-subtitle {
             font-family: 'Lato', sans-serif;
             font-size: 0.9rem;
@@ -265,7 +249,6 @@
             margin-top: 5px;
             letter-spacing: 0.5px;
         }
-
         .menu-item {
             display: block;
             padding: 16px 30px;
@@ -279,31 +262,26 @@
             border-left: 3px solid transparent;
             cursor: pointer;
         }
-
         .menu-item:hover {
             background-color: rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.95);
             border-left-color: rgba(255, 255, 255, 0.5);
         }
-
         .menu-item.active {
             background-color: rgba(255, 255, 255, 0.15);
             color: rgba(255, 255, 255, 1);
             border-left-color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
         }
-
         /* Zone de contenu principale */
         .content-area {
             flex: 1;
             padding: 40px;
             overflow-y: auto;
         }
-
         .content-header {
             margin-bottom: 30px;
         }
-
         .content-title {
             font-family: 'Lato', sans-serif;
             font-size: 2.2rem;
@@ -313,7 +291,6 @@
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
         .content-subtitle {
             font-family: 'Lato', sans-serif;
             font-size: 1rem;
@@ -322,15 +299,12 @@
             letter-spacing: 0.5px;
             line-height: 1.5;
         }
-
         .content-section {
             display: none;
         }
-
         .content-section.active {
             display: block;
         }
-
         .setting-group {
             background-color: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -338,7 +312,6 @@
             padding: 24px;
             margin-bottom: 20px;
         }
-
         .setting-group h3 {
             font-family: 'Lato', sans-serif;
             font-size: 1.3rem;
@@ -347,7 +320,6 @@
             margin-bottom: 16px;
             letter-spacing: 0.5px;
         }
-
         .setting-item {
             display: flex;
             justify-content: space-between;
@@ -355,25 +327,21 @@
             padding: 12px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .setting-item:last-child {
             border-bottom: none;
         }
-
         .setting-label {
             font-family: 'Lato', sans-serif;
             font-size: 1rem;
             color: rgba(255, 255, 255, 0.8);
             font-weight: 400;
         }
-
         .setting-description {
             font-family: 'Lato', sans-serif;
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.6);
             margin-top: 4px;
         }
-
         .toggle-switch {
             position: relative;
             width: 50px;
@@ -383,11 +351,9 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .toggle-switch.active {
             background-color: rgba(255, 255, 255, 0.4);
         }
-
         .toggle-switch::after {
             content: '';
             position: absolute;
@@ -399,9 +365,65 @@
             border-radius: 50%;
             transition: all 0.3s ease;
         }
-
         .toggle-switch.active::after {
             transform: translateX(26px);
+        }
+
+        /* Boutons d'action */
+        .action-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .action-button.danger {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: rgba(255, 107, 107, 0.5);
+        }
+
+        .action-button.danger:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+
+        /* Statistiques */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         /* Styles spéciaux pour la section Planning */
@@ -413,7 +435,6 @@
             text-align: center;
             margin-bottom: 20px;
         }
-
         .anime-title {
             font-family: 'Lato', sans-serif;
             font-size: 1.8rem;
@@ -423,7 +444,6 @@
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
-
         .schedule-info {
             font-family: 'Lato', sans-serif;
             font-size: 1.1rem;
@@ -432,7 +452,6 @@
             letter-spacing: 0.5px;
             line-height: 1.6;
         }
-
         .coming-soon {
             font-family: 'Lato', sans-serif;
             font-size: 1rem;
@@ -441,7 +460,6 @@
             letter-spacing: 0.5px;
             margin-bottom: 16px;
         }
-
         .access-link {
             display: inline-block;
             background-color: rgba(255, 255, 255, 0.15);
@@ -459,14 +477,12 @@
             letter-spacing: 0.5px;
             margin-top: 8px;
         }
-
         .access-link:hover {
             background-color: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             color: rgba(255, 255, 255, 1);
         }
-
         /* Styles pour la section Général - Message d'indisponibilité */
         .unavailable-message {
             background-color: rgba(255, 255, 255, 0.08);
@@ -476,7 +492,6 @@
             text-align: center;
             margin-bottom: 20px;
         }
-
         .unavailable-text {
             font-family: 'Lato', sans-serif;
             font-size: 1.2rem;
@@ -484,7 +499,6 @@
             letter-spacing: 0.5px;
             line-height: 1.6;
         }
-
         /* Bouton retour */
         .back-button {
             position: absolute;
@@ -506,13 +520,11 @@
             letter-spacing: 0.5px;
             z-index: 20;
         }
-
         .back-button:hover {
             background-color: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
-
         /* Responsive */
         @media (max-width: 768px) {
             .settings-container {
@@ -520,7 +532,6 @@
                 border-radius: 16px;
                 flex-direction: column;
             }
-
             .sidebar {
                 width: 100%;
                 height: auto;
@@ -528,87 +539,75 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.15);
                 padding: 20px 0;
             }
-
             .sidebar-header {
                 padding: 0 20px 20px 20px;
                 margin-bottom: 20px;
             }
-
             .sidebar-title {
                 font-size: 1.5rem;
             }
-
             .menu-item {
                 padding: 12px 20px;
                 font-size: 0.9rem;
             }
-
             .content-area {
                 padding: 20px;
             }
-
             .content-title {
                 font-size: 1.8rem;
             }
-
             .back-button {
                 top: 20px;
                 right: 20px;
                 padding: 10px 16px;
                 font-size: 13px;
             }
-
             .planning-info, .unavailable-message {
                 padding: 24px;
             }
-
             .anime-title {
                 font-size: 1.5rem;
             }
-
             .schedule-info, .unavailable-text {
                 font-size: 1rem;
             }
-
             .access-link {
                 padding: 10px 20px;
                 font-size: 0.9rem;
             }
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
         }
-
         @media (max-width: 500px) {
             .settings-container {
                 margin: 5px;
                 border-radius: 12px;
             }
-
             .content-area {
                 padding: 15px;
             }
-
             .content-title {
                 font-size: 1.5rem;
             }
-
             .setting-group {
                 padding: 16px;
             }
-
             .planning-info, .unavailable-message {
                 padding: 20px;
             }
-
             .anime-title {
                 font-size: 1.3rem;
             }
-
             .schedule-info, .unavailable-text {
                 font-size: 0.9rem;
             }
-
             .access-link {
                 padding: 8px 16px;
                 font-size: 0.85rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -618,9 +617,7 @@
     <div id="stars2"></div>
     <div id="stars3"></div>
     <div id="stars4"></div>
-
     <a href="../" class="back-button">← Retour</a>
-
     <div class="settings-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -628,12 +625,11 @@
                 <h1 class="sidebar-title">PARAMÈTRES</h1>
                 <p class="sidebar-subtitle">Configuration Uniware</p>
             </div>
-            
+                        
             <a href="#" class="menu-item active" onclick="showSection('general')">Général</a>
             <a href="#" class="menu-item" onclick="showSection('planning')">Planning</a>
             <a href="#" class="menu-item" onclick="showSection('legal')">Légal</a>
         </div>
-
         <!-- Zone de contenu -->
         <div class="content-area">
             <!-- Section Général -->
@@ -642,40 +638,74 @@
                     <h2 class="content-title">Général</h2>
                     <p class="content-subtitle">Paramètres généraux de l'application</p>
                 </div>
-
+                
                 <div class="setting-group">
                     <h3>Stockage des données</h3>
                     <div class="setting-item">
                         <div>
                             <div class="setting-label">Utilisation du localStorage</div>
-                            <div class="setting-description">Les épisodes regardés et la progression sont stockés localement dans votre navigateur</div>
+                            <div class="setting-description">Activer/désactiver la sauvegarde automatique des préférences</div>
                         </div>
-                        <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                        <div class="toggle-switch active" id="localStorageToggle" onclick="toggleLocalStorage(this)"></div>
                     </div>
                     <div class="setting-item">
                         <div>
                             <div class="setting-label">Données stockées</div>
-                            <div class="setting-description">Épisodes regardés, temps de visionnage restant, préférences utilisateur</div>
+                            <div class="setting-description">Épisodes regardés, temps de visionnage, préférences utilisateur</div>
                         </div>
-                        <button onclick="clearWatchData()" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 8px 16px; cursor: pointer;">Effacer</button>
+                        <button class="action-button danger" onclick="clearAllWatchData()">Effacer tout</button>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <h3>Statistiques de visionnage</h3>
+                    <div id="statsContainer">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-title">Cyberpunk: Edgerunners</div>
+                                <div class="stat-value" id="cyberpunkStats">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">Gachiakuta</div>
+                                <div class="stat-value" id="gachiakutaStats">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">Infinity Train</div>
+                                <div class="stat-value" id="infinityTrainStats">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">Tougen Anki</div>
+                                <div class="stat-value" id="tougenAnkiStats">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Actions individuelles</div>
+                            <div class="setting-description">Effacer les données d'une série spécifique</div>
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="action-button" onclick="clearSeriesData('cyberpunk')">Cyberpunk</button>
+                            <button class="action-button" onclick="clearSeriesData('gachiakuta')">Gachiakuta</button>
+                            <button class="action-button" onclick="clearSeriesData('infinitytrain')">Infinity Train</button>
+                            <button class="action-button" onclick="clearSeriesData('tougenanki')">Tougen Anki</button>
+                        </div>
                     </div>
                 </div>
             </div>
-
+            
             <!-- Section Planning -->
             <div id="planning" class="content-section">
                 <div class="content-header">
                     <h2 class="content-title">Planning</h2>
                     <p class="content-subtitle">Calendrier de diffusion des animes</p>
                 </div>
-
                 <div class="planning-info">
                     <h3 class="anime-title">Tougen Anki</h3>
                     <p class="schedule-info">Tous les vendredis, jusqu'au 19 décembre 2025 !</p>
                     <p class="coming-soon"></p>
                     <a href="https://uniware.site/watch/tougen-anki-vostfr/" class="access-link" target="_blank">Accédez →</a>
                 </div>
-
                 <div class="planning-info">
                     <h3 class="anime-title">Gachiakuta</h3>
                     <p class="schedule-info">Tous les dimanches, jusqu'au 21 décembre 2025 !</p>
@@ -683,14 +713,13 @@
                     <a href="https://uniware.site/watch/gachiakuta-vostfr/" class="access-link" target="_blank">Accédez →</a>
                 </div>
             </div>
-
+            
             <!-- Section Légal -->
             <div id="legal" class="content-section">
                 <div class="content-header">
                     <h2 class="content-title">Légal</h2>
                     <p class="content-subtitle">Informations légales.</p>
                 </div>
-
                 <div class="setting-group">
                     <h3>Confidentialité</h3>
                     <div class="setting-item">
@@ -701,7 +730,6 @@
                         <div class="toggle-switch active"></div>
                     </div>
                 </div>
-
                 <div class="setting-group">
                     <h3>Documents</h3>
                     <div class="setting-item">
@@ -721,185 +749,309 @@
             </div>
         </div>
     </div>
-
     <script>
-        // Gestionnaire localStorage pour les données de visionnage
-        class WatchDataManager {
+        // Configuration des clés localStorage pour chaque série
+        const SERIES_STORAGE_KEYS = {
+            cyberpunk: [
+                'cyberpunk_current_episode',
+                'cyberpunk_selected_player', 
+                'cyberpunk_last_visit',
+                'cyberpunk_watch_history'
+            ],
+            gachiakuta: [
+                'gachiakuta_current_episode',
+                'gachiakuta_selected_player',
+                'gachiakuta_last_visit', 
+                'gachiakuta_watch_history'
+            ],
+            infinitytrain: [
+                'infinitytrain_current_episode',
+                'infinitytrain_selected_player',
+                'infinitytrain_last_visit',
+                'infinitytrain_watch_history'
+            ],
+            tougenanki: [
+                'tougenanki_current_episode',
+                'tougenanki_selected_player',
+                'tougenanki_last_visit',
+                'tougenanki_watch_history'
+            ]
+        };
+
+        // Gestionnaire localStorage amélioré
+        class UniwareStorageManager {
             constructor() {
-                this.storageKey = 'uniware_watch_data';
+                this.localStorageEnabled = this.getLocalStorageStatus();
             }
 
-            // Récupérer toutes les données de visionnage
-            getAllWatchData() {
+            // Vérifier si localStorage est activé
+            getLocalStorageStatus() {
                 try {
-                    const data = localStorage.getItem(this.storageKey);
-                    return data ? JSON.parse(data) : {};
+                    const status = localStorage.getItem('uniware_localStorage_enabled');
+                    return status !== 'false'; // Par défaut activé
                 } catch (error) {
-                    console.error('Erreur lors de la récupération des données:', error);
-                    return {};
+                    return true;
                 }
             }
 
-            // Sauvegarder les données d'un anime/épisode
-            saveWatchData(animeId, episodeId, data) {
+            // Activer/désactiver localStorage
+            setLocalStorageStatus(enabled) {
                 try {
-                    const allData = this.getAllWatchData();
-                    
-                    if (!allData[animeId]) {
-                        allData[animeId] = {};
-                    }
-                    
-                    allData[animeId][episodeId] = {
-                        ...data,
-                        lastWatched: new Date().toISOString()
-                    };
-                    
-                    localStorage.setItem(this.storageKey, JSON.stringify(allData));
-                    console.log(`Données sauvegardées pour ${animeId} - Episode ${episodeId}:`, data);
-                } catch (error) {
-                    console.error('Erreur lors de la sauvegarde:', error);
-                }
-            }
-
-            // Récupérer les données d'un épisode spécifique
-            getEpisodeData(animeId, episodeId) {
-                const allData = this.getAllWatchData();
-                return allData[animeId] && allData[animeId][episodeId] ? allData[animeId][episodeId] : null;
-            }
-
-            // Marquer un épisode comme regardé
-            markEpisodeWatched(animeId, episodeId, remainingTime = 0) {
-                this.saveWatchData(animeId, episodeId, {
-                    watched: true,
-                    remainingTime: remainingTime,
-                    completed: remainingTime <= 30 // Considéré comme terminé si moins de 30 secondes restantes
-                });
-            }
-
-            // Sauvegarder le temps restant d'un épisode
-            saveRemainingTime(animeId, episodeId, remainingTime) {
-                const existingData = this.getEpisodeData(animeId, episodeId) || {};
-                this.saveWatchData(animeId, episodeId, {
-                    ...existingData,
-                    remainingTime: remainingTime,
-                    watched: true,
-                    completed: remainingTime <= 30
-                });
-            }
-
-            // Obtenir la liste des épisodes regardés pour un anime
-            getWatchedEpisodes(animeId) {
-                const allData = this.getAllWatchData();
-                const animeData = allData[animeId] || {};
-                
-                return Object.keys(animeData).filter(episodeId => 
-                    animeData[episodeId].watched
-                );
-            }
-
-            // Obtenir la liste des épisodes terminés pour un anime
-            getCompletedEpisodes(animeId) {
-                const allData = this.getAllWatchData();
-                const animeData = allData[animeData] || {};
-                
-                return Object.keys(animeData).filter(episodeId => 
-                    animeData[episodeId].completed
-                );
-            }
-
-            // Effacer toutes les données de visionnage
-            clearAllData() {
-                try {
-                    localStorage.removeItem(this.storageKey);
-                    console.log('Toutes les données de visionnage ont été effacées');
+                    localStorage.setItem('uniware_localStorage_enabled', enabled.toString());
+                    this.localStorageEnabled = enabled;
+                    console.log(`localStorage ${enabled ? 'activé' : 'désactivé'}`);
                     return true;
                 } catch (error) {
-                    console.error('Erreur lors de l\'effacement des données:', error);
+                    console.error('Erreur lors de la modification du statut localStorage:', error);
                     return false;
                 }
             }
 
-            // Effacer les données d'un anime spécifique
-            clearAnimeData(animeId) {
-                try {
-                    const allData = this.getAllWatchData();
-                    delete allData[animeId];
-                    localStorage.setItem(this.storageKey, JSON.stringify(allData));
-                    console.log(`Données effacées pour ${animeId}`);
-                    return true;
-                } catch (error) {
-                    console.error('Erreur lors de l\'effacement des données de l\'anime:', error);
-                    return false;
-                }
-            }
-
-            // Obtenir des statistiques de visionnage
-            getWatchStats() {
-                const allData = this.getAllWatchData();
-                let totalEpisodes = 0;
-                let watchedEpisodes = 0;
-                let completedEpisodes = 0;
+            // Obtenir les statistiques d'une série
+            getSeriesStats(seriesKey) {
+                if (!this.localStorageEnabled) return { episodes: 0, lastVisit: null };
                 
-                Object.keys(allData).forEach(animeId => {
-                    Object.keys(allData[animeId]).forEach(episodeId => {
-                        totalEpisodes++;
-                        if (allData[animeId][episodeId].watched) watchedEpisodes++;
-                        if (allData[animeId][episodeId].completed) completedEpisodes++;
+                try {
+                    const keys = SERIES_STORAGE_KEYS[seriesKey] || [];
+                    let episodes = 0;
+                    let lastVisit = null;
+
+                    keys.forEach(key => {
+                        const data = localStorage.getItem(key);
+                        if (data) {
+                            if (key.includes('current_episode')) {
+                                episodes = 1; // Au moins un épisode regardé
+                            }
+                            if (key.includes('last_visit')) {
+                                try {
+                                    const visitData = JSON.parse(data);
+                                    lastVisit = visitData;
+                                } catch (e) {
+                                    lastVisit = data;
+                                }
+                            }
+                            if (key.includes('watch_history')) {
+                                try {
+                                    const history = JSON.parse(data);
+                                    if (Array.isArray(history)) {
+                                        episodes = Math.max(episodes, history.length);
+                                    }
+                                } catch (e) {
+                                    // Ignore parsing errors
+                                }
+                            }
+                        }
                     });
+
+                    return { episodes, lastVisit };
+                } catch (error) {
+                    console.error(`Erreur lors de la récupération des stats pour ${seriesKey}:`, error);
+                    return { episodes: 0, lastVisit: null };
+                }
+            }
+
+            // Effacer les données d'une série spécifique
+            clearSeriesData(seriesKey) {
+                if (!SERIES_STORAGE_KEYS[seriesKey]) {
+                    console.error(`Série inconnue: ${seriesKey}`);
+                    return false;
+                }
+
+                try {
+                    const keys = SERIES_STORAGE_KEYS[seriesKey];
+                    keys.forEach(key => {
+                        localStorage.removeItem(key);
+                    });
+                    console.log(`Données effacées pour ${seriesKey}`);
+                    return true;
+                } catch (error) {
+                    console.error(`Erreur lors de l'effacement des données pour ${seriesKey}:`, error);
+                    return false;
+                }
+            }
+
+            // Effacer toutes les données de toutes les séries
+            clearAllSeriesData() {
+                try {
+                    Object.keys(SERIES_STORAGE_KEYS).forEach(seriesKey => {
+                        this.clearSeriesData(seriesKey);
+                    });
+                    console.log('Toutes les données des séries ont été effacées');
+                    return true;
+                } catch (error) {
+                    console.error('Erreur lors de l\'effacement de toutes les données:', error);
+                    return false;
+                }
+            }
+
+            // Obtenir toutes les statistiques
+            getAllStats() {
+                const stats = {};
+                Object.keys(SERIES_STORAGE_KEYS).forEach(seriesKey => {
+                    stats[seriesKey] = this.getSeriesStats(seriesKey);
                 });
-                
-                return {
-                    totalEpisodes,
-                    watchedEpisodes,
-                    completedEpisodes,
-                    animeCount: Object.keys(allData).length
-                };
+                return stats;
             }
         }
 
         // Initialiser le gestionnaire
-        const watchManager = new WatchDataManager();
+        const storageManager = new UniwareStorageManager();
 
         // Fonctions pour l'interface
         function showSection(sectionId) {
             // Masquer toutes les sections
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => section.classList.remove('active'));
-            
+                        
             // Afficher la section sélectionnée
             document.getElementById(sectionId).classList.add('active');
-            
+                        
             // Mettre à jour le menu actif
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(item => item.classList.remove('active'));
             event.target.classList.add('active');
+
+            // Mettre à jour les statistiques si on affiche la section générale
+            if (sectionId === 'general') {
+                updateStats();
+            }
         }
 
-        function toggleSwitch(element) {
-            element.classList.toggle('active');
-        }
-
-        function clearWatchData() {
-            if (confirm('Êtes-vous sûr de vouloir effacer toutes les données de visionnage ? Cette action est irréversible.')) {
-                const success = watchManager.clearAllData();
-                if (success) {
-                    alert('Toutes les données de visionnage ont été effacées avec succès.');
+        function toggleLocalStorage(element) {
+            const newStatus = !storageManager.localStorageEnabled;
+            const success = storageManager.setLocalStorageStatus(newStatus);
+            
+            if (success) {
+                element.classList.toggle('active', newStatus);
+                
+                if (newStatus) {
+                    showNotification('localStorage activé', 'success');
                 } else {
-                    alert('Erreur lors de l\'effacement des données.');
+                    showNotification('localStorage désactivé - Les données ne seront plus sauvegardées', 'warning');
+                }
+            } else {
+                showNotification('Erreur lors de la modification des paramètres', 'error');
+            }
+        }
+
+        function clearAllWatchData() {
+            if (confirm('⚠️ ATTENTION ⚠️\n\nCette action va effacer TOUTES les données de visionnage de TOUTES les séries :\n\n• Cyberpunk: Edgerunners\n• Gachiakuta\n• Infinity Train\n• Tougen Anki\n\nCette action est IRRÉVERSIBLE.\n\nÊtes-vous absolument sûr de vouloir continuer ?')) {
+                const success = storageManager.clearAllSeriesData();
+                if (success) {
+                    updateStats();
+                    showNotification('Toutes les données ont été effacées avec succès', 'success');
+                } else {
+                    showNotification('Erreur lors de l\'effacement des données', 'error');
                 }
             }
         }
 
-        // Exemple d'utilisation du gestionnaire (pour les développeurs)
-        console.log('WatchDataManager initialisé. Exemples d\'utilisation:');
-        console.log('watchManager.markEpisodeWatched("cyberpunk-edgerunners", "1", 120); // Marquer l\'épisode 1 avec 120 secondes restantes');
-        console.log('watchManager.getEpisodeData("cyberpunk-edgerunners", "1"); // Récupérer les données de l\'épisode 1');
-        console.log('watchManager.getWatchedEpisodes("cyberpunk-edgerunners"); // Liste des épisodes regardés');
-        console.log('watchManager.getWatchStats(); // Statistiques globales');
+        function clearSeriesData(seriesKey) {
+            const seriesNames = {
+                cyberpunk: 'Cyberpunk: Edgerunners',
+                gachiakuta: 'Gachiakuta',
+                infinitytrain: 'Infinity Train',
+                tougenanki: 'Tougen Anki'
+            };
 
-        // Afficher les statistiques actuelles
-        const stats = watchManager.getWatchStats();
-        console.log('Statistiques actuelles:', stats);
+            const seriesName = seriesNames[seriesKey] || seriesKey;
+            
+            if (confirm(`Êtes-vous sûr de vouloir effacer toutes les données de "${seriesName}" ?\n\nCela inclut :\n• Épisode actuel\n• Lecteur sélectionné\n• Historique de visionnage\n\nCette action est irréversible.`)) {
+                const success = storageManager.clearSeriesData(seriesKey);
+                if (success) {
+                    updateStats();
+                    showNotification(`Données de "${seriesName}" effacées avec succès`, 'success');
+                } else {
+                    showNotification(`Erreur lors de l'effacement des données de "${seriesName}"`, 'error');
+                }
+            }
+        }
+
+        function updateStats() {
+            const stats = storageManager.getAllStats();
+            
+            // Mettre à jour les statistiques affichées
+            document.getElementById('cyberpunkStats').textContent = stats.cyberpunk.episodes;
+            document.getElementById('gachiakutaStats').textContent = stats.gachiakuta.episodes;
+            document.getElementById('infinityTrainStats').textContent = stats.infinitytrain.episodes;
+            document.getElementById('tougenAnkiStats').textContent = stats.tougenanki.episodes;
+        }
+
+        function showNotification(message, type = 'info') {
+            // Créer une notification temporaire
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' : 
+                            type === 'warning' ? 'rgba(255, 193, 7, 0.9)' : 
+                            type === 'error' ? 'rgba(244, 67, 54, 0.9)' : 
+                            'rgba(33, 150, 243, 0.9)'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                font-family: 'Lato', sans-serif;
+                font-size: 14px;
+                z-index: 1000;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Supprimer la notification après 4 secondes
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Ajouter les animations CSS pour les notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialisation au chargement de la page
+        window.addEventListener('load', function() {
+            // Mettre à jour l'état du toggle localStorage
+            const toggle = document.getElementById('localStorageToggle');
+            if (toggle) {
+                toggle.classList.toggle('active', storageManager.localStorageEnabled);
+            }
+            
+            // Mettre à jour les statistiques
+            updateStats();
+            
+            console.log('Uniware Settings initialisé');
+            console.log('État localStorage:', storageManager.localStorageEnabled);
+            console.log('Statistiques:', storageManager.getAllStats());
+        });
+
+        // Exposer les fonctions utiles pour le debug
+        window.uniwareSettings = {
+            storageManager: storageManager,
+            updateStats: updateStats,
+            clearAll: clearAllWatchData,
+            clearSeries: clearSeriesData,
+            toggleStorage: toggleLocalStorage
+        };
     </script>
 </body>
 </html>
