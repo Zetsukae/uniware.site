@@ -643,8 +643,22 @@
                     <p class="content-subtitle">Paramètres généraux de l'application</p>
                 </div>
 
-                <div class="unavailable-message">
-                    <p class="unavailable-text">Pas disponible pour le moment. Tentez de redémarrer votre navigateur.</p>
+                <div class="setting-group">
+                    <h3>Stockage des données</h3>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Utilisation du localStorage</div>
+                            <div class="setting-description">Les épisodes regardés et la progression sont stockés localement dans votre navigateur</div>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Données stockées</div>
+                            <div class="setting-description">Épisodes regardés, temps de visionnage restant, préférences utilisateur</div>
+                        </div>
+                        <button onclick="clearWatchData()" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 8px 16px; cursor: pointer;">Effacer</button>
+                    </div>
                 </div>
             </div>
 
@@ -681,10 +695,10 @@
                     <h3>Confidentialité</h3>
                     <div class="setting-item">
                         <div>
-                            <div class="setting-label">Cookies analytiques</div>
-                            <div class="setting-description">Accepter les cookies d'analyse</div>
+                            <div class="setting-label">Stockage local uniquement</div>
+                            <div class="setting-description">Toutes les données sont stockées localement sur votre appareil</div>
                         </div>
-                        <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                        <div class="toggle-switch active"></div>
                     </div>
                 </div>
 
@@ -709,6 +723,144 @@
     </div>
 
     <script>
+        // Gestionnaire localStorage pour les données de visionnage
+        class WatchDataManager {
+            constructor() {
+                this.storageKey = 'uniware_watch_data';
+            }
+
+            // Récupérer toutes les données de visionnage
+            getAllWatchData() {
+                try {
+                    const data = localStorage.getItem(this.storageKey);
+                    return data ? JSON.parse(data) : {};
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données:', error);
+                    return {};
+                }
+            }
+
+            // Sauvegarder les données d'un anime/épisode
+            saveWatchData(animeId, episodeId, data) {
+                try {
+                    const allData = this.getAllWatchData();
+                    
+                    if (!allData[animeId]) {
+                        allData[animeId] = {};
+                    }
+                    
+                    allData[animeId][episodeId] = {
+                        ...data,
+                        lastWatched: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem(this.storageKey, JSON.stringify(allData));
+                    console.log(`Données sauvegardées pour ${animeId} - Episode ${episodeId}:`, data);
+                } catch (error) {
+                    console.error('Erreur lors de la sauvegarde:', error);
+                }
+            }
+
+            // Récupérer les données d'un épisode spécifique
+            getEpisodeData(animeId, episodeId) {
+                const allData = this.getAllWatchData();
+                return allData[animeId] && allData[animeId][episodeId] ? allData[animeId][episodeId] : null;
+            }
+
+            // Marquer un épisode comme regardé
+            markEpisodeWatched(animeId, episodeId, remainingTime = 0) {
+                this.saveWatchData(animeId, episodeId, {
+                    watched: true,
+                    remainingTime: remainingTime,
+                    completed: remainingTime <= 30 // Considéré comme terminé si moins de 30 secondes restantes
+                });
+            }
+
+            // Sauvegarder le temps restant d'un épisode
+            saveRemainingTime(animeId, episodeId, remainingTime) {
+                const existingData = this.getEpisodeData(animeId, episodeId) || {};
+                this.saveWatchData(animeId, episodeId, {
+                    ...existingData,
+                    remainingTime: remainingTime,
+                    watched: true,
+                    completed: remainingTime <= 30
+                });
+            }
+
+            // Obtenir la liste des épisodes regardés pour un anime
+            getWatchedEpisodes(animeId) {
+                const allData = this.getAllWatchData();
+                const animeData = allData[animeId] || {};
+                
+                return Object.keys(animeData).filter(episodeId => 
+                    animeData[episodeId].watched
+                );
+            }
+
+            // Obtenir la liste des épisodes terminés pour un anime
+            getCompletedEpisodes(animeId) {
+                const allData = this.getAllWatchData();
+                const animeData = allData[animeData] || {};
+                
+                return Object.keys(animeData).filter(episodeId => 
+                    animeData[episodeId].completed
+                );
+            }
+
+            // Effacer toutes les données de visionnage
+            clearAllData() {
+                try {
+                    localStorage.removeItem(this.storageKey);
+                    console.log('Toutes les données de visionnage ont été effacées');
+                    return true;
+                } catch (error) {
+                    console.error('Erreur lors de l\'effacement des données:', error);
+                    return false;
+                }
+            }
+
+            // Effacer les données d'un anime spécifique
+            clearAnimeData(animeId) {
+                try {
+                    const allData = this.getAllWatchData();
+                    delete allData[animeId];
+                    localStorage.setItem(this.storageKey, JSON.stringify(allData));
+                    console.log(`Données effacées pour ${animeId}`);
+                    return true;
+                } catch (error) {
+                    console.error('Erreur lors de l\'effacement des données de l\'anime:', error);
+                    return false;
+                }
+            }
+
+            // Obtenir des statistiques de visionnage
+            getWatchStats() {
+                const allData = this.getAllWatchData();
+                let totalEpisodes = 0;
+                let watchedEpisodes = 0;
+                let completedEpisodes = 0;
+                
+                Object.keys(allData).forEach(animeId => {
+                    Object.keys(allData[animeId]).forEach(episodeId => {
+                        totalEpisodes++;
+                        if (allData[animeId][episodeId].watched) watchedEpisodes++;
+                        if (allData[animeId][episodeId].completed) completedEpisodes++;
+                    });
+                });
+                
+                return {
+                    totalEpisodes,
+                    watchedEpisodes,
+                    completedEpisodes,
+                    animeCount: Object.keys(allData).length
+                };
+            }
+        }
+
+        // Initialiser le gestionnaire
+        const watchManager = new WatchDataManager();
+
+        // Fonctions pour l'interface
         function showSection(sectionId) {
             // Masquer toutes les sections
             const sections = document.querySelectorAll('.content-section');
@@ -726,6 +878,28 @@
         function toggleSwitch(element) {
             element.classList.toggle('active');
         }
+
+        function clearWatchData() {
+            if (confirm('Êtes-vous sûr de vouloir effacer toutes les données de visionnage ? Cette action est irréversible.')) {
+                const success = watchManager.clearAllData();
+                if (success) {
+                    alert('Toutes les données de visionnage ont été effacées avec succès.');
+                } else {
+                    alert('Erreur lors de l\'effacement des données.');
+                }
+            }
+        }
+
+        // Exemple d'utilisation du gestionnaire (pour les développeurs)
+        console.log('WatchDataManager initialisé. Exemples d\'utilisation:');
+        console.log('watchManager.markEpisodeWatched("cyberpunk-edgerunners", "1", 120); // Marquer l\'épisode 1 avec 120 secondes restantes');
+        console.log('watchManager.getEpisodeData("cyberpunk-edgerunners", "1"); // Récupérer les données de l\'épisode 1');
+        console.log('watchManager.getWatchedEpisodes("cyberpunk-edgerunners"); // Liste des épisodes regardés');
+        console.log('watchManager.getWatchStats(); // Statistiques globales');
+
+        // Afficher les statistiques actuelles
+        const stats = watchManager.getWatchStats();
+        console.log('Statistiques actuelles:', stats);
     </script>
 </body>
 </html>
