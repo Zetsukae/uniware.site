@@ -297,7 +297,6 @@
     }
 
     .goback {
-      margin-top: 20px;
       background-color: rgba(255, 255, 255, 0.15);
       color: white;
       padding: 12px 24px;
@@ -312,6 +311,16 @@
     .goback:hover {
       background-color: rgba(255, 255, 255, 0.25);
       transform: scale(1.05);
+    }
+
+    /* Conteneur pour les boutons de navigation en bas */
+    .bottom-navigation {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     /* Media query pour agrandir sur mobile */
@@ -342,9 +351,13 @@
         font-size: 18px;
         padding: 14px 28px;
       }
+      .bottom-navigation {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
 
-    /* Conteneur pour la vidéo avec position relative pour les boutons */
+    /* Conteneur pour la vidéo */
     .video-container {
       position: relative;
       width: 100%;
@@ -378,24 +391,19 @@
       100% { transform: translateX(0); }
     }
 
-    /* Boutons de navigation des épisodes avec flèches animées */
+    /* Boutons de navigation des épisodes repositionnés */
     .episode-nav-btn {
-      position: absolute;
-      bottom: 5px;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(255, 255, 255, 0.15);
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 14px;
+      padding: 12px 20px;
+      font-size: 16px;
       font-family: Arial, sans-serif;
       cursor: pointer;
       transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(5px);
       white-space: nowrap;
-      z-index: 10;
-      opacity: 0.8;
       user-select: none;
       display: flex;
       align-items: center;
@@ -403,11 +411,9 @@
     }
 
     .episode-nav-btn:hover {
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(255, 255, 255, 0.25);
       border-color: rgba(255, 255, 255, 0.6);
-      opacity: 1;
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .episode-nav-btn:active {
@@ -418,16 +424,6 @@
       opacity: 0.3;
       cursor: not-allowed;
       pointer-events: none;
-    }
-
-    /* Bouton précédent (gauche) */
-    .prev-episode {
-      left: 15px;
-    }
-
-    /* Bouton suivant (droite) */
-    .next-episode {
-      right: 15px;
     }
 
     /* Styles pour les SVG des flèches */
@@ -465,18 +461,9 @@
     /* Responsive pour les boutons sur mobile */
     @media (max-width: 500px) {
       .episode-nav-btn {
-        bottom: 3px;
-        padding: 6px 10px;
-        font-size: 12px;
+        padding: 14px 28px;
+        font-size: 18px;
         gap: 6px;
-      }
-      
-      .prev-episode {
-        left: 10px;
-      }
-      
-      .next-episode {
-        right: 10px;
       }
 
       .arrow-svg {
@@ -615,30 +602,13 @@
         </div>
       </div>
 
-      <!-- Conteneur pour la vidéo avec boutons de navigation -->
+      <!-- Conteneur pour la vidéo -->
       <div class="video-container">
         <!-- Iframe pour la vidéo -->
         <iframe id="videoFrame" width="100%" height="450" src="" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; display: none;"></iframe>
-        
-        <!-- Boutons de navigation des épisodes avec flèches animées -->
-        <button id="prevEpisodeBtn" class="episode-nav-btn prev-episode">
-          <svg class="arrow-svg arrow-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 15h-6v4l-7-7 7-7v4h6v6z"/>
-          </svg>
-          <span class="short-text">Précédent</span>
-          <span class="full-text">Précédent épisode</span>
-        </button>
-        
-        <button id="nextEpisodeBtn" class="episode-nav-btn next-episode">
-          <span class="short-text">Suivant</span>
-          <span class="full-text">Prochain épisode</span>
-          <svg class="arrow-svg arrow-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 9h6V5l7 7-7 7v-4H6V9z"/>
-          </svg>
-        </button>
       </div>
       
-      <!-- Message d'erreur pour Uniware -->
+      <!-- Message d'erreur -->
       <div id="errorMessage">
         <div class="error-content">
           <span class="error-icon">⚠️</span>
@@ -646,7 +616,29 @@
         </div>
       </div>
       
-      <a href="https://uniware.site/watch/" class="goback">Retour</a>
+      <!-- Navigation en bas avec les boutons d'épisodes et retour -->
+      <div class="bottom-navigation">
+        <!-- Bouton épisode précédent -->
+        <button id="prevEpisodeBtn" class="episode-nav-btn">
+          <svg class="arrow-svg arrow-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15h-6v4l-7-7 7-7v4h6v6z"/>
+          </svg>
+          <span class="short-text">Précédent</span>
+          <span class="full-text">Précédent épisode</span>
+        </button>
+        
+        <!-- Bouton retour -->
+        <a href="https://uniware.site/watch/" class="goback">Retour</a>
+        
+        <!-- Bouton épisode suivant -->
+        <button id="nextEpisodeBtn" class="episode-nav-btn">
+          <span class="short-text">Suivant</span>
+          <span class="full-text">Prochain épisode</span>
+          <svg class="arrow-svg arrow-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9h6V5l7 7-7 7v-4H6V9z"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -658,6 +650,14 @@
     const loadingIndicator = document.getElementById('loadingIndicator');
     const prevEpisodeBtn = document.getElementById('prevEpisodeBtn');
     const nextEpisodeBtn = document.getElementById('nextEpisodeBtn');
+
+    // Clés pour le localStorage (différentes des autres séries pour éviter les conflits)
+    const STORAGE_KEYS = {
+      EPISODE: 'tougenanki_current_episode',
+      PLAYER: 'tougenanki_selected_player',
+      LAST_VISIT: 'tougenanki_last_visit',
+      WATCH_HISTORY: 'tougenanki_watch_history'
+    };
 
     // URLs SIBNET pour chaque épisode
     const sibnetUrls = {
@@ -672,6 +672,86 @@
       '9': 'https://video.sibnet.ru/shell.php?videoid=5976608',
       '10': 'https://video.sibnet.ru/shell.php?videoid=5976611'
     };
+
+    // Fonctions localStorage
+    function saveToLocalStorage(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        console.log(`Sauvegardé dans localStorage: ${key} = ${value}`);
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde:', error);
+      }
+    }
+
+    function loadFromLocalStorage(key, defaultValue = null) {
+      try {
+        const stored = localStorage.getItem(key);
+        if (stored !== null) {
+          const parsed = JSON.parse(stored);
+          console.log(`Chargé depuis localStorage: ${key} = ${parsed}`);
+          return parsed;
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement:', error);
+      }
+      return defaultValue;
+    }
+
+    function saveWatchHistory(episode, player) {
+      const history = loadFromLocalStorage(STORAGE_KEYS.WATCH_HISTORY, []);
+      const timestamp = new Date().toISOString();
+      
+      // Ajouter l'entrée actuelle
+      const newEntry = {
+        episode: episode,
+        player: player,
+        timestamp: timestamp
+      };
+      
+      // Éviter les doublons récents (même épisode dans les 5 dernières minutes)
+      const recentEntry = history.find(entry => 
+        entry.episode === episode && 
+        new Date(timestamp) - new Date(entry.timestamp) < 5 * 60 * 1000
+      );
+      
+      if (!recentEntry) {
+        history.unshift(newEntry);
+        // Garder seulement les 20 dernières entrées
+        if (history.length > 20) {
+          history.splice(20);
+        }
+        saveToLocalStorage(STORAGE_KEYS.WATCH_HISTORY, history);
+      }
+    }
+
+    function saveCurrentState() {
+      const episode = episodeSelect.value;
+      const player = playerSelect.value;
+      
+      saveToLocalStorage(STORAGE_KEYS.EPISODE, episode);
+      saveToLocalStorage(STORAGE_KEYS.PLAYER, player);
+      saveToLocalStorage(STORAGE_KEYS.LAST_VISIT, new Date().toISOString());
+      saveWatchHistory(episode, player);
+    }
+
+    function loadSavedState() {
+      // Charger l'épisode sauvegardé
+      const savedEpisode = loadFromLocalStorage(STORAGE_KEYS.EPISODE, '1');
+      const savedPlayer = loadFromLocalStorage(STORAGE_KEYS.PLAYER, 'sibnet');
+      
+      // Appliquer les valeurs sauvegardées
+      episodeSelect.value = savedEpisode;
+      playerSelect.value = savedPlayer;
+      
+      console.log(`État restauré: Épisode ${savedEpisode}, Lecteur ${savedPlayer}`);
+      
+      // Afficher les informations de la dernière visite
+      const lastVisit = loadFromLocalStorage(STORAGE_KEYS.LAST_VISIT);
+      if (lastVisit) {
+        const lastVisitDate = new Date(lastVisit);
+        console.log(`Dernière visite: ${lastVisitDate.toLocaleString()}`);
+      }
+    }
 
     // Fonction pour mettre à jour l'état des boutons de navigation
     function updateNavigationButtons() {
@@ -698,9 +778,7 @@
       videoFrame.style.display = 'none';
       errorMessage.style.display = 'none';
       loadingIndicator.style.display = 'flex';
-      // Masquer les boutons pendant le chargement
-      prevEpisodeBtn.style.display = 'none';
-      nextEpisodeBtn.style.display = 'none';
+      updateNavigationButtons();
     }
 
     // Fonction pour afficher la vidéo
@@ -708,9 +786,6 @@
       loadingIndicator.style.display = 'none';
       errorMessage.style.display = 'none';
       videoFrame.style.display = 'block';
-      // Afficher les boutons quand la vidéo est chargée
-      prevEpisodeBtn.style.display = 'flex';
-      nextEpisodeBtn.style.display = 'flex';
       updateNavigationButtons();
     }
 
@@ -719,9 +794,7 @@
       loadingIndicator.style.display = 'none';
       videoFrame.style.display = 'none';
       errorMessage.style.display = 'flex';
-      // Masquer les boutons en cas d'erreur
-      prevEpisodeBtn.style.display = 'none';
-      nextEpisodeBtn.style.display = 'none';
+      updateNavigationButtons();
     }
 
     // Fonction pour mettre à jour la source vidéo
@@ -736,6 +809,9 @@
           const newSrc = sibnetUrls[episode];
           if (newSrc) {
             showLoading();
+            
+            // Sauvegarder l'état actuel
+            saveCurrentState();
             
             // Simuler un délai de chargement
             setTimeout(() => {
@@ -800,7 +876,7 @@
     prevEpisodeBtn.addEventListener('click', goToPreviousEpisode);
     nextEpisodeBtn.addEventListener('click', goToNextEpisode);
 
-    // Navigation au clavier (optionnel)
+    // Navigation au clavier
     document.addEventListener('keydown', function(event) {
       // Flèche gauche pour épisode précédent
       if (event.key === 'ArrowLeft' && !prevEpisodeBtn.classList.contains('disabled')) {
@@ -812,13 +888,50 @@
       }
     });
 
-    // Charger l'épisode 1 par défaut au chargement de la page
-    window.addEventListener('load', function() {
-      console.log('Page chargée - initialisation');
-      episodeSelect.value = '1';
-      playerSelect.value = 'sibnet';
-      updateVideoSource();
+    // Sauvegarder automatiquement lors de la fermeture de la page
+    window.addEventListener('beforeunload', function() {
+      saveCurrentState();
     });
+
+    // Sauvegarder périodiquement (toutes les 30 secondes)
+    setInterval(saveCurrentState, 30000);
+
+    // Initialisation au chargement de la page
+    window.addEventListener('load', function() {
+      console.log('Page chargée - initialisation avec localStorage');
+      
+      // Charger l'état sauvegardé
+      loadSavedState();
+      
+      // Démarrer la vidéo
+      updateVideoSource();
+      
+      console.log('Initialisation terminée');
+    });
+
+    // Fonction pour afficher l'historique de visionnage (pour debug)
+    function showWatchHistory() {
+      const history = loadFromLocalStorage(STORAGE_KEYS.WATCH_HISTORY, []);
+      console.log('Historique de visionnage:', history);
+      return history;
+    }
+
+    // Fonction pour effacer toutes les données sauvegardées
+    function clearAllData() {
+      Object.values(STORAGE_KEYS).forEach(key => {
+        localStorage.removeItem(key);
+      });
+      console.log('Toutes les données ont été effacées');
+      location.reload();
+    }
+
+    // Exposer les fonctions utiles pour le debug
+    window.tougenAnkiPlayer = {
+      showHistory: showWatchHistory,
+      clearData: clearAllData,
+      saveState: saveCurrentState,
+      loadState: loadSavedState
+    };
   </script>
 </body>
 </html>
