@@ -930,7 +930,7 @@
             }
         }
         function clearAllWatchData() {
-            if (confirm('⚠️ ATTENTION ⚠️\n\nCette action va effacer TOUTES les données de visionnage de TOUTES les séries :\n\n• Cyberpunk: Edgerunners\n• Gachiakuta\n• Infinity Train\n• Tougen Anki\n\nCette action est IRRÉVERSIBLE.\n\nÊtes-vous absolument sûr de vouloir continuer ?')) {
+            if (confirm('⚠️ ATTENTION ⚠️\n\nCette action va effacer TOUTES les données de visionnage de TOUTES les séries.\n\nCette action est IRRÉVERSIBLE.\n\nÊtes-vous absolument sûr de vouloir continuer ?')) {
                 const success = storageManager.clearAllSeriesData();
                 if (success) {
                     updateStats();
