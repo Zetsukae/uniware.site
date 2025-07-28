@@ -368,7 +368,6 @@
         .toggle-switch.active::after {
             transform: translateX(26px);
         }
-
         /* Boutons d'action */
         .action-button {
             background: rgba(255, 255, 255, 0.1);
@@ -381,21 +380,17 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
         }
-
         .action-button:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-1px);
         }
-
         .action-button.danger {
             background: rgba(255, 107, 107, 0.2);
             border-color: rgba(255, 107, 107, 0.5);
         }
-
         .action-button.danger:hover {
             background: rgba(255, 107, 107, 0.3);
         }
-
         /* Statistiques */
         .stats-grid {
             display: grid;
@@ -403,27 +398,66 @@
             gap: 16px;
             margin-top: 16px;
         }
-
         .stat-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 16px;
             text-align: center;
+            transition: all 0.3s ease;
         }
-
+        .stat-card.hidden {
+            display: none;
+        }
         .stat-title {
             font-family: 'Lato', sans-serif;
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 8px;
         }
-
         .stat-value {
             font-family: 'Lato', sans-serif;
             font-size: 1.5rem;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Message quand aucune donnée */
+        .no-data-message {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            margin-top: 16px;
+            display: none;
+        }
+        .no-data-message.show {
+            display: block;
+        }
+        .no-data-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        /* Tip en dehors de la box des statistiques */
+        .stats-tip {
+            margin-top: 24px;
+            text-align: center;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            letter-spacing: 0.5px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
         }
 
         /* Styles spéciaux pour la section Planning */
@@ -660,25 +694,39 @@
                 <div class="setting-group">
                     <h3>Statistiques de visionnage</h3>
                     <div id="statsContainer">
-                        <div class="stats-grid">
-                            <div class="stat-card">
+                        <!-- Message quand aucune donnée -->
+                        <div id="noDataMessage" class="no-data-message">
+                            <div class="no-data-text">
+                                📊 Aucune donnée ou l'utilisation du localStorage est désactivée
+                            </div>
+                        </div>
+                        
+                        <!-- Grille des statistiques -->
+                        <div class="stats-grid" id="statsGrid">
+                            <div class="stat-card hidden" id="cyberpunkCard">
                                 <div class="stat-title">Cyberpunk: Edgerunners</div>
-                                <div class="stat-value" id="cyberpunkStats">0</div>
+                                <div class="stat-value" id="cyberpunkStats">1 ep vu</div>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card hidden" id="gachiakutaCard">
                                 <div class="stat-title">Gachiakuta</div>
-                                <div class="stat-value" id="gachiakutaStats">0</div>
+                                <div class="stat-value" id="gachiakutaStats">1 ep vu</div>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card hidden" id="infinityTrainCard">
                                 <div class="stat-title">Infinity Train</div>
-                                <div class="stat-value" id="infinityTrainStats">0</div>
+                                <div class="stat-value" id="infinityTrainStats">1 ep vu</div>
                             </div>
-                            <div class="stat-card">
+                            <div class="stat-card hidden" id="tougenAnkiCard">
                                 <div class="stat-title">Tougen Anki</div>
-                                <div class="stat-value" id="tougenAnkiStats">0</div>
+                                <div class="stat-value" id="tougenAnkiStats">1 ep vu</div>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Tip en dehors de la box -->
+                    <div class="stats-tip">
+                        💡 TIPS : utilisez un adblock !
+                    </div>
+                    
                     <div class="setting-item">
                         <div>
                             <div class="setting-label">Actions individuelles</div>
@@ -807,20 +855,39 @@
                 }
             }
 
-            // Obtenir les statistiques d'une série
+            // Obtenir les statistiques d'une série (amélioré)
             getSeriesStats(seriesKey) {
-                if (!this.localStorageEnabled) return { episodes: 0, lastVisit: null };
+                if (!this.localStorageEnabled) return { episodes: 0, lastVisit: null, displayText: 'Aucun épisode', hasData: false };
                 
                 try {
                     const keys = SERIES_STORAGE_KEYS[seriesKey] || [];
-                    let episodes = 0;
+                    let currentEpisode = 0;
                     let lastVisit = null;
+                    let displayText = 'Aucun épisode';
+                    let hasData = false;
 
                     keys.forEach(key => {
                         const data = localStorage.getItem(key);
                         if (data) {
                             if (key.includes('current_episode')) {
-                                episodes = 1; // Au moins un épisode regardé
+                                try {
+                                    const episodeNum = JSON.parse(data);
+                                    if (typeof episodeNum === 'string' || typeof episodeNum === 'number') {
+                                        currentEpisode = parseInt(episodeNum);
+                                        if (currentEpisode > 0) {
+                                            displayText = `${currentEpisode} ep vu${currentEpisode > 1 ? 's' : ''}`;
+                                            hasData = true;
+                                        }
+                                    }
+                                } catch (e) {
+                                    // Si ce n'est pas du JSON, essayer de parser directement
+                                    const episodeNum = parseInt(data);
+                                    if (!isNaN(episodeNum) && episodeNum > 0) {
+                                        currentEpisode = episodeNum;
+                                        displayText = `${currentEpisode} ep vu${currentEpisode > 1 ? 's' : ''}`;
+                                        hasData = true;
+                                    }
+                                }
                             }
                             if (key.includes('last_visit')) {
                                 try {
@@ -830,23 +897,13 @@
                                     lastVisit = data;
                                 }
                             }
-                            if (key.includes('watch_history')) {
-                                try {
-                                    const history = JSON.parse(data);
-                                    if (Array.isArray(history)) {
-                                        episodes = Math.max(episodes, history.length);
-                                    }
-                                } catch (e) {
-                                    // Ignore parsing errors
-                                }
-                            }
                         }
                     });
 
-                    return { episodes, lastVisit };
+                    return { episodes: currentEpisode, lastVisit, displayText, hasData };
                 } catch (error) {
                     console.error(`Erreur lors de la récupération des stats pour ${seriesKey}:`, error);
-                    return { episodes: 0, lastVisit: null };
+                    return { episodes: 0, lastVisit: null, displayText: 'Aucun épisode', hasData: false };
                 }
             }
 
@@ -929,6 +986,9 @@
                 } else {
                     showNotification('localStorage désactivé - Les données ne seront plus sauvegardées', 'warning');
                 }
+                
+                // Mettre à jour l'affichage des statistiques
+                updateStats();
             } else {
                 showNotification('Erreur lors de la modification des paramètres', 'error');
             }
@@ -969,12 +1029,50 @@
 
         function updateStats() {
             const stats = storageManager.getAllStats();
+            const noDataMessage = document.getElementById('noDataMessage');
+            const statsGrid = document.getElementById('statsGrid');
             
-            // Mettre à jour les statistiques affichées
-            document.getElementById('cyberpunkStats').textContent = stats.cyberpunk.episodes;
-            document.getElementById('gachiakutaStats').textContent = stats.gachiakuta.episodes;
-            document.getElementById('infinityTrainStats').textContent = stats.infinitytrain.episodes;
-            document.getElementById('tougenAnkiStats').textContent = stats.tougenanki.episodes;
+            // Vérifier s'il y a des données
+            const hasAnyData = Object.values(stats).some(stat => stat.hasData);
+            
+            if (!hasAnyData || !storageManager.localStorageEnabled) {
+                // Afficher le message "aucune donnée" et cacher toutes les cartes
+                noDataMessage.classList.add('show');
+                document.getElementById('cyberpunkCard').classList.add('hidden');
+                document.getElementById('gachiakutaCard').classList.add('hidden');
+                document.getElementById('infinityTrainCard').classList.add('hidden');
+                document.getElementById('tougenAnkiCard').classList.add('hidden');
+            } else {
+                // Cacher le message "aucune donnée"
+                noDataMessage.classList.remove('show');
+                
+                // Afficher/cacher les cartes selon les données et mettre à jour le contenu
+                const cardMappings = {
+                    cyberpunk: { card: 'cyberpunkCard', stats: 'cyberpunkStats' },
+                    gachiakuta: { card: 'gachiakutaCard', stats: 'gachiakutaStats' },
+                    infinitytrain: { card: 'infinityTrainCard', stats: 'infinityTrainStats' },
+                    tougenanki: { card: 'tougenAnkiCard', stats: 'tougenAnkiStats' }
+                };
+                
+                Object.keys(cardMappings).forEach(seriesKey
+                };
+                
+                Object.keys(cardMappings).forEach(seriesKey => {
+                    const mapping = cardMappings[seriesKey];
+                    const seriesStats = stats[seriesKey];
+                    const card = document.getElementById(mapping.card);
+                    const statsElement = document.getElementById(mapping.stats);
+                    
+                    if (seriesStats.hasData) {
+                        // Afficher la carte et mettre à jour les stats
+                        card.classList.remove('hidden');
+                        statsElement.textContent = seriesStats.displayText;
+                    } else {
+                        // Cacher la carte
+                        card.classList.add('hidden');
+                    }
+                });
+            }
         }
 
         function showNotification(message, type = 'info') {
@@ -1028,6 +1126,21 @@
         `;
         document.head.appendChild(style);
 
+        // Fonction pour simuler des données de test (pour démonstration)
+        function simulateTestData() {
+            // Simuler que l'utilisateur a regardé l'épisode 7 de Cyberpunk
+            localStorage.setItem('cyberpunk_current_episode', '7');
+            localStorage.setItem('cyberpunk_last_visit', JSON.stringify(new Date().toISOString()));
+            
+            // Simuler d'autres données
+            localStorage.setItem('gachiakuta_current_episode', '3');
+            localStorage.setItem('infinitytrain_current_episode', '10');
+            localStorage.setItem('tougenanki_current_episode', '2');
+            
+            updateStats();
+            showNotification('Données de test ajoutées pour démonstration', 'info');
+        }
+
         // Initialisation au chargement de la page
         window.addEventListener('load', function() {
             // Mettre à jour l'état du toggle localStorage
@@ -1050,7 +1163,8 @@
             updateStats: updateStats,
             clearAll: clearAllWatchData,
             clearSeries: clearSeriesData,
-            toggleStorage: toggleLocalStorage
+            toggleStorage: toggleLocalStorage,
+            simulateTest: simulateTestData // Fonction pour tester
         };
     </script>
 </body>
