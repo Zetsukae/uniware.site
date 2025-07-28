@@ -318,31 +318,25 @@
       h1 {
         font-size: 36px;
       }
-
       h2 {
         font-size: 18px;
       }
-
       .controls-container {
         flex-direction: column;
         gap: 10px;
       }
-
       #episodeSelect, #playerSelect {
         width: 90%;
         font-size: 20px;
         padding: 12px 16px;
       }
-
       .video-wrapper {
         width: 95%;
         max-width: none;
       }
-
       video {
         border-radius: 12px;
       }
-
       .goback {
         font-size: 18px;
         padding: 14px 28px;
@@ -354,6 +348,7 @@
       height: 450px;
       border-radius: 8px;
       border: none;
+      background: rgba(255, 255, 255, 0.05);
     }
 
     @media (max-width: 500px) {
@@ -397,13 +392,63 @@
         height: 250px;
         border-radius: 12px;
       }
-
       #errorMessage .error-content {
         font-size: 16px;
       }
-
       #errorMessage .error-icon {
         font-size: 36px;
+        margin-bottom: 10px;
+      }
+    }
+
+    /* Indicateur de chargement */
+    .loading-indicator {
+      width: 100%;
+      height: 450px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      backdrop-filter: blur(5px);
+    }
+
+    .loading-content {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 500px) {
+      .loading-indicator {
+        height: 250px;
+        border-radius: 12px;
+      }
+      .loading-content {
+        font-size: 14px;
+      }
+      .spinner {
+        width: 30px;
+        height: 30px;
         margin-bottom: 10px;
       }
     }
@@ -436,15 +481,33 @@
           <option value="9">EP 09</option>
           <option value="10">EP 10</option>
         </select>
-
+        
         <!-- Barre défilante pour choisir le lecteur -->
         <select id="playerSelect">
           <option value="sibnet" selected>SIBNET</option>
         </select>
       </div>
 
+      <!-- Indicateur de chargement -->
+      <div id="loadingIndicator" class="loading-indicator">
+        <div class="loading-content">
+          <div class="spinner"></div>
+          Chargement du lecteur vidéo...
+        </div>
+      </div>
+
+      <!-- Iframe pour la vidéo -->
       <iframe id="videoFrame" width="100%" height="450" src="" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; display: none;"></iframe>
-            
+      
+      <!-- Message d'erreur -->
+      <div id="errorMessage">
+        <div class="error-content">
+          <span class="error-icon">⚠️</span>
+          Erreur de chargement<br>
+          Veuillez réessayer plus tard
+        </div>
+      </div>
+      
       <a href="https://uniware.site/watch/" class="goback">Retour</a>
     </div>
   </div>
@@ -454,6 +517,7 @@
     const playerSelect = document.getElementById('playerSelect');
     const videoFrame = document.getElementById('videoFrame');
     const errorMessage = document.getElementById('errorMessage');
+    const loadingIndicator = document.getElementById('loadingIndicator');
 
     // URLs SIBNET pour chaque épisode
     const sibnetUrls = {
@@ -469,26 +533,73 @@
       '10': 'https://video.sibnet.ru/shell.php?videoid=5976611'
     };
 
+    // Fonction pour afficher l'indicateur de chargement
+    function showLoading() {
+      videoFrame.style.display = 'none';
+      errorMessage.style.display = 'none';
+      loadingIndicator.style.display = 'flex';
+    }
+
+    // Fonction pour afficher la vidéo
+    function showVideo() {
+      loadingIndicator.style.display = 'none';
+      errorMessage.style.display = 'none';
+      videoFrame.style.display = 'block';
+    }
+
+    // Fonction pour afficher l'erreur
+    function showError() {
+      loadingIndicator.style.display = 'none';
+      videoFrame.style.display = 'none';
+      errorMessage.style.display = 'flex';
+    }
+
     // Fonction pour mettre à jour la source vidéo
     function updateVideoSource() {
       const episode = episodeSelect.value;
       const playerType = playerSelect.value;
       
-      // Masquer tous les éléments d'abord
-      videoFrame.style.display = 'none';
-      errorMessage.style.display = 'none';
+      console.log('Épisode sélectionné:', episode, 'Lecteur:', playerType);
       
-      if (episode) {
-        if (playerType === 'sibnet') {
-          const newSrc = sibnetUrls[episode];
-          if (newSrc) {
+      if (episode && playerType === 'sibnet') {
+        const newSrc = sibnetUrls[episode];
+        console.log('URL de la vidéo:', newSrc);
+        
+        if (newSrc) {
+          showLoading();
+          
+          // Simuler un délai de chargement
+          setTimeout(() => {
             videoFrame.src = newSrc;
-            videoFrame.style.display = 'block';
-          }
-        } else if (playerType === 'uniware') {
-          // Afficher le message d'erreur pour Uniware
-          errorMessage.style.display = 'flex';
+            
+            // Attendre que l'iframe soit chargée
+            videoFrame.onload = function() {
+              console.log('Iframe chargée avec succès');
+              showVideo();
+            };
+            
+            // Gérer les erreurs de chargement
+            videoFrame.onerror = function() {
+              console.log('Erreur de chargement de l\'iframe');
+              showError();
+            };
+            
+            // Timeout de sécurité
+            setTimeout(() => {
+              if (loadingIndicator.style.display !== 'none') {
+                console.log('Timeout - affichage de la vidéo');
+                showVideo();
+              }
+            }, 3000);
+            
+          }, 500);
+        } else {
+          console.log('URL non trouvée pour l\'épisode:', episode);
+          showError();
         }
+      } else {
+        console.log('Paramètres invalides');
+        showError();
       }
     }
 
@@ -496,9 +607,13 @@
     episodeSelect.addEventListener('change', updateVideoSource);
     playerSelect.addEventListener('change', updateVideoSource);
 
-    // Charger l'épisode 1 par défaut
-    episodeSelect.value = '1';
-    updateVideoSource();
+    // Charger l'épisode 1 par défaut au chargement de la page
+    window.addEventListener('load', function() {
+      console.log('Page chargée - initialisation');
+      episodeSelect.value = '1';
+      playerSelect.value = 'sibnet';
+      updateVideoSource();
+    });
   </script>
 </body>
 </html>
