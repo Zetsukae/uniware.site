@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanta Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0C0C10;
+            color: white;
+            overflow: hidden;
+        }
+
+        .launcher-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 256px;
+            background-color: #0C0C10;
+            border-right: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.minimized {
+            width: 72px;
+        }
+
+        .logo {
+            padding: 24px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(to right, #60A5FA, #A855F7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.minimized .logo h1 {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar.minimized .logo {
+            justify-content: center;
+            padding: 24px 12px;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+            color: white;
+        }
+
+        .sidebar-toggle svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.minimized .sidebar-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .nav {
+            flex: 1;
+            padding: 16px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.2));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .nav-item-text {
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar.minimized .nav-item {
+            padding: 12px;
+            justify-content: center;
+        }
+
+        .sidebar.minimized .nav-item svg {
+            margin-right: 0;
+        }
+
+        .sidebar.minimized .nav-item-text {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            left: 100%;
+        }
+
+        /* Tooltip for minimized sidebar */
+        .nav-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #374151;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+
+        .sidebar.minimized .nav-item:hover::after {
+            opacity: 1;
+        }
+
+        .user-info {
+            padding: 16px;
+            border-top: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.minimized .user-info {
+            justify-content: center;
+            padding: 16px 12px;
+            gap: 0;
+        }
+
+        .user-info-text {
+            transition: opacity 0.3s ease;
+            flex: 1;
+        }
+
+        .sidebar.minimized .user-info-text {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            overflow: hidden;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #60A5FA, #A855F7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* User info tooltip for minimized sidebar */
+        .user-info::after {
+            content: "VantaUser";
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #374151;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+
+        .sidebar.minimized .user-info:hover::after {
+            opacity: 1;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            height: 64px;
+            background-color: #0C0C10;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 384px;
+            padding: 8px 12px 8px 40px;
+            background-color: rgba(55, 65, 81, 0.5);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #9CA3AF;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563EB;
+        }
+
+        .btn-secondary {
+            background-color: #374151;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4B5563;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #374151;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background-color: #374151;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: white;
+            position: relative;
+        }
+
+        .btn-ghost:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background-color: #EF4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bell Icon Animation */
+        .bell-icon {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .bell-icon:hover {
+            animation: bellRing 0.5s ease-in-out;
+        }
+
+        @keyframes bellRing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        /* Page Content Styles */
+        .page-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Featured Carousel */
+        .featured-carousel {
+            height: 280px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1s;
+            opacity: 0;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4), transparent);
+        }
+
+        .carousel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 24px;
+            color: white;
+        }
+
+        .carousel-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .carousel-description {
+            font-size: 16px;
+            margin-bottom: 16px;
+            max-width: 350px;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dot.active {
+            background-color: white;
+        }
+
+        /* Cards */
+        .card {
+            background-color: rgba(55, 65, 81, 0.3);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+            border-color: rgba(55, 65, 81, 0.7);
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-header {
+            padding: 16px 16px 0;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .md\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .md\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .lg\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+            .lg\\:grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+        }
+
+        @media (min-width: 1280px) {
+            .xl\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+            .xl\\:grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+            .xl\\:grid-cols-8 { grid-template-columns: repeat(8, 1fr); }
+        }
+
+        /* Game Cards - Utilisation des bannières */
+        .game-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .game-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .game-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border-radius: 8px;
+        }
+
+        .game-card:hover .game-overlay {
+            opacity: 1;
+        }
+
+        /* Store game cards */
+        .store-game-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+        .badge-success {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: #F59E0B;
+            color: white;
+        }
+
+        .badge-danger {
+            background-color: #EF4444;
+            color: white;
+        }
+
+        .badge-outline {
+            background: transparent;
+            border: 1px solid #374151;
+            color: #9CA3AF;
+        }
+
+        /* Progress Bar */
+        .progress {
+            width: 100%;
+            height: 6px;
+            background-color: #374151;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #3B82F6;
+            transition: width 0.3s;
+        }
+
+        /* Tabs */
+        .tabs {
+            margin-bottom: 24px;
+        }
+
+        .tab-list {
+            display: flex;
+            background-color: rgba(55, 65, 81, 0.3);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .tab-trigger {
+            flex: 1;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .tab-trigger.active {
+            background-color: #374151;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Settings fixes */
+        .settings-input {
+            background-color: #374151;
+            border: 1px solid #4B5563;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .settings-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .settings-select {
+            background-color: #374151;
+            border: 1px solid #4B5563;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .settings-toggle {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .settings-toggle input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .settings-slider {
+            width: 44px;
+            height: 24px;
+            background-color: #4B5563;
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .settings-slider::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .settings-toggle input:checked + .settings-slider {
+            background-color: #3B82F6;
+        }
+
+        .settings-toggle input:checked + .settings-slider::before {
+            transform: translateX(20px);
+        }
+
+        /* Star rating - Plus petites étoiles */
+        .star-rating {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .star-rating svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        /* Utility Classes */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-4 > * + * { margin-left: 16px; }
+        .space-y-4 > * + * { margin-top: 16px; }
+        .space-y-6 > * + * { margin-top: 24px; }
+        .space-y-8 > * + * { margin-top: 32px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-6 { margin-bottom: 24px; }
+        .text-sm { font-size: 14px; }
+        .text-lg { font-size: 18px; }
+        .text-xl { font-size: 20px; }
+        .text-2xl { font-size: 24px; }
+        .text-3xl { font-size: 30px; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-gray-400 { color: #9CA3AF; }
+        .text-gray-500 { color: #6B7280; }
+        .text-blue-400 { color: #60A5FA; }
+        .text-green-400 { color: #34D399; }
+        .text-yellow-400 { color: #FBBF24; }
+        .truncate { 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .hidden { display: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .sidebar.minimized {
+                width: 72px;
+            }
+            .search-input {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="launcher-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <nav class="nav">
+                <button class="nav-item active" data-page="home" data-tooltip="Home">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.home">Home</span>
+                </button>
+                
+                <button class="nav-item" data-page="store" data-tooltip="Store">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.store">Store</span>
+                </button>
+                
+                <button class="nav-item" data-page="library" data-tooltip="Library">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.library">Library</span>
+                </button>
+                
+                <button class="nav-item" data-page="downloads" data-tooltip="Downloads">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.downloads">Downloads</span>
+                </button>
+                
+                <button class="nav-item" data-page="friends" data-tooltip="Friends">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.friends">Friends</span>
+                </button>
+                
+                <button class="nav-item" data-page="profile" data-tooltip="Profile">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.profile">Profile</span>
+                </button>
+                
+                <button class="nav-item" data-page="settings" data-tooltip="Settings">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.settings">Settings</span>
+                </button>
+            </nav>
+            
+            <div class="user-info">
+                <div class="avatar">VU</div>
+                <div class="user-info-text">
+                    <div class="font-semibold">VantaUser</div>
+                    <div class="text-sm text-gray-400" data-translate="user.level">Level 42</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-container">
+                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" class="search-input" data-translate-placeholder="search.placeholder" placeholder="Search games, friends, or content..." id="searchInput">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-ghost">
+                        <div class="bell-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                            </svg>
+                        </div>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="btn btn-ghost">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Home Page -->
+                <div class="page active" id="home">
+                    <div class="space-y-8">
+                        <!-- Featured Games Carousel -->
+                        <div class="featured-carousel" id="featuredCarousel">
+                            <div class="carousel-slide active" style="background-image: url('https://i.imgur.com/edO1PFB.jpeg')">
+                                <div class="carousel-overlay"></div>
+                                <div class="carousel-content">
+                                    <h2 class="carousel-title">Cyberpunk 2077</h2>
+                                    <p class="carousel-description" data-translate="games.cyberpunk.description">Experience the ultimate cyberpunk adventure in a neon-lit metropolis where technology and humanity collide.</p>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary">
+                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.play_now">Play Now</span>
+                                        </button>
+                                        <button class="btn btn-outline" data-translate="buttons.learn_more">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide" style="background-image: url('https://i.imgur.com/1ZpK8dt.jpeg')">
+                                <div class="carousel-overlay"></div>
+                                <div class="carousel-content">
+                                    <h2 class="carousel-title">Omega Stars</h2>
+                                    <p class="carousel-description" data-translate="games.omega.description">Embark on an epic journey across the galaxy in this free-to-play space exploration adventure.</p>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary">
+                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.get_game">Get Game</span>
+                                        </button>
+                                        <button class="btn btn-outline" data-translate="buttons.learn_more">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=400&fit=crop')">
+                                <div class="carousel-overlay"></div>
+                                <div class="carousel-content">
+                                    <h2 class="carousel-title">Mystic Realms</h2>
+                                    <p class="carousel-description" data-translate="games.mystic.description">Master the arcane arts in this enchanting fantasy RPG filled with magic, mystery, and adventure.</p>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary">
+                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.get_game">Get Game</span>
+                                        </button>
+                                        <button class="btn btn-outline" data-translate="buttons.learn_more">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-indicators">
+                                <div class="carousel-dot active" data-slide="0"></div>
+                                <div class="carousel-dot" data-slide="1"></div>
+                                <div class="carousel-dot" data-slide="2"></div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4" data-translate="sections.recent_activity">Recent Activity</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="game-icon">
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold">Cyberpunk 2077</h4>
+                                                <p class="text-sm text-gray-400" data-translate="activity.last_played">Last played: 2024-01-20</p>
+                                                <button class="btn btn-primary mt-2" style="background-color: #10B981; padding: 4px 12px; font-size: 12px;">
+                                                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"/>
+                                                    </svg>
+                                                    <span data-translate="buttons.play">Play</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://i.imgur.com/Sra3Ksx.jpeg" alt="Omega Stars" class="game-icon">
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold">Omega Stars</h4>
+                                                <p class="text-sm text-gray-400" data-translate="activity.last_played">Last played: 2024-01-18</p>
+                                                <button class="btn btn-primary mt-2" style="background-color: #10B981; padding: 4px 12px; font-size: 12px;">
+                                                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"/>
+                                                    </svg>
+                                                    <span data-translate="buttons.play">Play</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Game Library Preview -->
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold" data-translate="sections.your_library">Your Library</h3>
+                                <button class="btn btn-outline" onclick="showPage('library')" data-translate="buttons.view_all">View All</button>
+                            </div>
+                            <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+                                <div class="game-card relative">
+                                    <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="game-image">
+                                    <div class="game-overlay">
+                                        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.play">Play</span>
+                                        </button>
+                                    </div>
+                                    <p class="text-sm font-semibold mt-2 truncate">Cyberpunk 2077</p>
+                                </div>
+                                <div class="game-card relative">
+                                    <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="game-image">
+                                    <div class="game-overlay">
+                                        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.play">Play</span>
+                                        </button>
+                                    </div>
+                                    <p class="text-sm font-semibold mt-2 truncate">Omega Stars</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Store Page -->
+                <div class="page" id="store">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold" data-translate="pages.game_store">Game Store</h2>
+                            <div class="flex items-center space-x-4">
+                                <button class="btn btn-outline">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                                    </svg>
+                                    <span data-translate="buttons.filters">Filters</span>
+                                </button>
+                                <button class="btn btn-outline">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
+                                    </svg>
+                                    <span data-translate="buttons.sort">Sort</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="tabs">
+                            <div class="tab-list">
+                                <button class="tab-trigger active" data-tab="all" data-translate="tabs.all_games">All Games</button>
+                                <button class="tab-trigger" data-tab="free" data-translate="tabs.free">Free</button>
+                                <button class="tab-trigger" data-tab="sale" data-translate="tabs.on_sale">On Sale</button>
+                                <button class="tab-trigger" data-tab="new" data-translate="tabs.new_releases">New Releases</button>
+                                <button class="tab-trigger" data-tab="popular" data-translate="tabs.popular">Popular</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                            <div class="card game-card">
+                                <div class="relative">
+                                    <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="store-game-image">
+                                    <span class="badge badge-danger absolute top-2 left-2">-25%</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="font-semibold mb-2 truncate">Cyberpunk 2077</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="star-rating text-yellow-400 mr-2">
+                                            <svg viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm">4.8</span>
+                                        <span class="badge badge-outline ml-2">RPG</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-gray-400 line-through">$79.99</span>
+                                            <span class="font-bold text-blue-400">$59.99</span>
+                                        </div>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;" data-translate="buttons.view">View</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card game-card">
+                                <div class="relative">
+                                    <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="store-game-image">
+                                    <span class="badge badge-success absolute top-2 left-2" data-translate="badges.free">Free</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="font-semibold mb-2 truncate">Omega Stars</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="star-rating text-yellow-400 mr-2">
+                                            <svg viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm">4.6</span>
+                                        <span class="badge badge-outline ml-2">MOBA-Lite</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-blue-400" data-translate="badges.free">Free</span>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;" data-translate="buttons.view">View</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card game-card">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=160&fit=crop" alt="Mystic Realms" class="store-game-image">
+                                    <span class="badge badge-danger absolute top-2 left-2">-20%</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="font-semibold mb-2 truncate">Mystic Realms</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="star-rating text-yellow-400 mr-2">
+                                            <svg viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm">4.9</span>
+                                        <span class="badge badge-outline ml-2">Fantasy</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-gray-400 line-through">$49.99</span>
+                                            <span class="font-bold text-blue-400">$39.99</span>
+                                        </div>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;" data-translate="buttons.view">View</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Library Page -->
+                <div class="page" id="library">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold" data-translate="sections.your_library">Your Library</h2>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn btn-secondary" id="gridViewBtn">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                </button>
+                                <button class="btn btn-outline" id="listViewBtn">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <line x1="8" y1="6" x2="21" y2="6"/>
+                                        <line x1="8" y1="12" x2="21" y2="12"/>
+                                        <line x1="8" y1="18" x2="21" y2="18"/>
+                                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3" id="libraryGrid">
+                            <div class="game-card relative">
+                                <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="game-image">
+                                <div class="game-overlay">
+                                    <button class="btn btn-primary" style="background-color: #10B981; padding: 6px 12px; font-size: 12px;">
+                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        <span data-translate="buttons.play">Play</span>
+                                    </button>
+                                </div>
+                                <p class="text-sm font-semibold mt-2 truncate">Cyberpunk 2077</p>
+                                <p class="text-xs text-gray-400" data-translate="activity.last_played">Last played: 2024-01-20</p>
+                            </div>
+
+                            <div class="game-card relative">
+                                <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="game-image">
+                                <div class="game-overlay">
+                                    <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        <span data-translate="buttons.play">Play</span>
+                                    </button>
+                                </div>
+                                <p class="text-sm font-semibold mt-2 truncate">Omega Stars</p>
+                                <p class="text-xs text-gray-400" data-translate="activity.last_played">Last played: 2024-01-18</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Downloads Page -->
+                <div class="page" id="downloads">
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-bold" data-translate="nav.downloads">Downloads</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-semibold">Cyberpunk 2077 - Update 1.5</h3>
+                                            <p class="text-sm text-gray-400">12.5 MB/s • 2.1 GB</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <rect x="6" y="4" width="4" height="16"/>
+                                                    <rect x="14" y="4" width="4" height="16"/>
+                                                </svg>
+                                            </button>
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span>75%</span>
+                                            <span class="text-blue-400" data-translate="status.downloading">Downloading</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-semibold">Mystic Realms</h3>
+                                            <p class="text-sm text-gray-400" data-translate="status.queued">Queued • 15.8 GB</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span>0%</span>
+                                            <span class="text-gray-400" data-translate="status.queued">Queued</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-semibold">Omega Stars - DLC Pack</h3>
+                                            <p class="text-sm text-gray-400" data-translate="status.completed">Completed • 850 MB</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span>100%</span>
+                                            <span class="text-green-400" data-translate="status.completed">Completed</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 100%; background-color: #10B981;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friends Page -->
+                <div class="page" id="friends">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold" data-translate="nav.friends">Friends</h2>
+                            <button class="btn btn-primary">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                </svg>
+                                <span data-translate="buttons.add_friend">Add Friend</span>
+                            </button>
+                        </div>
+
+                        <div class="space-y-4">
+    <div class="card">
+        <div class="card-content">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <div class="avatar">AC</div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-green-500"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Alex Chen</h3>
+                        <p class="text-sm text-gray-400" data-translate="status.online">Online</p>
+                        <p class="text-xs text-blue-400" data-translate="activity.playing">Playing Cyberpunk 2077</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <div class="avatar">SK</div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-yellow-500"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Sarah Kim</h3>
+                        <p class="text-sm text-gray-400" data-translate="status.away">Away</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <div class="avatar">MJ</div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-gray-500"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Mike Johnson</h3>
+                        <p class="text-sm text-gray-400" data-translate="status.offline">Offline</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <div class="avatar">EW</div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-green-500"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Emma Wilson</h3>
+                        <p class="text-sm text-gray-400" data-translate="status.online">Online</p>
+                        <p class="text-xs text-blue-400" data-translate="activity.playing">Playing Omega Stars</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline" style="padding: 6px;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                    </div>
+                </div>
+
+                <!-- Profile Page -->
+                <div class="page" id="profile">
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-6">
+                            <div class="avatar" style="width: 96px; height: 96px; font-size: 32px;">VU</div>
+                            <div>
+                                <h2 class="text-3xl font-bold">VantaUser</h2>
+                                <p class="text-gray-400" data-translate="profile.member_since">Level 42 • Member since 2023</p>
+                                <div class="flex items-center space-x-4 mt-2">
+                                    <span class="badge badge-primary" data-translate="badges.pro_gamer">Pro Gamer</span>
+                                    <span class="badge" style="background-color: #A855F7;" data-translate="badges.achievement_hunter">Achievement Hunter</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title flex items-center">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                        <span data-translate="profile.game_library">Game Library</span>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="text-3xl font-bold text-blue-400">2</div>
+                                    <p class="text-gray-400" data-translate="profile.games_owned">Games Owned</p>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title flex items-center">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                        </svg>
+                                        <span data-translate="profile.achievements">Achievements</span>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="text-3xl font-bold text-yellow-400">127</div>
+                                    <p class="text-gray-400" data-translate="profile.unlocked">Unlocked</p>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title flex items-center">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                                        </svg>
+                                        <span data-translate="nav.friends">Friends</span>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="text-3xl font-bold text-green-400">4</div>
+                                    <p class="text-gray-400" data-translate="profile.connected">Connected</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title" data-translate="profile.recent_achievements">Recent Achievements</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="space-y-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #FBBF24, #F59E0B);">
+                                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold" data-translate="achievements.first_steps">First Steps</h4>
+                                            <p class="text-sm text-gray-400" data-translate="achievements.complete_tutorial">Complete the tutorial</p>
+                                            <p class="text-xs text-gray-500">Cyberpunk 2077 • 2024-01-20</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #FBBF24, #F59E0B);">
+                                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold" data-translate="achievements.explorer">Explorer</h4>
+                                            <p class="text-sm text-gray-400" data-translate="achievements.discover_locations">Discover 10 locations</p>
+                                            <p class="text-xs text-gray-500">Omega Stars • 2024-01-18</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #FBBF24, #F59E0B);">
+                                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold" data-translate="achievements.master_collector">Master Collector</h4>
+                                            <p class="text-sm text-gray-400" data-translate="achievements.collect_items">Collect all rare items</p>
+                                            <p class="text-xs text-gray-500">Mystic Realms • 2024-01-15</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div class="page" id="settings">
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-bold" data-translate="nav.settings">Settings</h2>
+
+                        <div class="tabs">
+                            <div class="tab-list">
+                                <button class="tab-trigger active" data-tab="general" data-translate="settings.general">General</button>
+                                <button class="tab-trigger" data-tab="account" data-translate="settings.account">Account</button>
+                                <button class="tab-trigger" data-tab="game" data-translate="settings.game">Game</button>
+                                <button class="tab-trigger" data-tab="about" data-translate="settings.about">About</button>
+                            </div>
+
+                            <div class="tab-content active" id="general">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title flex items-center">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
+                                            </svg>
+                                            <span data-translate="settings.general_settings">General Settings</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-content space-y-6">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold" data-translate="settings.language">Language</h4>
+                                                <p class="text-sm text-gray-400" data-translate="settings.language_desc">Choose your preferred language</p>
+                                            </div>
+                                            <select class="settings-select" id="languageSelect">
+                                                <option value="en">English</option>
+                                                <option value="es">Español</option>
+                                                <option value="fr">Français</option>
+                                                <option value="de">Deutsch</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold" data-translate="settings.dark_theme">Dark Theme</h4>
+                                                <p class="text-sm text-gray-400" data-translate="settings.dark_theme_desc">Use dark theme across the launcher</p>
+                                            </div>
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold" data-translate="settings.notifications">Notifications</h4>
+                                                <p class="text-sm text-gray-400" data-translate="settings.notifications_desc">Receive notifications for updates and friends</p>
+                                            </div>
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="account">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title flex items-center">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                            </svg>
+                                            <span data-translate="settings.account_settings">Account Settings</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-content space-y-6">
+                                        <div>
+                                            <h4 class="font-semibold mb-2" data-translate="settings.email">Email</h4>
+                                            <input type="email" value="user@vanta.com" class="settings-input">
+                                        </div>
+
+                                        <div>
+                                            <h4 class="font-semibold mb-2" data-translate="settings.password">Password</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <input type="password" value="••••••••" readonly class="settings-input">
+                                                <button class="btn btn-outline" data-translate="buttons.change">Change</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold" data-translate="settings.two_factor">Two-Factor Authentication</h4>
+                                                <p class="text-sm text-gray-400" data-translate="settings.two_factor_desc">Add an extra layer of security</p>
+                                            </div>
+                                            <button class="btn btn-outline flex items-center">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                                </svg>
+                                                <span data-translate="buttons.enable">Enable</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="game">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title flex items-center">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a2 2 0 100-4H4a1 1 0 01-1-1V4a1 1 0 011-1h3a1 1 0 011 1v1a2 2 0 104 0V4z"/>
+                                            </svg>
+                                            <span data-translate="settings.game_settings">Game Settings</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-content space-y-6">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold" data-translate="settings.overlay">In-Game Overlay</h4>
+                                                <p class="text-sm text-gray-400" data-translate="settings.overlay_desc">Show FPS, friends, and chat overlay</p>
+                                            </div>
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold" data-translate="settings.cloud_saves">Cloud Saves</h4>
+                                                <p class="text-sm text-gray-400" data-translate="settings.cloud_saves_desc">Sync game saves to the cloud</p>
+                                            </div>
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-semibold" data-translate="settings.hardware_acceleration">Hardware Acceleration</h4>
+                                                <p class="text-sm text-gray-400" data-translate="settings.hardware_acceleration_desc">Use GPU for better performance</p>
+                                            </div>
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="about">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title flex items-center">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <span data-translate="settings.about_vanta">About Vanta Launcher</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-content space-y-6">
+                                        <div class="text-center space-y-4">
+                                            <div>
+                                                <h3 class="text-2xl font-bold">Vanta Launcher</h3>
+                                                <p class="text-lg text-blue-400 font-semibold" data-translate="about.version">Version DÉMO</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-4 text-center">
+                                            <div>
+                                                <h4 class="font-semibold text-lg mb-2" data-translate="about.copyright">Copyright</h4>
+                                                <p class="text-gray-400" data-translate="about.copyright_text">© 2025 Uniware. All rights reserved.</p>
+                                            </div>
+
+                                            <div class="border-t border-gray-600 pt-4">
+                                                <p class="text-sm text-gray-500" data-translate="about.description">
+                                                    This is a demonstration version of Vanta Launcher.<br>
+                                                    Built with modern web technologies for optimal performance.
+                                                </p>
+                                            </div>
+
+                                            <div class="flex justify-center space-x-4 pt-4">
+                                                <button class="btn btn-outline">
+                                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                    </svg>
+                                                    <span data-translate="buttons.license">License</span>
+                                                </button>
+                                                <button class="btn btn-outline">
+                                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                                    </svg>
+                                                    <span data-translate="buttons.website">Website</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                'nav.home': 'Home',
+                'nav.store': 'Store',
+                'nav.library': 'Library',
+                'nav.downloads': 'Downloads',
+                'nav.friends': 'Friends',
+                'nav.profile': 'Profile',
+                'nav.settings': 'Settings',
+                'user.level': 'Level 42',
+                'search.placeholder': 'Search games, friends, or content...',
+                'games.cyberpunk.description': 'Experience the ultimate cyberpunk adventure in a neon-lit metropolis where technology and humanity collide.',
+                'games.omega.description': 'Embark on an epic journey across the galaxy in this free-to-play space exploration adventure.',
+                'games.mystic.description': 'Master the arcane arts in this enchanting fantasy RPG filled with magic, mystery, and adventure.',
+                'buttons.play_now': 'Play Now',
+                'buttons.get_game': 'Get Game',
+                'buttons.learn_more': 'Learn More',
+                'buttons.play': 'Play',
+                'buttons.view_all': 'View All',
+                'buttons.view': 'View',
+                'buttons.filters': 'Filters',
+                'buttons.sort': 'Sort',
+                'buttons.add_friend': 'Add Friend',
+                'buttons.change': 'Change',
+                'buttons.enable': 'Enable',
+                'buttons.license': 'License',
+                'buttons.website': 'Website',
+                'sections.recent_activity': 'Recent Activity',
+                'sections.your_library': 'Your Library',
+                'pages.game_store': 'Game Store',
+                'tabs.all_games': 'All Games',
+                'tabs.free': 'Free',
+                'tabs.on_sale': 'On Sale',
+                'tabs.new_releases': 'New Releases',
+                'tabs.popular': 'Popular',
+                'badges.free': 'Free',
+                'badges.pro_gamer': 'Pro Gamer',
+                'badges.achievement_hunter': 'Achievement Hunter',
+                'activity.last_played': 'Last played: 2024-01-20',
+                'activity.playing': 'Playing Cyberpunk 2077',
+                'status.online': 'Online',
+                'status.away': 'Away',
+                'status.offline': 'Offline',
+                'status.downloading': 'Downloading',
+                'status.queued': 'Queued',
+                'status.completed': 'Completed',
+                'profile.member_since': 'Level 42 • Member since 2023',
+                'profile.game_library': 'Game Library',
+                'profile.games_owned': 'Games Owned',
+                'profile.achievements': 'Achievements',
+                'profile.unlocked': 'Unlocked',
+                'profile.connected': 'Connected',
+                'profile.recent_achievements': 'Recent Achievements',
+                'achievements.first_steps': 'First Steps',
+                'achievements.complete_tutorial': 'Complete the tutorial',
+                'achievements.explorer': 'Explorer',
+                'achievements.discover_locations': 'Discover 10 locations',
+                'achievements.master_collector': 'Master Collector',
+                'achievements.collect_items': 'Collect all rare items',
+                'settings.general': 'General',
+                'settings.account': 'Account',
+                'settings.game': 'Game',
+                'settings.about': 'About',
+                'settings.general_settings': 'General Settings',
+                'settings.account_settings': 'Account Settings',
+                'settings.game_settings': 'Game Settings',
+                'settings.about_vanta': 'About Vanta Launcher',
+                'settings.language': 'Language',
+                'settings.language_desc': 'Choose your preferred language',
+                'settings.dark_theme': 'Dark Theme',
+                'settings.dark_theme_desc': 'Use dark theme across the launcher',
+                'settings.notifications': 'Notifications',
+                'settings.notifications_desc': 'Receive notifications for updates and friends',
+                'settings.email': 'Email',
+                'settings.password': 'Password',
+                'settings.two_factor': 'Two-Factor Authentication',
+                'settings.two_factor_desc': 'Add an extra layer of security',
+                'settings.overlay': 'In-Game Overlay',
+                'settings.overlay_desc': 'Show FPS, friends, and chat overlay',
+                'settings.cloud_saves': 'Cloud Saves',
+                'settings.cloud_saves_desc': 'Sync game saves to the cloud',
+                'settings.hardware_acceleration': 'Hardware Acceleration',
+                'settings.hardware_acceleration_desc': 'Use GPU for better performance',
+                'about.version': 'Version DÉMO',
+                'about.copyright': 'Copyright',
+                'about.copyright_text': '© 2025 Uniware. All rights reserved.',
+                'about.description': 'This is a demonstration version of Vanta Launcher.<br>Built with modern web technologies for optimal performance.'
+            },
+            es: {
+                'nav.home': 'Inicio',
+                'nav.store': 'Tienda',
+                'nav.library': 'Biblioteca',
+                'nav.downloads': 'Descargas',
+                'nav.friends': 'Amigos',
+                'nav.profile': 'Perfil',
+                'nav.settings': 'Configuración',
+                'user.level': 'Nivel 42',
+                'search.placeholder': 'Buscar juegos, amigos o contenido...',
+                'games.cyberpunk.description': 'Vive la aventura cyberpunk definitiva en una metrópolis de neón donde la tecnología y la humanidad chocan.',
+                'games.omega.description': 'Embárcate en un viaje épico por la galaxia en esta aventura gratuita de exploración espacial.',
+                'games.mystic.description': 'Domina las artes arcanas en este encantador RPG de fantasía lleno de magia, misterio y aventura.',
+                'buttons.play_now': 'Jugar Ahora',
+                'buttons.get_game': 'Obtener Juego',
+                'buttons.learn_more': 'Saber Más',
+                'buttons.play': 'Jugar',
+                'buttons.view_all': 'Ver Todo',
+                'buttons.view': 'Ver',
+                'buttons.filters': 'Filtros',
+                'buttons.sort': 'Ordenar',
+                'buttons.add_friend': 'Añadir Amigo',
+                'buttons.change': 'Cambiar',
+                'buttons.enable': 'Activar',
+                'buttons.license': 'Licencia',
+                'buttons.website': 'Sitio Web',
+                'sections.recent_activity': 'Actividad Reciente',
+                'sections.your_library': 'Tu Biblioteca',
+                'pages.game_store': 'Tienda de Juegos',
+                'tabs.all_games': 'Todos los Juegos',
+                'tabs.free': 'Gratis',
+                'tabs.on_sale': 'En Oferta',
+                'tabs.new_releases': 'Nuevos Lanzamientos',
+                'tabs.popular': 'Popular',
+                'badges.free': 'Gratis',
+                'badges.pro_gamer': 'Jugador Pro',
+                'badges.achievement_hunter': 'Cazador de Logros',
+                'activity.last_played': 'Última vez jugado: 2024-01-20',
+                'activity.playing': 'Jugando Cyberpunk 2077',
+                'status.online': 'En línea',
+                'status.away': 'Ausente',
+                'status.offline': 'Desconectado',
+                'status.downloading': 'Descargando',
+                'status.queued': 'En cola',
+                'status.completed': 'Completado',
+                'profile.member_since': 'Nivel 42 • Miembro desde 2023',
+                'profile.game_library': 'Biblioteca de Juegos',
+                'profile.games_owned': 'Juegos Poseídos',
+                'profile.achievements': 'Logros',
+                'profile.unlocked': 'Desbloqueados',
+                'profile.connected': 'Conectados',
+                'profile.recent_achievements': 'Logros Recientes',
+                'achievements.first_steps': 'Primeros Pasos',
+                'achievements.complete_tutorial': 'Completar el tutorial',
+                'achievements.explorer': 'Explorador',
+                'achievements.discover_locations': 'Descubrir 10 ubicaciones',
+                'achievements.master_collector': 'Coleccionista Maestro',
+                'achievements.collect_items': 'Recoger todos los objetos raros',
+                'settings.general': 'General',
+                'settings.account': 'Cuenta',
+                'settings.game': 'Juego',
+                'settings.about': 'Acerca de',
+                'settings.general_settings': 'Configuración General',
+                'settings.account_settings': 'Configuración de Cuenta',
+                'settings.game_settings': 'Configuración de Juego',
+                'settings.about_vanta': 'Acerca de Vanta Launcher',
+                'settings.language': 'Idioma',
+                'settings.language_desc': 'Elige tu idioma preferido',
+                'settings.dark_theme': 'Tema Oscuro',
+                'settings.dark_theme_desc': 'Usar tema oscuro en todo el launcher',
+                'settings.notifications': 'Notificaciones',
+                'settings.notifications_desc': 'Recibir notificaciones de actualizaciones y amigos',
+                'settings.email': 'Correo',
+                'settings.password': 'Contraseña',
+                'settings.two_factor': 'Autenticación de Dos Factores',
+                'settings.two_factor_desc': 'Añadir una capa extra de seguridad',
+                'settings.overlay': 'Superposición en Juego',
+                'settings.overlay_desc': 'Mostrar FPS, amigos y chat superpuesto',
+                'settings.cloud_saves': 'Guardados en la Nube',
+                'settings.cloud_saves_desc': 'Sincronizar guardados de juego en la nube',
+                'settings.hardware_acceleration': 'Aceleración por Hardware',
+                'settings.hardware_acceleration_desc': 'Usar GPU para mejor rendimiento',
+                'about.version': 'Versión DEMO',
+                'about.copyright': 'Derechos de Autor',
+                'about.copyright_text': '© 2025 Uniware. Todos los derechos reservados.',
+                'about.description': 'Esta es una versión de demostración de Vanta Launcher.<br>Construido con tecnologías web modernas para un rendimiento óptimo.'
+            },
+            fr: {
+                'nav.home': 'Accueil',
+                'nav.store': 'Boutique',
+                'nav.library': 'Bibliothèque',
+                'nav.downloads': 'Téléchargements',
+                'nav.friends': 'Amis',
+                'nav.profile': 'Profil',
+                'nav.settings': 'Paramètres',
+                'user.level': 'Niveau 42',
+                'search.placeholder': 'Rechercher des jeux, amis ou contenu...',
+                'games.cyberpunk.description': 'Vivez l\'aventure cyberpunk ultime dans une métropole néon où technologie et humanité s\'affrontent.',
+                'games.omega.description': 'Embarquez pour un voyage épique à travers la galaxie dans cette aventure d\'exploration spatiale gratuite.',
+                'games.mystic.description': 'Maîtrisez les arts arcaniques dans ce RPG fantastique enchanteur rempli de magie, mystère et aventure.',
+                'buttons.play_now': 'Jouer Maintenant',
+                'buttons.get_game': 'Obtenir le Jeu',
+                'buttons.learn_more': 'En Savoir Plus',
+                'buttons.play': 'Jouer',
+                'buttons.view_all': 'Voir Tout',
+                'buttons.view': 'Voir',
+                'buttons.filters': 'Filtres',
+                'buttons.sort': 'Trier',
+                'buttons.add_friend': 'Ajouter un Ami',
+                'buttons.change': 'Changer',
+                'buttons.enable': 'Activer',
+                'buttons.license': 'Licence',
+                'buttons.website': 'Site Web',
+                'sections.recent_activity': 'Activité Récente',
+                'sections.your_library': 'Votre Bibliothèque',
+                'pages.game_store': 'Boutique de Jeux',
+                'tabs.all_games': 'Tous les Jeux',
+                'tabs.free': 'Gratuit',
+                'tabs.on_sale': 'En Promotion',
+                'tabs.new_releases': 'Nouvelles Sorties',
+                'tabs.popular': 'Populaire',
+                'badges.free': 'Gratuit',
+                'badges.pro_gamer': 'Joueur Pro',
+                'badges.achievement_hunter': 'Chasseur de Succès',
+                'activity.last_played': 'Dernière fois joué: 2024-01-20',
+                'activity.playing': 'Joue à Cyberpunk 2077',
+                'status.online': 'En ligne',
+                'status.away': 'Absent',
+                'status.offline': 'Hors ligne',
+                'status.downloading': 'Téléchargement',
+                'status.queued': 'En attente',
+                'status.completed': 'Terminé',
+                'profile.member_since': 'Niveau 42 • Membre depuis 2023',
+                'profile.game_library': 'Bibliothèque de Jeux',
+                'profile.games_owned': 'Jeux Possédés',
+                'profile.achievements': 'Succès',
+                'profile.unlocked': 'Débloqués',
+                'profile.connected': 'Connectés',
+                'profile.recent_achievements': 'Succès Récents',
+                'achievements.first_steps': 'Premiers Pas',
+                'achievements.complete_tutorial': 'Terminer le tutoriel',
+                'achievements.explorer': 'Explorateur',
+                'achievements.discover_locations': 'Découvrir 10 emplacements',
+                'achievements.master_collector': 'Collectionneur Maître',
+                'achievements.collect_items': 'Collecter tous les objets rares',
+                'settings.general': 'Général',
+                'settings.account': 'Compte',
+                'settings.game': 'Jeu',
+                'settings.about': 'À propos',
+                'settings.general_settings': 'Paramètres Généraux',
+                'settings.account_settings': 'Paramètres du Compte',
+                'settings.game_settings': 'Paramètres de Jeu',
+                'settings.about_vanta': 'À propos de Vanta Launcher',
+                'settings.language': 'Langue',
+                'settings.language_desc': 'Choisissez votre langue préférée',
+                'settings.dark_theme': 'Thème Sombre',
+                'settings.dark_theme_desc': 'Utiliser le thème sombre dans tout le launcher',
+                'settings.notifications': 'Notifications',
+                'settings.notifications_desc': 'Recevoir des notifications pour les mises à jour et amis',
+                'settings.email': 'Email',
+                'settings.password': 'Mot de passe',
+                'settings.two_factor': 'Authentification à Deux Facteurs',
+                'settings.two_factor_desc': 'Ajouter une couche de sécurité supplémentaire',
+                'settings.overlay': 'Superposition en Jeu',
+                'settings.overlay_desc': 'Afficher FPS, amis et chat en superposition',
+                'settings.cloud_saves': 'Sauvegardes Cloud',
+                'settings.cloud_saves_desc': 'Synchroniser les sauvegardes de jeu dans le cloud',
+                'settings.hardware_acceleration': 'Accélération Matérielle',
+                'settings.hardware_acceleration_desc': 'Utiliser le GPU pour de meilleures performances',
+                'about.version': 'Version DÉMO',
+                'about.copyright': 'Droits d\'auteur',
+                'about.copyright_text': '© 2025 Uniware. Tous droits réservés.',
+                'about.description': 'Ceci est une version de démonstration de Vanta Launcher.<br>Construit avec des technologies web modernes pour des performances optimales.'
+            },
+            de: {
+                'nav.home': 'Startseite',
+                'nav.store': 'Shop',
+                'nav.library': 'Bibliothek',
+                'nav.downloads': 'Downloads',
+                'nav.friends': 'Freunde',
+                'nav.profile': 'Profil',
+                'nav.settings': 'Einstellungen',
+                'user.level': 'Level 42',
+                'search.placeholder': 'Spiele, Freunde oder Inhalte suchen...',
+                'games.cyberpunk.description': 'Erleben Sie das ultimative Cyberpunk-Abenteuer in einer neonbeleuchteten Metropole, wo Technologie und Menschlichkeit aufeinanderprallen.',
+                'games.omega.description': 'Begeben Sie sich auf eine epische Reise durch die Galaxie in diesem kostenlosen Weltraum-Erkundungsabenteuer.',
+                'games.mystic.description': 'Meistern Sie die arkanen Künste in diesem bezaubernden Fantasy-RPG voller Magie, Mysterium und Abenteuer.',
+                'buttons.play_now': 'Jetzt Spielen',
+                'buttons.get_game': 'Spiel Holen',
+                'buttons.learn_more': 'Mehr Erfahren',
+                'buttons.play': 'Spielen',
+                'buttons.view_all': 'Alle Anzeigen',
+                'buttons.view': 'Anzeigen',
+                'buttons.filters': 'Filter',
+                'buttons.sort': 'Sortieren',
+                'buttons.add_friend': 'Freund Hinzufügen',
+                'buttons.change': 'Ändern',
+                'buttons.enable': 'Aktivieren',
+                'buttons.license': 'Lizenz',
+                'buttons.website': 'Webseite',
+                'sections.recent_activity': 'Letzte Aktivität',
+                'sections.your_library': 'Ihre Bibliothek',
+                'pages.game_store': 'Spiele-Shop',
+                'tabs.all_games': 'Alle Spiele',
+                'tabs.free': 'Kostenlos',
+                'tabs.on_sale': 'Im Angebot',
+                'tabs.new_releases': 'Neue Veröffentlichungen',
+                'tabs.popular': 'Beliebt',
+                'badges.free': 'Kostenlos',
+                'badges.pro_gamer': 'Pro Gamer',
+                'badges.achievement_hunter': 'Erfolgs-Jäger',
+                'activity.last_played': 'Zuletzt gespielt: 2024-01-20',
+                'activity.playing': 'Spielt Cyberpunk 2077',
+                'status.online': 'Online',
+                'status.away': 'Abwesend',
+                'status.offline': 'Offline',
+                'status.downloading': 'Herunterladen',
+                'status.queued': 'In Warteschlange',
+                'status.completed': 'Abgeschlossen',
+                'profile.member_since': 'Level 42 • Mitglied seit 2023',
+                'profile.game_library': 'Spiele-Bibliothek',
+                'profile.games_owned': 'Besessene Spiele',
+                'profile.achievements': 'Erfolge',
+                'profile.unlocked': 'Freigeschaltet',
+                'profile.connected': 'Verbunden',
+                'profile.recent_achievements': 'Letzte Erfolge',
+                'achievements.first_steps': 'Erste Schritte',
+                'achievements.complete_tutorial': 'Tutorial abschließen',
+                'achievements.explorer': 'Entdecker',
+                'achievements.discover_locations': '10 Orte entdecken',
+                'achievements.master_collector': 'Meister-Sammler',
+                'achievements.collect_items': 'Alle seltenen Gegenstände sammeln',
+                'settings.general': 'Allgemein',
+                'settings.account': 'Konto',
+                'settings.game': 'Spiel',
+                'settings.about': 'Über',
+                'settings.general_settings': 'Allgemeine Einstellungen',
+                'settings.account_settings': 'Konto-Einstellungen',
+                'settings.game_settings': 'Spiel-Einstellungen',
+                'settings.about_vanta': 'Über Vanta Launcher',
+                'settings.language': 'Sprache',
+                'settings.language_desc': 'Wählen Sie Ihre bevorzugte Sprache',
+                'settings.dark_theme': 'Dunkles Theme',
+                'settings.dark_theme_desc': 'Dunkles Theme im gesamten Launcher verwenden',
+                'settings.notifications': 'Benachrichtigungen',
+                'settings.notifications_desc': 'Benachrichtigungen für Updates und Freunde erhalten',
+                'settings.email': 'E-Mail',
+                'settings.password': 'Passwort',
+                'settings.two_factor': 'Zwei-Faktor-Authentifizierung',
+                'settings.two_factor_desc': 'Eine zusätzliche Sicherheitsebene hinzufügen',
+                'settings.overlay': 'In-Game-Overlay',
+                'settings.overlay_desc': 'FPS, Freunde und Chat-Overlay anzeigen',
+                'settings.cloud_saves': 'Cloud-Speicherstände',
+                'settings.cloud_saves_desc': 'Spielstände in der Cloud synchronisieren',
+                'settings.hardware_acceleration': 'Hardware-Beschleunigung',
+                'settings.hardware_acceleration_desc': 'GPU für bessere Leistung verwenden',
+                'about.version': 'Version DEMO',
+                'about.copyright': 'Urheberrecht',
+                'about.copyright_text': '© 2025 Uniware. Alle Rechte vorbehalten.',
+                'about.description': 'Dies ist eine Demonstrationsversion von Vanta Launcher.<br>Erstellt mit modernen Web-Technologien für optimale Leistung.'
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        // Language change functionality
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            const elements = document.querySelectorAll('[data-translate]');
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Handle placeholder translations
+            const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
+            placeholderElements.forEach(element => {
+                const key = element.getAttribute('data-translate-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+
+            // Handle HTML content translations (for descriptions with <br>)
+            const htmlElements = document.querySelectorAll('[data-translate="about.description"]');
+            htmlElements.forEach(element => {
+                if (translations[lang] && translations[lang]['about.description']) {
+                    element.innerHTML = translations[lang]['about.description'];
+                }
+            });
+
+            // Update tooltips for minimized sidebar
+            document.querySelectorAll('.nav-item').forEach(item => {
+                const key = item.querySelector('[data-translate]')?.getAttribute('data-translate');
+                if (key && translations[lang] && translations[lang][key]) {
+                    item.setAttribute('data-tooltip', translations[lang][key]);
+                }
+            });
+
+            // Save language preference
+            localStorage.setItem('vanta-language', lang);
+        }
+
+        // Load saved language on startup
+        function loadLanguage() {
+            const savedLang = localStorage.getItem('vanta-language') || 'en';
+            const languageSelect = document.getElementById('languageSelect');
+            if (languageSelect) {
+                languageSelect.value = savedLang;
+                changeLanguage(savedLang);
+            }
+        }
+
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('minimized');
+        }
+
+        // Add click event listener to sidebar toggle
+        document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+
+        // Language select change event
+        document.getElementById('languageSelect').addEventListener('change', (e) => {
+            changeLanguage(e.target.value);
+        });
+
+        // Navigation functionality
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add active class to selected nav item
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+        }
+
+        // Add click event listeners to navigation items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const pageId = item.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        // Featured carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        // Auto-rotate carousel
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Carousel dot click handlers
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+
+        // Tab functionality
+        document.querySelectorAll('.tab-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const tabId = trigger.getAttribute('data-tab');
+                
+                // Remove active class from all triggers and contents
+                document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked trigger and corresponding content
+                trigger.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Library view toggle
+        document.getElementById('gridViewBtn')?.addEventListener('click', () => {
+            document.getElementById('gridViewBtn').classList.add('btn-secondary');
+            document.getElementById('gridViewBtn').classList.remove('btn-outline');
+            document.getElementById('listViewBtn').classList.add('btn-outline');
+            document.getElementById('listViewBtn').classList.remove('btn-secondary');
+        });
+
+        document.getElementById('listViewBtn')?.addEventListener('click', () => {
+            document.getElementById('listViewBtn').classList.add('btn-secondary');
+            document.getElementById('listViewBtn').classList.remove('btn-outline');
+            document.getElementById('gridViewBtn').classList.add('btn-outline');
+            document.getElementById('gridViewBtn').classList.remove('btn-secondary');
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Here you would implement search filtering logic
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Store tab functionality
+        document.querySelectorAll('[data-tab]').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                
+                // Remove active class from all tabs
+                document.querySelectorAll('[data-tab]').forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Here you would filter games based on the selected tab
+                console.log('Selected tab:', tabName);
+            });
+        });
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLanguage();
+        });
+    </script>
+</body>
+</html>
+keep in mind that's a demo version, bugs, not all features work. Created by Uniware. Managed by Zetsukae.
