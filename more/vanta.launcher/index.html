@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vanta Launcher</title>
+    <title>Vanta Launcher - UNIWARE</title>
     <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
     <style>
         * {
@@ -184,6 +184,13 @@
             align-items: center;
             gap: 12px;
             transition: all 0.3s ease;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 8px;
+        }
+
+        .user-info:hover {
+            background-color: rgba(55, 65, 81, 0.5);
         }
 
         .sidebar.minimized .user-info {
@@ -370,6 +377,110 @@
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-10deg); }
             75% { transform: rotate(10deg); }
+        }
+
+        /* Notifications Panel */
+        .notifications-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 320px;
+            max-height: 400px;
+            background: #0C0C10;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+
+        .notifications-panel.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .notifications-header {
+            padding: 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notifications-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .mark-all-read {
+            font-size: 12px;
+            color: #60A5FA;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .mark-all-read:hover {
+            background-color: rgba(96, 165, 250, 0.1);
+        }
+
+        .notifications-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background-color: rgba(55, 65, 81, 0.3);
+        }
+
+        .notification-item.unread {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #3B82F6;
+            border-radius: 50%;
+        }
+
+        .notification-item.unread .notification-content {
+            margin-left: 16px;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 12px;
+            color: #9CA3AF;
+            margin-bottom: 4px;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: #6B7280;
         }
 
         /* Page Content Styles */
@@ -773,6 +884,424 @@
                 width: 250px;
             }
         }
+
+        /* Friends Page Improvements */
+        .friend-card {
+            background-color: rgba(55, 65, 81, 0.3);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .friend-card:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+            border-color: rgba(55, 65, 81, 0.7);
+        }
+
+        .friend-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #60A5FA, #A855F7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .friend-status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #0C0C10;
+        }
+
+        .friend-info {
+            flex: 1;
+            margin-left: 16px;
+            min-width: 0;
+        }
+
+        .friend-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .friend-status {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .friend-activity {
+            font-size: 12px;
+            color: #60A5FA;
+            font-style: italic;
+        }
+
+        .friend-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .friend-action-btn {
+            padding: 8px;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(55, 65, 81, 0.7);
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .friend-action-btn:hover {
+            background: rgba(55, 65, 81, 0.8);
+            border-color: #3B82F6;
+        }
+
+        /* Chat Modal Styles */
+        .chat-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .chat-modal.active {
+            display: flex;
+        }
+
+        .chat-window {
+            width: 400px;
+            height: 500px;
+            background: #0C0C10;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .chat-close:hover {
+            background: rgba(55, 65, 81, 0.5);
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .chat-message.sent {
+            align-self: flex-end;
+            background: #3B82F6;
+            color: white;
+        }
+
+        .chat-message.received {
+            align-self: flex-start;
+            background: rgba(55, 65, 81, 0.5);
+            color: white;
+        }
+
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid #374151;
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid #374151;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .chat-send {
+            padding: 8px 16px;
+            background: #3B82F6;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .chat-send:hover {
+            background: #2563EB;
+        }
+
+        /* Friends Icon Animation */
+        .friends-icon {
+            transition: all 0.3s ease;
+        }
+
+        .friends-icon .animated-path {
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover .friends-icon .animated-path {
+            transform: translateX(-6px);
+            animation: friendsSlide 0.6s ease;
+        }
+
+        @keyframes friendsSlide {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Light Theme Styles */
+        body.light-theme {
+            background-color: #ffffff;
+            color: #1f2937;
+        }
+
+        body.light-theme .sidebar {
+            background-color: #f9fafb;
+            border-right-color: #e5e7eb;
+        }
+
+        body.light-theme .header {
+            background-color: #ffffff;
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .card {
+            background-color: rgba(249, 250, 251, 0.8);
+            border-color: rgba(229, 231, 235, 0.8);
+        }
+
+        body.light-theme .card:hover {
+            background-color: rgba(243, 244, 246, 0.9);
+            border-color: rgba(209, 213, 219, 0.9);
+        }
+
+        body.light-theme .search-input {
+            background-color: rgba(243, 244, 246, 0.8);
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .nav-item {
+            color: #374151;
+        }
+
+        body.light-theme .nav-item:hover {
+            background-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .nav-item.active {
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        body.light-theme .friend-card {
+            background-color: rgba(249, 250, 251, 0.8);
+            border-color: rgba(229, 231, 235, 0.8);
+        }
+
+        body.light-theme .friend-card:hover {
+            background-color: rgba(243, 244, 246, 0.9);
+            border-color: rgba(209, 213, 219, 0.9);
+        }
+
+        body.light-theme .friend-action-btn {
+            background: rgba(243, 244, 246, 0.8);
+            border-color: rgba(209, 213, 219, 0.8);
+            color: #374151;
+        }
+
+        body.light-theme .friend-action-btn:hover {
+            background: rgba(229, 231, 235, 0.9);
+            border-color: #3B82F6;
+        }
+
+        body.light-theme .chat-window {
+            background: #ffffff;
+            border-color: #e5e7eb;
+        }
+
+        body.light-theme .chat-header {
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .chat-input-container {
+            border-top-color: #e5e7eb;
+        }
+
+        body.light-theme .chat-input {
+            background: rgba(243, 244, 246, 0.8);
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .settings-input {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .settings-select {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .text-gray-400 {
+            color: #6b7280 !important;
+        }
+
+        body.light-theme .text-gray-500 {
+            color: #9ca3af !important;
+        }
+
+        body.light-theme .tab-list {
+            background-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .tab-trigger {
+            color: #6b7280;
+        }
+
+        body.light-theme .tab-trigger.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        body.light-theme .progress {
+            background-color: #e5e7eb;
+        }
+
+        body.light-theme .badge-outline {
+            border-color: #d1d5db;
+            color: #6b7280;
+        }
+
+        body.light-theme .friend-name {
+            color: #1f2937;
+        }
+
+        body.light-theme .friend-status-dot {
+            border-color: #ffffff;
+        }
+
+        body.light-theme .sidebar-toggle {
+            color: #6b7280;
+        }
+
+        body.light-theme .sidebar-toggle:hover {
+            background-color: rgba(229, 231, 235, 0.5);
+            color: #1f2937;
+        }
+
+        body.light-theme .user-info:hover {
+            background-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .logo {
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .user-info {
+            border-top-color: #e5e7eb;
+        }
+
+        body.light-theme .nav-item::after {
+            background-color: #374151;
+            color: white;
+        }
+
+        body.light-theme .user-info::after {
+            background-color: #374151;
+            color: white;
+        }
+
+        body.light-theme .notifications-panel {
+            background: #ffffff;
+            border-color: #e5e7eb;
+        }
+
+        body.light-theme .notifications-header {
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .notification-item {
+            border-bottom-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .notification-item:hover {
+            background-color: rgba(243, 244, 246, 0.5);
+        }
+
+        body.light-theme .notification-item.unread {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
     </style>
 </head>
 <body>
@@ -780,6 +1309,7 @@
         <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="logo">
+                
                 <button class="sidebar-toggle" id="sidebarToggle">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
@@ -817,17 +1347,13 @@
                 </button>
                 
                 <button class="nav-item" data-page="friends" data-tooltip="Friends">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="friends-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 21v-2a4 4 0 0 0-3-3.87" class="animated-path"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3.13a4 4 0 0 1 0 7.75" class="animated-path"/>
                     </svg>
                     <span class="nav-item-text" data-translate="nav.friends">Friends</span>
-                </button>
-                
-                <button class="nav-item" data-page="profile" data-tooltip="Profile">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                    </svg>
-                    <span class="nav-item-text" data-translate="nav.profile">Profile</span>
                 </button>
                 
                 <button class="nav-item" data-page="settings" data-tooltip="Settings">
@@ -839,7 +1365,7 @@
                 </button>
             </nav>
             
-            <div class="user-info">
+            <div class="user-info" id="userProfile">
                 <div class="avatar">VU</div>
                 <div class="user-info-text">
                     <div class="font-semibold">VantaUser</div>
@@ -860,20 +1386,55 @@
                 </div>
                 
                 <div class="header-actions">
-                    <button class="btn btn-ghost">
-                        <div class="bell-icon">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-                            </svg>
+                    <div class="relative">
+                        <button class="btn btn-ghost" id="notificationBtn">
+                            <div class="bell-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                                </svg>
+                            </div>
+                            <span class="notification-badge" id="notificationBadge">3</span>
+                        </button>
+                        
+                        <!-- Notifications Panel -->
+                        <div class="notifications-panel" id="notificationsPanel">
+                            <div class="notifications-header">
+                                <div class="notifications-title" data-translate="notifications.title">Notifications</div>
+                                <div class="mark-all-read" onclick="markAllAsRead()" data-translate="notifications.mark_all_read">Mark all as read</div>
+                            </div>
+                            <div class="notifications-list" id="notificationsList">
+                                <div class="notification-item unread" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Game Update Available</div>
+                                        <div class="notification-message">Cyberpunk 2077 has a new update ready to install</div>
+                                        <div class="notification-time">2 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Friend Request</div>
+                                        <div class="notification-message">Alex Chen sent you a friend request</div>
+                                        <div class="notification-time">1 hour ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Achievement Unlocked</div>
+                                        <div class="notification-message">You unlocked "Speed Demon" in Omega Stars</div>
+                                        <div class="notification-time">3 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Download Complete</div>
+                                        <div class="notification-message">Mystic Realms has finished downloading</div>
+                                        <div class="notification-time">Yesterday</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <span class="notification-badge">3</span>
-                    </button>
-                    <button class="btn btn-ghost">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                    </button>
+                    </div>
                 </div>
             </div>
 
@@ -1036,7 +1597,6 @@
                                 </button>
                             </div>
                         </div>
-
                         <div class="tabs">
                             <div class="tab-list">
                                 <button class="tab-trigger active" data-tab="all" data-translate="tabs.all_games">All Games</button>
@@ -1046,7 +1606,6 @@
                                 <button class="tab-trigger" data-tab="popular" data-translate="tabs.popular">Popular</button>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                             <div class="card game-card">
                                 <div class="relative">
@@ -1073,7 +1632,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card game-card">
                                 <div class="relative">
                                     <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="store-game-image">
@@ -1096,7 +1654,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card game-card">
                                 <div class="relative">
                                     <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=160&fit=crop" alt="Mystic Realms" class="store-game-image">
@@ -1152,7 +1709,6 @@
                                 </button>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3" id="libraryGrid">
                             <div class="game-card relative">
                                 <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="game-image">
@@ -1167,7 +1723,6 @@
                                 <p class="text-sm font-semibold mt-2 truncate">Cyberpunk 2077</p>
                                 <p class="text-xs text-gray-400" data-translate="activity.last_played">Last played: 2025-01-20</p>
                             </div>
-
                             <div class="game-card relative">
                                 <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="game-image">
                                 <div class="game-overlay">
@@ -1224,7 +1779,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card">
                                 <div class="card-content">
                                     <div class="flex items-center justify-between mb-4">
@@ -1257,7 +1811,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card">
                                 <div class="card-content">
                                     <div class="flex items-center justify-between mb-4">
@@ -1301,126 +1854,122 @@
                                 <span data-translate="buttons.add_friend">Add Friend</span>
                             </button>
                         </div>
+                        
+                        <div class="space-y-3">
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        AC
+                                        <div class="friend-status-dot bg-green-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Alex Chen</div>
+                                        <div class="friend-status text-green-400" data-translate="status.online">Online</div>
+                                        <div class="friend-activity" data-translate="activity.playing">Playing Cyberpunk 2077</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Alex Chen', 'AC')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Join Game">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a2 2 0 100-4H4a1 1 0 01-1-1V4a1 1 0 011-1h3a1 1 0 011 1v1a2 2 0 104 0V4z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div class="space-y-4">
-    <div class="card">
-        <div class="card-content">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="relative">
-                        <div class="avatar">AC</div>
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-green-500"></div>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">Alex Chen</h3>
-                        <p class="text-sm text-gray-400" data-translate="status.online">Online</p>
-                        <p class="text-xs text-blue-400" data-translate="activity.playing">Playing Cyberpunk 2077</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        SK
+                                        <div class="friend-status-dot bg-yellow-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Sarah Kim</div>
+                                        <div class="friend-status text-yellow-400" data-translate="status.away">Away</div>
+                                        <div class="friend-activity text-gray-400">Last seen 2 hours ago</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Sarah Kim', 'SK')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-    <div class="card">
-        <div class="card-content">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="relative">
-                        <div class="avatar">SK</div>
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-yellow-500"></div>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">Sarah Kim</h3>
-                        <p class="text-sm text-gray-400" data-translate="status.away">Away</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        MJ
+                                        <div class="friend-status-dot bg-gray-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Mike Johnson</div>
+                                        <div class="friend-status text-gray-400" data-translate="status.offline">Offline</div>
+                                        <div class="friend-activity text-gray-400">Last seen yesterday</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Mike Johnson', 'MJ')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-    <div class="card">
-        <div class="card-content">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="relative">
-                        <div class="avatar">MJ</div>
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-gray-500"></div>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">Mike Johnson</h3>
-                        <p class="text-sm text-gray-400" data-translate="status.offline">Offline</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-content">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="relative">
-                        <div class="avatar">EW</div>
-                        <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-800 bg-green-500"></div>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">Emma Wilson</h3>
-                        <p class="text-sm text-gray-400" data-translate="status.online">Online</p>
-                        <p class="text-xs text-blue-400" data-translate="activity.playing">Playing Omega Stars</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        EW
+                                        <div class="friend-status-dot bg-green-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Emma Wilson</div>
+                                        <div class="friend-status text-green-400" data-translate="status.online">Online</div>
+                                        <div class="friend-activity" data-translate="activity.playing">Playing Omega Stars</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Emma Wilson', 'EW')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Join Game">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a2 2 0 100-4H4a1 1 0 01-1-1V4a1 1 0 011-1h3a1 1 0 011 1v1a2 2 0 104 0V4z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1438,7 +1987,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div class="card">
                                 <div class="card-header">
@@ -1454,7 +2002,6 @@
                                     <p class="text-gray-400" data-translate="profile.games_owned">Games Owned</p>
                                 </div>
                             </div>
-
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title flex items-center">
@@ -1469,7 +2016,6 @@
                                     <p class="text-gray-400" data-translate="profile.unlocked">Unlocked</p>
                                 </div>
                             </div>
-
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title flex items-center">
@@ -1485,7 +2031,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title" data-translate="profile.recent_achievements">Recent Achievements</div>
@@ -1498,36 +2043,20 @@
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                             </svg>
                                         </div>
-                                        <div class="flex-1">
-                                            <h4 class="font-semibold" data-translate="achievements.first_steps">First Steps</h4>
-                                            <p class="text-sm text-gray-400" data-translate="achievements.complete_tutorial">Complete the tutorial</p>
-                                            <p class="text-xs text-gray-500">Cyberpunk 2077 • 2024-01-20</p>
+                                        <div>
+                                            <h4 class="font-semibold">First Steps</h4>
+                                            <p class="text-sm text-gray-400">Complete your first mission</p>
                                         </div>
                                     </div>
-
                                     <div class="flex items-center space-x-4">
-                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #FBBF24, #F59E0B);">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #10B981, #059669);">
                                             <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                             </svg>
                                         </div>
-                                        <div class="flex-1">
-                                            <h4 class="font-semibold" data-translate="achievements.explorer">New Player !</h4>
-                                            <p class="text-sm text-gray-400" data-translate="achievements.discover_locations">Unlock 10 Brawlers</p>
-                                            <p class="text-xs text-gray-500">Omega Stars • 2024-01-18</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex items-center space-x-4">
-                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #FBBF24, #F59E0B);">
-                                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                            </svg>
-                                        </div>
-                                        <div class="flex-1">
-                                            <h4 class="font-semibold" data-translate="achievements.master_collector">Master Collector</h4>
-                                            <p class="text-sm text-gray-400" data-translate="achievements.collect_items">Collect all rare items</p>
-                                            <p class="text-xs text-gray-500">Mystic Realms • 2024-01-15</p>
+                                        <div>
+                                            <h4 class="font-semibold">Speed Demon</h4>
+                                            <p class="text-sm text-gray-400">Complete a race in under 2 minutes</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1540,197 +2069,134 @@
                 <div class="page" id="settings">
                     <div class="space-y-6">
                         <h2 class="text-2xl font-bold" data-translate="nav.settings">Settings</h2>
-
-                        <div class="tabs">
-                            <div class="tab-list">
-                                <button class="tab-trigger active" data-tab="general" data-translate="settings.general">General</button>
-                                <button class="tab-trigger" data-tab="account" data-translate="settings.account">Account</button>
-                                <button class="tab-trigger" data-tab="game" data-translate="settings.game">Game</button>
-                                <button class="tab-trigger" data-tab="about" data-translate="settings.about">About</button>
-                            </div>
-
-                            <div class="tab-content active" id="general">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title flex items-center">
-                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
-                                            </svg>
-                                            <span data-translate="settings.general_settings">General Settings</span>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- General Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.general">General</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.language">Language</label>
+                                        <select class="settings-select" id="languageSelect">
+                                            <option>English</option>
+                                            <option>Français</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.theme">Theme</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" id="darkThemeToggle">
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.dark_mode">Dark Mode</span>
                                         </div>
                                     </div>
-                                    <div class="card-content space-y-6">
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-semibold" data-translate="settings.language">Language</h4>
-                                                <p class="text-sm text-gray-400" data-translate="settings.language_desc">Choose your preferred language</p>
-                                            </div>
-                                            <select class="settings-select" id="languageSelect">
-                                                <option value="en">English</option>
-                                                <option value="es">Español</option>
-                                                <option value="fr">Français</option>
-                                                <option value="de">Deutsch</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-semibold" data-translate="settings.dark_theme">Dark Theme</h4>
-                                                <p class="text-sm text-gray-400" data-translate="settings.dark_theme_desc">Use dark theme across the launcher</p>
-                                            </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.startup">Launch on Startup</label>
+                                        <div class="flex items-center space-x-4">
                                             <label class="settings-toggle">
                                                 <input type="checkbox" checked>
                                                 <span class="settings-slider"></span>
                                             </label>
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-semibold" data-translate="settings.notifications">Notifications</h4>
-                                                <p class="text-sm text-gray-400" data-translate="settings.notifications_desc">Receive notifications for updates and friends</p>
-                                            </div>
-                                            <label class="settings-toggle">
-                                                <input type="checkbox" checked>
-                                                <span class="settings-slider"></span>
-                                            </label>
+                                            <span data-translate="settings.auto_launch">Auto-launch Vanta Launcher</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-content" id="account">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title flex items-center">
-                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                            </svg>
-                                            <span data-translate="settings.account_settings">Account Settings</span>
+                            <!-- Gaming Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.gaming">Gaming</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.install_location">Default Install Location</label>
+                                        <div class="flex space-x-2">
+                                            <input type="text" class="settings-input flex-1" value="C:\Games\Vanta" readonly>
+                                            <button class="btn btn-outline">Browse</button>
                                         </div>
                                     </div>
-                                    <div class="card-content space-y-6">
-                                        <div>
-                                            <h4 class="font-semibold mb-2" data-translate="settings.email">Email</h4>
-                                            <input type="email" value="user@vanta.com" class="settings-input">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.auto_updates">Auto-Update Games</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.enable_auto_updates">Enable automatic game updates</span>
                                         </div>
-
-                                        <div>
-                                            <h4 class="font-semibold mb-2" data-translate="settings.password">Password</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <input type="password" value="••••••••" readonly class="settings-input">
-                                                <button class="btn btn-outline" data-translate="buttons.change">Change</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-semibold" data-translate="settings.two_factor">Two-Factor Authentication</h4>
-                                                <p class="text-sm text-gray-400" data-translate="settings.two_factor_desc">Add an extra layer of security</p>
-                                            </div>
-                                            <button class="btn btn-outline flex items-center">
-                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                                </svg>
-                                                <span data-translate="buttons.enable">Enable</span>
-                                            </button>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.overlay">In-Game Overlay</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.enable_overlay">Enable Vanta overlay in games</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-content" id="game">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title flex items-center">
-                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a2 2 0 100-4H4a1 1 0 01-1-1V4a1 1 0 011-1h3a1 1 0 011 1v1a2 2 0 104 0V4z"/>
-                                            </svg>
-                                            <span data-translate="settings.game_settings">Game Settings</span>
+                            <!-- Privacy Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.privacy">Privacy</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.profile_visibility">Profile Visibility</label>
+                                        <select class="settings-select">
+                                            <option data-translate="settings.public">Public</option>
+                                            <option data-translate="settings.friends_only">Friends Only</option>
+                                            <option data-translate="settings.private">Private</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.activity_status">Show Activity Status</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.show_activity">Let friends see what you're playing</span>
                                         </div>
                                     </div>
-                                    <div class="card-content space-y-6">
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-semibold" data-translate="settings.overlay">In-Game Overlay</h4>
-                                                <p class="text-sm text-gray-400" data-translate="settings.overlay_desc">Show FPS, friends, and chat overlay</p>
-                                            </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.data_collection">Data Collection</label>
+                                        <div class="flex items-center space-x-4">
                                             <label class="settings-toggle">
-                                                <input type="checkbox" checked>
+                                                <input type="checkbox">
                                                 <span class="settings-slider"></span>
                                             </label>
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-semibold" data-translate="settings.cloud_saves">Cloud Saves</h4>
-                                                <p class="text-sm text-gray-400" data-translate="settings.cloud_saves_desc">Sync game saves to the cloud</p>
-                                            </div>
-                                            <label class="settings-toggle">
-                                                <input type="checkbox" checked>
-                                                <span class="settings-slider"></span>
-                                            </label>
-                                        </div>
-
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <h4 class="font-semibold" data-translate="settings.hardware_acceleration">Hardware Acceleration</h4>
-                                                <p class="text-sm text-gray-400" data-translate="settings.hardware_acceleration_desc">Use GPU for better performance</p>
-                                            </div>
-                                            <label class="settings-toggle">
-                                                <input type="checkbox" checked>
-                                                <span class="settings-slider"></span>
-                                            </label>
+                                            <span data-translate="settings.analytics">Allow analytics data collection</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="tab-content" id="about">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title flex items-center">
-                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                            <span data-translate="settings.about_vanta">About Vanta Launcher</span>
-                                        </div>
+                            <!-- Account Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.account">Account</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.username">Username</label>
+                                        <input type="text" class="settings-input" value="VantaUser" readonly>
                                     </div>
-                                    <div class="card-content space-y-6">
-                                        <div class="text-center space-y-4">
-                                            <div>
-                                                <h3 class="text-2xl font-bold">Vanta Launcher</h3>
-                                                <p class="text-lg text-blue-400 font-semibold" data-translate="about.version">Version DÉMO</p>
-                                            </div>
-                                        </div>
-
-                                        <div class="space-y-4 text-center">
-                                            <div>
-                                                <h4 class="font-semibold text-lg mb-2" data-translate="about.copyright">Copyright</h4>
-                                                <p class="text-gray-400" data-translate="about.copyright_text">© 2025 Uniware. All rights reserved.</p>
-                                            </div>
-
-                                            <div class="border-t border-gray-600 pt-4">
-                                                <p class="text-sm text-gray-500" data-translate="about.description">
-                                                    This is a demonstration version of Vanta Launcher.<br>
-                                                    Built with modern web technologies for optimal performance.
-                                                </p>
-                                            </div>
-
-                                            <div class="flex justify-center space-x-4 pt-4">
-                                                <button class="btn btn-outline">
-                                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                                    </svg>
-                                                    <span data-translate="buttons.license">License</span>
-                                                </button>
-                                                <button class="btn btn-outline">
-                                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                                                    </svg>
-                                                    <span data-translate="buttons.website">Website</span>
-                                                </button>
-                                            </div>
-                                        </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.email">Email</label>
+                                        <input type="email" class="settings-input" value="user@vanta.com" readonly>
+                                    </div>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary" data-translate="settings.change_password">Change Password</button>
+                                        <button class="btn btn-outline" data-translate="settings.logout">Logout</button>
                                     </div>
                                 </div>
                             </div>
@@ -1741,54 +2207,320 @@
         </div>
     </div>
 
+    <!-- Chat Modal -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="chat-user-info">
+                    <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;" id="chatAvatar">AC</div>
+                    <div>
+                        <div class="font-semibold" id="chatUserName">Alex Chen</div>
+                        <div class="text-sm text-green-400">Online</div>
+                    </div>
+                </div>
+                <button class="chat-close" onclick="closeChat()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message received">Hey! How's it going?</div>
+                <div class="chat-message sent">Pretty good! Just finished that Cyberpunk mission.</div>
+                <div class="chat-message received">Nice! How did you like it?</div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" placeholder="Type a message..." id="chatInput">
+                <button class="chat-send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Language translations
+        // Sidebar toggle functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('minimized');
+        });
+
+        // Navigation functionality
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetPage = item.getAttribute('data-page');
+                showPage(targetPage);
+                
+                // Update active nav item
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // User profile click handler
+        document.getElementById('userProfile').addEventListener('click', () => {
+            showPage('profile');
+            navItems.forEach(nav => nav.classList.remove('active'));
+            // No nav item gets active class for profile page since it's accessed via user info
+        });
+
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Auto-advance carousel
+        setInterval(nextSlide, 5000);
+
+        // Dot click handlers
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+
+        // Tab functionality
+        const tabTriggers = document.querySelectorAll('.tab-trigger');
+        
+        tabTriggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                tabTriggers.forEach(t => t.classList.remove('active'));
+                trigger.classList.add('active');
+            });
+        });
+
+        // Library view toggle
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+        
+        if (gridViewBtn && listViewBtn) {
+            gridViewBtn.addEventListener('click', () => {
+                gridViewBtn.classList.remove('btn-outline');
+                gridViewBtn.classList.add('btn-secondary');
+                listViewBtn.classList.remove('btn-secondary');
+                listViewBtn.classList.add('btn-outline');
+            });
+            
+            listViewBtn.addEventListener('click', () => {
+                listViewBtn.classList.remove('btn-outline');
+                listViewBtn.classList.add('btn-secondary');
+                gridViewBtn.classList.remove('btn-secondary');
+                gridViewBtn.classList.add('btn-outline');
+            });
+        }
+
+        // Chat functionality
+        function openChat(userName, userInitials) {
+            document.getElementById('chatUserName').textContent = userName;
+            document.getElementById('chatAvatar').textContent = userInitials;
+            document.getElementById('chatModal').classList.add('active');
+            
+            // Clear previous messages and add some sample ones
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="chat-message received">Hey! How's it going?</div>
+                <div class="chat-message sent">Pretty good! Just finished that Cyberpunk mission.</div>
+                <div class="chat-message received">Nice! How did you like it?</div>
+            `;
+        }
+
+        function closeChat() {
+            document.getElementById('chatModal').classList.remove('active');
+        }
+
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const message = chatInput.value.trim();
+            
+            if (message) {
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message sent';
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate response after a delay
+                setTimeout(() => {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = 'chat-message received';
+                    responseDiv.textContent = 'Thanks for the message!';
+                    chatMessages.appendChild(responseDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // Enter key to send message
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Close chat modal when clicking outside
+        document.getElementById('chatModal').addEventListener('click', (e) => {
+            if (e.target.id === 'chatModal') {
+                closeChat();
+            }
+        });
+
+        // Dark theme toggle
+        const darkThemeToggle = document.getElementById('darkThemeToggle');
+        
+        // Set initial state (dark theme is default)
+        darkThemeToggle.checked = true;
+        
+        darkThemeToggle.addEventListener('change', () => {
+            if (darkThemeToggle.checked) {
+                document.body.classList.remove('light-theme');
+            } else {
+                document.body.classList.add('light-theme');
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Here you would implement search logic
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Notifications functionality
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationsPanel = document.getElementById('notificationsPanel');
+        const notificationBadge = document.getElementById('notificationBadge');
+
+        notificationBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationsPanel.classList.toggle('active');
+        });
+
+        // Close notifications when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!notificationsPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
+                notificationsPanel.classList.remove('active');
+            }
+        });
+
+        function markAsRead(notificationElement) {
+            notificationElement.classList.remove('unread');
+            updateNotificationBadge();
+        }
+
+        function markAllAsRead() {
+            const unreadNotifications = document.querySelectorAll('.notification-item.unread');
+            unreadNotifications.forEach(notification => {
+                notification.classList.remove('unread');
+            });
+            updateNotificationBadge();
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            if (unreadCount > 0) {
+                notificationBadge.textContent = unreadCount;
+                notificationBadge.style.display = 'flex';
+            } else {
+                notificationBadge.style.display = 'none';
+            }
+        }
+
+        // Translation system
         const translations = {
             en: {
+                // Navigation
                 'nav.home': 'Home',
                 'nav.store': 'Store',
                 'nav.library': 'Library',
                 'nav.downloads': 'Downloads',
                 'nav.friends': 'Friends',
-                'nav.profile': 'Profile',
                 'nav.settings': 'Settings',
+                
+                // User
                 'user.level': 'Level 42',
+                
+                // Search
                 'search.placeholder': 'Search games, friends, or content...',
-                'games.cyberpunk.description': 'Experience the ultimate cyberpunk adventure in a neon-lit metropolis where technology and humanity collide.',
-                'games.omega.description': 'Embark on an epic journey across the galaxy in this free-to-play space exploration adventure.',
-                'games.mystic.description': 'Master the arcane arts in this enchanting fantasy RPG filled with magic, mystery, and adventure.',
+                
+                // Buttons
                 'buttons.play_now': 'Play Now',
-                'buttons.get_game': 'Get Game',
                 'buttons.learn_more': 'Learn More',
+                'buttons.get_game': 'Get Game',
                 'buttons.play': 'Play',
                 'buttons.view_all': 'View All',
                 'buttons.view': 'View',
                 'buttons.filters': 'Filters',
                 'buttons.sort': 'Sort',
                 'buttons.add_friend': 'Add Friend',
-                'buttons.change': 'Change',
-                'buttons.enable': 'Enable',
-                'buttons.license': 'License',
-                'buttons.website': 'Website',
+                
+                // Sections
                 'sections.recent_activity': 'Recent Activity',
                 'sections.your_library': 'Your Library',
+                
+                // Pages
                 'pages.game_store': 'Game Store',
+                
+                // Tabs
                 'tabs.all_games': 'All Games',
                 'tabs.free': 'Free',
                 'tabs.on_sale': 'On Sale',
                 'tabs.new_releases': 'New Releases',
                 'tabs.popular': 'Popular',
+                
+                // Badges
                 'badges.free': 'Free',
-                'badges.pro_gamer': 'Pro Gamer',
-                'badges.achievement_hunter': 'Achievement Hunter',
+                
+                // Activity
                 'activity.last_played': 'Last played: 2024-01-20',
-                'activity.playing': 'Playing Cyberpunk 2077',
-                'status.online': 'Online',
-                'status.away': 'Away',
-                'status.offline': 'Offline',
+                'activity.playing': 'Playing',
+                
+                // Status
                 'status.downloading': 'Downloading',
                 'status.queued': 'Queued',
                 'status.completed': 'Completed',
+                'status.online': 'Online',
+                'status.away': 'Away',
+                'status.offline': 'Offline',
+                
+                // Games
+                'games.cyberpunk.description': 'Experience the ultimate cyberpunk adventure in a neon-lit metropolis where technology and humanity collide.',
+                'games.omega.description': 'Our modded game, If you like MOBA-lite, that\'s for you !',
+                'games.mystic.description': 'Master the arcane arts in this enchanting fantasy RPG filled with magic, mystery, and adventure.',
+                
+                // Profile
                 'profile.member_since': 'Level 42 • Member since 2023',
                 'profile.game_library': 'Game Library',
                 'profile.games_owned': 'Games Owned',
@@ -1796,173 +2528,104 @@
                 'profile.unlocked': 'Unlocked',
                 'profile.connected': 'Connected',
                 'profile.recent_achievements': 'Recent Achievements',
-                'achievements.first_steps': 'First Steps',
-                'achievements.complete_tutorial': 'Complete the tutorial',
-                'achievements.explorer': 'Explorer',
-                'achievements.discover_locations': 'Discover 10 locations',
-                'achievements.master_collector': 'Master Collector',
-                'achievements.collect_items': 'Collect all rare items',
+                
+                // Badges
+                'badges.pro_gamer': 'Pro Gamer',
+                'badges.achievement_hunter': 'Achievement Hunter',
+                
+                // Settings
                 'settings.general': 'General',
-                'settings.account': 'Account',
-                'settings.game': 'Game',
-                'settings.about': 'About',
-                'settings.general_settings': 'General Settings',
-                'settings.account_settings': 'Account Settings',
-                'settings.game_settings': 'Game Settings',
-                'settings.about_vanta': 'About Vanta Launcher',
                 'settings.language': 'Language',
-                'settings.language_desc': 'Choose your preferred language',
-                'settings.dark_theme': 'Dark Theme',
-                'settings.dark_theme_desc': 'Use dark theme across the launcher',
-                'settings.notifications': 'Notifications',
-                'settings.notifications_desc': 'Receive notifications for updates and friends',
-                'settings.email': 'Email',
-                'settings.password': 'Password',
-                'settings.two_factor': 'Two-Factor Authentication',
-                'settings.two_factor_desc': 'Add an extra layer of security',
+                'settings.theme': 'Theme',
+                'settings.dark_mode': 'Dark Mode',
+                'settings.startup': 'Launch on Startup',
+                'settings.auto_launch': 'Auto-launch Vanta Launcher',
+                'settings.gaming': 'Gaming',
+                'settings.install_location': 'Default Install Location',
+                'settings.auto_updates': 'Auto-Update Games',
+                'settings.enable_auto_updates': 'Enable automatic game updates',
                 'settings.overlay': 'In-Game Overlay',
-                'settings.overlay_desc': 'Show FPS, friends, and chat overlay',
-                'settings.cloud_saves': 'Cloud Saves',
-                'settings.cloud_saves_desc': 'Sync game saves to the cloud',
-                'settings.hardware_acceleration': 'Hardware Acceleration',
-                'settings.hardware_acceleration_desc': 'Use GPU for better performance',
-                'about.version': 'Version DÉMO',
-                'about.copyright': 'Copyright',
-                'about.copyright_text': '© 2025 Uniware. All rights reserved.',
-                'about.description': 'This is a demonstration version of Vanta Launcher.<br>Built with modern web technologies for optimal performance.'
-            },
-            es: {
-                'nav.home': 'Inicio',
-                'nav.store': 'Tienda',
-                'nav.library': 'Biblioteca',
-                'nav.downloads': 'Descargas',
-                'nav.friends': 'Amigos',
-                'nav.profile': 'Perfil',
-                'nav.settings': 'Configuración',
-                'user.level': 'Nivel 42',
-                'search.placeholder': 'Buscar juegos, amigos o contenido...',
-                'games.cyberpunk.description': 'Vive la aventura cyberpunk definitiva en una metrópolis de neón donde la tecnología y la humanidad chocan.',
-                'games.omega.description': 'Nuestro juego modificado. Si te gustan los MOBA ligeros, este es para ti.',
-                'games.mystic.description': 'Domina las artes arcanas en este encantador RPG de fantasía lleno de magia, misterio y aventura.',
-                'buttons.play_now': 'Jugar Ahora',
-                'buttons.get_game': 'Obtener Juego',
-                'buttons.learn_more': 'Saber Más',
-                'buttons.play': 'Jugar',
-                'buttons.view_all': 'Ver Todo',
-                'buttons.view': 'Ver',
-                'buttons.filters': 'Filtros',
-                'buttons.sort': 'Ordenar',
-                'buttons.add_friend': 'Añadir Amigo',
-                'buttons.change': 'Cambiar',
-                'buttons.enable': 'Activar',
-                'buttons.license': 'Licencia',
-                'buttons.website': 'Sitio Web',
-                'sections.recent_activity': 'Actividad Reciente',
-                'sections.your_library': 'Tu Biblioteca',
-                'pages.game_store': 'Tienda de Juegos',
-                'tabs.all_games': 'Todos los Juegos',
-                'tabs.free': 'Gratis',
-                'tabs.on_sale': 'En Oferta',
-                'tabs.new_releases': 'Nuevos Lanzamientos',
-                'tabs.popular': 'Popular',
-                'badges.free': 'Gratis',
-                'badges.pro_gamer': 'Jugador Pro',
-                'badges.achievement_hunter': 'Cazador de Logros',
-                'activity.last_played': 'Última vez jugado: 2024-01-20',
-                'activity.playing': 'Jugando Cyberpunk 2077',
-                'status.online': 'En línea',
-                'status.away': 'Ausente',
-                'status.offline': 'Desconectado',
-                'status.downloading': 'Descargando',
-                'status.queued': 'En cola',
-                'status.completed': 'Completado',
-                'profile.member_since': 'Nivel 42 • Miembro desde 2023',
-                'profile.game_library': 'Biblioteca de Juegos',
-                'profile.games_owned': 'Juegos Poseídos',
-                'profile.achievements': 'Logros',
-                'profile.unlocked': 'Desbloqueados',
-                'profile.connected': 'Conectados',
-                'profile.recent_achievements': 'Logros Recientes',
-                'achievements.first_steps': 'Primeros Pasos',
-                'achievements.complete_tutorial': 'Completar el tutorial',
-                'achievements.explorer': 'Nuevo jugador',
-                'achievements.discover_locations': 'Desbloquea 10 Brawlers',
-                'achievements.master_collector': 'Coleccionista Maestro',
-                'achievements.collect_items': 'Recoger todos los objetos raros',
-                'settings.general': 'General',
-                'settings.account': 'Cuenta',
-                'settings.game': 'Juego',
-                'settings.about': 'Acerca de',
-                'settings.general_settings': 'Configuración General',
-                'settings.account_settings': 'Configuración de Cuenta',
-                'settings.game_settings': 'Configuración de Juego',
-                'settings.about_vanta': 'Acerca de Vanta Launcher',
-                'settings.language': 'Idioma',
-                'settings.language_desc': 'Elige tu idioma preferido',
-                'settings.dark_theme': 'Tema Oscuro',
-                'settings.dark_theme_desc': 'Usar tema oscuro en todo el launcher',
-                'settings.notifications': 'Notificaciones',
-                'settings.notifications_desc': 'Recibir notificaciones de actualizaciones y amigos',
-                'settings.email': 'Correo',
-                'settings.password': 'Contraseña',
-                'settings.two_factor': 'Autenticación de Dos Factores',
-                'settings.two_factor_desc': 'Añadir una capa extra de seguridad',
-                'settings.overlay': 'Superposición en Juego',
-                'settings.overlay_desc': 'Mostrar FPS, amigos y chat superpuesto',
-                'settings.cloud_saves': 'Guardados en la Nube',
-                'settings.cloud_saves_desc': 'Sincronizar guardados de juego en la nube',
-                'settings.hardware_acceleration': 'Aceleración por Hardware',
-                'settings.hardware_acceleration_desc': 'Usar GPU para mejor rendimiento',
-                'about.version': 'Versión DEMO',
-                'about.copyright': 'Derechos de Autor',
-                'about.copyright_text': '© 2025 Uniware. Todos los derechos reservados.',
-                'about.description': 'Esta es una versión de demostración de Vanta Launcher.<br>Construido con tecnologías web modernas para un rendimiento óptimo.'
+                'settings.enable_overlay': 'Enable Vanta overlay in games',
+                'settings.privacy': 'Privacy',
+                'settings.profile_visibility': 'Profile Visibility',
+                'settings.public': 'Public',
+                'settings.friends_only': 'Friends Only',
+                'settings.private': 'Private',
+                'settings.activity_status': 'Show Activity Status',
+                'settings.show_activity': 'Let friends see what you\'re playing',
+                'settings.data_collection': 'Data Collection',
+                'settings.analytics': 'Allow analytics data collection',
+                'settings.account': 'Account',
+                'settings.username': 'Username',
+                'settings.email': 'Email',
+                'settings.change_password': 'Change Password',
+                'settings.logout': 'Logout',
+                
+                // Notifications
+                'notifications.title': 'Notifications',
+                'notifications.mark_all_read': 'Mark all as read'
             },
             fr: {
+                // Navigation
                 'nav.home': 'Accueil',
                 'nav.store': 'Boutique',
                 'nav.library': 'Bibliothèque',
                 'nav.downloads': 'Téléchargements',
                 'nav.friends': 'Amis',
-                'nav.profile': 'Profil',
                 'nav.settings': 'Paramètres',
+                
+                // User
                 'user.level': 'Niveau 42',
+                
+                // Search
                 'search.placeholder': 'Rechercher des jeux, amis ou contenu...',
-                'games.cyberpunk.description': 'Vivez l\'aventure cyberpunk ultime dans une métropole néon où technologie et humanité s\'affrontent.',
-                'games.omega.description': "Notre jeu moddé, Si vous aimez les MOBA-Lite, c'est fait pour vous !",
-                'games.mystic.description': 'Maîtrisez les arts arcaniques dans ce RPG fantastique enchanteur rempli de magie, mystère et aventure.',
+                
+                // Buttons
                 'buttons.play_now': 'Jouer Maintenant',
-                'buttons.get_game': 'Obtenir le Jeu',
                 'buttons.learn_more': 'En Savoir Plus',
+                'buttons.get_game': 'Obtenir le Jeu',
                 'buttons.play': 'Jouer',
                 'buttons.view_all': 'Voir Tout',
                 'buttons.view': 'Voir',
                 'buttons.filters': 'Filtres',
                 'buttons.sort': 'Trier',
                 'buttons.add_friend': 'Ajouter un Ami',
-                'buttons.change': 'Changer',
-                'buttons.enable': 'Activer',
-                'buttons.license': 'Licence',
-                'buttons.website': 'Site Web',
+                
+                // Sections
                 'sections.recent_activity': 'Activité Récente',
                 'sections.your_library': 'Votre Bibliothèque',
+                
+                // Pages
                 'pages.game_store': 'Boutique de Jeux',
+                
+                // Tabs
                 'tabs.all_games': 'Tous les Jeux',
                 'tabs.free': 'Gratuit',
                 'tabs.on_sale': 'En Promotion',
-                'tabs.new_releases': 'Nouvelles Sorties',
+                'tabs.new_releases': 'Nouveautés',
                 'tabs.popular': 'Populaire',
+                
+                // Badges
                 'badges.free': 'Gratuit',
-                'badges.pro_gamer': 'Joueur Pro',
-                'badges.achievement_hunter': 'Chasseur de Succès',
-                'activity.last_played': 'Dernière fois joué: 2024-01-20',
-                'activity.playing': 'Joue à Cyberpunk 2077',
-                'status.online': 'En ligne',
-                'status.away': 'Absent',
-                'status.offline': 'Hors ligne',
+                
+                // Activity
+                'activity.last_played': 'Dernière partie : 20/01/2024',
+                'activity.playing': 'Joue à',
+                
+                // Status
                 'status.downloading': 'Téléchargement',
-                'status.queued': 'En attente',
+                'status.queued': 'En Attente',
                 'status.completed': 'Terminé',
+                'status.online': 'En Ligne',
+                'status.away': 'Absent',
+                'status.offline': 'Hors Ligne',
+                
+                // Games
+                'games.cyberpunk.description': 'Vivez l\'aventure cyberpunk ultime dans une métropole néon où technologie et humanité s\'affrontent.',
+                'games.omega.description': 'Notre jeu moddé, si vous aimez les MOBA-lite, c\'est pour vous !',
+                'games.mystic.description': 'Maîtrisez les arts occultes dans ce RPG fantastique enchanteur rempli de magie, mystère et aventure.',
+                
+                // Profile
                 'profile.member_since': 'Niveau 42 • Membre depuis 2023',
                 'profile.game_library': 'Bibliothèque de Jeux',
                 'profile.games_owned': 'Jeux Possédés',
@@ -1970,309 +2633,93 @@
                 'profile.unlocked': 'Débloqués',
                 'profile.connected': 'Connectés',
                 'profile.recent_achievements': 'Succès Récents',
-                'achievements.first_steps': 'Premiers Pas',
-                'achievements.complete_tutorial': 'Terminer le tutoriel',
-                'achievements.explorer': 'Nouveau Joueur !',
-                'achievements.discover_locations': 'Débloquer 10 Brawlers',
-                'achievements.master_collector': 'Collectionneur Maître',
-                'achievements.collect_items': 'Collecter tous les objets rares',
+                
+                // Badges
+                'badges.pro_gamer': 'Joueur Pro',
+                'badges.achievement_hunter': 'Chasseur de Succès',
+                
+                // Settings
                 'settings.general': 'Général',
-                'settings.account': 'Compte',
-                'settings.game': 'Jeu',
-                'settings.about': 'À propos',
-                'settings.general_settings': 'Paramètres Généraux',
-                'settings.account_settings': 'Paramètres du Compte',
-                'settings.game_settings': 'Paramètres de Jeu',
-                'settings.about_vanta': 'À propos de Vanta Launcher',
                 'settings.language': 'Langue',
-                'settings.language_desc': 'Choisissez votre langue préférée',
-                'settings.dark_theme': 'Thème Sombre',
-                'settings.dark_theme_desc': 'Utiliser le thème sombre dans tout le launcher',
-                'settings.notifications': 'Notifications',
-                'settings.notifications_desc': 'Recevoir des notifications pour les mises à jour et amis',
+                'settings.theme': 'Thème',
+                'settings.dark_mode': 'Mode Sombre',
+                'settings.startup': 'Lancement au Démarrage',
+                'settings.auto_launch': 'Lancer automatiquement Vanta Launcher',
+                'settings.gaming': 'Jeux',
+                'settings.install_location': 'Emplacement d\'Installation par Défaut',
+                'settings.auto_updates': 'Mises à Jour Automatiques',
+                'settings.enable_auto_updates': 'Activer les mises à jour automatiques des jeux',
+                'settings.overlay': 'Overlay en Jeu',
+                'settings.enable_overlay': 'Activer l\'overlay Vanta dans les jeux',
+                'settings.privacy': 'Confidentialité',
+                'settings.profile_visibility': 'Visibilité du Profil',
+                'settings.public': 'Public',
+                'settings.friends_only': 'Amis Seulement',
+                'settings.private': 'Privé',
+                'settings.activity_status': 'Afficher le Statut d\'Activité',
+                'settings.show_activity': 'Permettre aux amis de voir à quoi vous jouez',
+                'settings.data_collection': 'Collecte de Données',
+                'settings.analytics': 'Autoriser la collecte de données analytiques',
+                'settings.account': 'Compte',
+                'settings.username': 'Nom d\'Utilisateur',
                 'settings.email': 'Email',
-                'settings.password': 'Mot de passe',
-                'settings.two_factor': 'Authentification à Deux Facteurs',
-                'settings.two_factor_desc': 'Ajouter une couche de sécurité supplémentaire',
-                'settings.overlay': 'Superposition en Jeu',
-                'settings.overlay_desc': 'Afficher FPS, amis et chat en superposition',
-                'settings.cloud_saves': 'Sauvegardes Cloud',
-                'settings.cloud_saves_desc': 'Synchroniser les sauvegardes de jeu dans le cloud',
-                'settings.hardware_acceleration': 'Accélération Matérielle',
-                'settings.hardware_acceleration_desc': 'Utiliser le GPU pour de meilleures performances',
-                'about.version': 'Version DÉMO',
-                'about.copyright': 'Droits d\'auteur',
-                'about.copyright_text': '© 2025 Uniware. Tous droits réservés.',
-                'about.description': 'Ceci est une version de démonstration de Vanta Launcher.<br>Construit avec des technologies web modernes pour des performances optimales.'
-            },
-            de: {
-                'nav.home': 'Startseite',
-                'nav.store': 'Shop',
-                'nav.library': 'Bibliothek',
-                'nav.downloads': 'Downloads',
-                'nav.friends': 'Freunde',
-                'nav.profile': 'Profil',
-                'nav.settings': 'Einstellungen',
-                'user.level': 'Level 42',
-                'search.placeholder': 'Spiele, Freunde oder Inhalte suchen...',
-                'games.cyberpunk.description': 'Erleben Sie das ultimative Cyberpunk-Abenteuer in einer neonbeleuchteten Metropole, wo Technologie und Menschlichkeit aufeinanderprallen.',
-                'games.omega.description': 'Unser modifiziertes Spiel. Wenn du MOBA-Lite magst, ist das genau das Richtige für dich.',
-                'games.mystic.description': 'Meistern Sie die arkanen Künste in diesem bezaubernden Fantasy-RPG voller Magie, Mysterium und Abenteuer.',
-                'buttons.play_now': 'Jetzt Spielen',
-                'buttons.get_game': 'Spiel Holen',
-                'buttons.learn_more': 'Mehr Erfahren',
-                'buttons.play': 'Spielen',
-                'buttons.view_all': 'Alle Anzeigen',
-                'buttons.view': 'Anzeigen',
-                'buttons.filters': 'Filter',
-                'buttons.sort': 'Sortieren',
-                'buttons.add_friend': 'Freund Hinzufügen',
-                'buttons.change': 'Ändern',
-                'buttons.enable': 'Aktivieren',
-                'buttons.license': 'Lizenz',
-                'buttons.website': 'Webseite',
-                'sections.recent_activity': 'Letzte Aktivität',
-                'sections.your_library': 'Ihre Bibliothek',
-                'pages.game_store': 'Spiele-Shop',
-                'tabs.all_games': 'Alle Spiele',
-                'tabs.free': 'Kostenlos',
-                'tabs.on_sale': 'Im Angebot',
-                'tabs.new_releases': 'Neue Veröffentlichungen',
-                'tabs.popular': 'Beliebt',
-                'badges.free': 'Kostenlos',
-                'badges.pro_gamer': 'Pro Gamer',
-                'badges.achievement_hunter': 'Erfolgs-Jäger',
-                'activity.last_played': 'Zuletzt gespielt: 2024-01-20',
-                'activity.playing': 'Spielt Cyberpunk 2077',
-                'status.online': 'Online',
-                'status.away': 'Abwesend',
-                'status.offline': 'Offline',
-                'status.downloading': 'Herunterladen',
-                'status.queued': 'In Warteschlange',
-                'status.completed': 'Abgeschlossen',
-                'profile.member_since': 'Level 42 • Mitglied seit 2023',
-                'profile.game_library': 'Spiele-Bibliothek',
-                'profile.games_owned': 'Besessene Spiele',
-                'profile.achievements': 'Erfolge',
-                'profile.unlocked': 'Freigeschaltet',
-                'profile.connected': 'Verbunden',
-                'profile.recent_achievements': 'Letzte Erfolge',
-                'achievements.first_steps': 'Erste Schritte',
-                'achievements.complete_tutorial': 'Tutorial abschließen',
-                'achievements.explorer': 'Nueur Spieler !',
-                'achievements.discover_locations': 'Schalte 10 Brawlers frei',
-                'achievements.master_collector': 'Meister-Sammler',
-                'achievements.collect_items': 'Alle seltenen Gegenstände sammeln',
-                'settings.general': 'Allgemein',
-                'settings.account': 'Konto',
-                'settings.game': 'Spiel',
-                'settings.about': 'Über',
-                'settings.general_settings': 'Allgemeine Einstellungen',
-                'settings.account_settings': 'Konto-Einstellungen',
-                'settings.game_settings': 'Spiel-Einstellungen',
-                'settings.about_vanta': 'Über Vanta Launcher',
-                'settings.language': 'Sprache',
-                'settings.language_desc': 'Wählen Sie Ihre bevorzugte Sprache',
-                'settings.dark_theme': 'Dunkles Theme',
-                'settings.dark_theme_desc': 'Dunkles Theme im gesamten Launcher verwenden',
-                'settings.notifications': 'Benachrichtigungen',
-                'settings.notifications_desc': 'Benachrichtigungen für Updates und Freunde erhalten',
-                'settings.email': 'E-Mail',
-                'settings.password': 'Passwort',
-                'settings.two_factor': 'Zwei-Faktor-Authentifizierung',
-                'settings.two_factor_desc': 'Eine zusätzliche Sicherheitsebene hinzufügen',
-                'settings.overlay': 'In-Game-Overlay',
-                'settings.overlay_desc': 'FPS, Freunde und Chat-Overlay anzeigen',
-                'settings.cloud_saves': 'Cloud-Speicherstände',
-                'settings.cloud_saves_desc': 'Spielstände in der Cloud synchronisieren',
-                'settings.hardware_acceleration': 'Hardware-Beschleunigung',
-                'settings.hardware_acceleration_desc': 'GPU für bessere Leistung verwenden',
-                'about.version': 'Version DEMO',
-                'about.copyright': 'Urheberrecht',
-                'about.copyright_text': '© 2025 Uniware. Alle Rechte vorbehalten.',
-                'about.description': 'Dies ist eine Demonstrationsversion von Vanta Launcher.<br>Erstellt mit modernen Web-Technologien für optimale Leistung.'
+                'settings.change_password': 'Changer le Mot de Passe',
+                'settings.logout': 'Déconnexion',
+                
+                // Notifications
+                'notifications.title': 'Notifications',
+                'notifications.mark_all_read': 'Tout marquer comme lu'
             }
         };
 
         let currentLanguage = 'en';
 
-        // Language change functionality
-        function changeLanguage(lang) {
-            currentLanguage = lang;
+        function translatePage() {
             const elements = document.querySelectorAll('[data-translate]');
-            
             elements.forEach(element => {
                 const key = element.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    element.textContent = translations[lang][key];
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.textContent = translations[currentLanguage][key];
                 }
             });
 
-            // Handle placeholder translations
+            // Handle placeholders
             const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
             placeholderElements.forEach(element => {
                 const key = element.getAttribute('data-translate-placeholder');
-                if (translations[lang] && translations[lang][key]) {
-                    element.placeholder = translations[lang][key];
-                }
-            });
-
-            // Handle HTML content translations (for descriptions with <br>)
-            const htmlElements = document.querySelectorAll('[data-translate="about.description"]');
-            htmlElements.forEach(element => {
-                if (translations[lang] && translations[lang]['about.description']) {
-                    element.innerHTML = translations[lang]['about.description'];
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.placeholder = translations[currentLanguage][key];
                 }
             });
 
             // Update tooltips for minimized sidebar
-            document.querySelectorAll('.nav-item').forEach(item => {
-                const key = item.querySelector('[data-translate]')?.getAttribute('data-translate');
-                if (key && translations[lang] && translations[lang][key]) {
-                    item.setAttribute('data-tooltip', translations[lang][key]);
+            const tooltipElements = document.querySelectorAll('[data-tooltip]');
+            tooltipElements.forEach(element => {
+                const translateKey = element.getAttribute('data-translate');
+                if (translateKey && translations[currentLanguage] && translations[currentLanguage][translateKey]) {
+                    element.setAttribute('data-tooltip', translations[currentLanguage][translateKey]);
                 }
             });
-
-            // Save language preference
-            localStorage.setItem('vanta-language', lang);
         }
 
-        // Load saved language on startup
-        function loadLanguage() {
-            const savedLang = localStorage.getItem('vanta-language') || 'en';
-            const languageSelect = document.getElementById('languageSelect');
-            if (languageSelect) {
-                languageSelect.value = savedLang;
-                changeLanguage(savedLang);
-            }
+        // Language selector functionality
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.addEventListener('change', (e) => {
+                const selectedLanguage = e.target.value;
+                if (selectedLanguage === 'English') {
+                    currentLanguage = 'en';
+                } else if (selectedLanguage === 'Français') {
+                    currentLanguage = 'fr';
+                }
+                translatePage();
+            });
         }
 
-        // Sidebar toggle functionality
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('minimized');
-        }
-
-        // Add click event listener to sidebar toggle
-        document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
-
-        // Language select change event
-        document.getElementById('languageSelect').addEventListener('change', (e) => {
-            changeLanguage(e.target.value);
-        });
-
-        // Navigation functionality
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Remove active class from all nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Show selected page
-            document.getElementById(pageId).classList.add('active');
-            
-            // Add active class to selected nav item
-            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-        }
-
-        // Add click event listeners to navigation items
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const pageId = item.getAttribute('data-page');
-                showPage(pageId);
-            });
-        });
-
-        // Featured carousel functionality
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-slide');
-        const dots = document.querySelectorAll('.carousel-dot');
-
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
-            currentSlide = index;
-        }
-
-        // Auto-rotate carousel
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }, 5000);
-
-        // Carousel dot click handlers
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
-            });
-        });
-
-        // Tab functionality
-        document.querySelectorAll('.tab-trigger').forEach(trigger => {
-            trigger.addEventListener('click', () => {
-                const tabId = trigger.getAttribute('data-tab');
-                
-                // Remove active class from all triggers and contents
-                document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked trigger and corresponding content
-                trigger.classList.add('active');
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-
-        // Library view toggle
-        document.getElementById('gridViewBtn')?.addEventListener('click', () => {
-            document.getElementById('gridViewBtn').classList.add('btn-secondary');
-            document.getElementById('gridViewBtn').classList.remove('btn-outline');
-            document.getElementById('listViewBtn').classList.add('btn-outline');
-            document.getElementById('listViewBtn').classList.remove('btn-secondary');
-        });
-
-        document.getElementById('listViewBtn')?.addEventListener('click', () => {
-            document.getElementById('listViewBtn').classList.add('btn-secondary');
-            document.getElementById('listViewBtn').classList.remove('btn-outline');
-            document.getElementById('gridViewBtn').classList.add('btn-outline');
-            document.getElementById('gridViewBtn').classList.remove('btn-secondary');
-        });
-
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            // Here you would implement search filtering logic
-            console.log('Searching for:', searchTerm);
-        });
-
-        // Store tab functionality
-        document.querySelectorAll('[data-tab]').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.getAttribute('data-tab');
-                
-                // Remove active class from all tabs
-                document.querySelectorAll('[data-tab]').forEach(t => t.classList.remove('active'));
-                
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                
-                // Here you would filter games based on the selected tab
-                console.log('Selected tab:', tabName);
-            });
-        });
-
-        // Initialize language on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            loadLanguage();
-        });
+        // Initialize translations
+        translatePage();
     </script>
 </body>
 </html>
-keep in mind that's a demo version, bugs, not all features work. Created by Uniware. Managed by Zetsukae.
+
+Keep in mind that's a DEMO Version, might have some bugs.
