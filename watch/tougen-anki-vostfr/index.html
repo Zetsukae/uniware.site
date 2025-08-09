@@ -588,6 +588,7 @@
           <option value="2">EP 02</option>
           <option value="3">EP 03</option>
           <option value="4">EP 04</option>
+          <option value="4">EP 05</option>
         </select>
         <!-- Barre défilante pour choisir le lecteur -->
         <select id="playerSelect">
@@ -666,7 +667,7 @@
       '2': 'https://video.sibnet.ru/shell.php?videoid=5967686',
       '3': 'https://video.sibnet.ru/shell.php?videoid=5974310',
       '4': 'https://video.sibnet.ru/shell.php?videoid=5980073',
-      '5': 'https://video.sibnet.ru/shell.php?videoid=5976600',
+      '5': 'https://video.sibnet.ru/shell.php?videoid=5986436',
       '6': 'https://video.sibnet.ru/shell.php?videoid=5976601',
       '7': 'https://video.sibnet.ru/shell.php?videoid=5976605',
       '8': 'https://video.sibnet.ru/shell.php?videoid=5976606',
@@ -862,7 +863,7 @@
     // Fonction pour aller à l'épisode suivant
     function goToNextEpisode() {
       const currentEpisode = parseInt(episodeSelect.value);
-      const totalEpisodes = 3; // Seulement 3 épisodes disponibles
+      const totalEpisodes = 5; // Seulement 3 épisodes disponibles
       if (currentEpisode < totalEpisodes) {
         episodeSelect.value = (currentEpisode + 1).toString();
         updateVideoSource();
