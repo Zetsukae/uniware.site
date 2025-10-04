@@ -238,30 +238,46 @@
             flex-wrap: wrap;
             margin-bottom: 40px;
         }
-        .button-link {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: white;
-            padding: 12px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 16px;
-            font-family: 'Lato', sans-serif;
-            font-weight: 400;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            cursor: pointer;
-            display: inline-block;
-            letter-spacing: 1px;
+        .boton-elegante {
+          padding: 15px 30px;
+          border: 2px solid #2c2c2c;
+          background-color: #1a1a1a;
+          color: #ffffff;
+          font-size: 1.2rem;
+          cursor: pointer;
+          border-radius: 30px;
+          transition: all 0.4s ease;
+          outline: none;
+          position: relative;
+          overflow: hidden;
+          font-weight: bold;
+          text-decoration: none;
+          display: inline-block;
         }
-        .button-link:hover {
-            background-color: rgba(255, 255, 255, 0.25);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+
+        .boton-elegante::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0) 70%
+          );
+          transform: scale(0);
+          transition: transform 0.5s ease;
         }
-        .button-link:active {
-            transform: scale(0.98);
+
+        .boton-elegante:hover::after {
+          transform: scale(4);
+        }
+
+        .boton-elegante:hover {
+          border-color: #666666;
+          background: #292929;
         }
                 /* Nouvelle section info-card - maintenant cliquable */
         .info-card {
@@ -349,9 +365,9 @@
                 gap: 15px;
                 margin-bottom: 30px;
             }
-                        .button-link {
-                font-size: 14px;
-                padding: 10px 20px;
+                        .boton-elegante {
+                font-size: 1rem;
+                padding: 12px 24px;
             }
                         .info-card {
                 max-width: 320px;
@@ -409,9 +425,9 @@
         <h1 class="brand-text">D'INFOS</h1>
         
         <div class="buttons-container">
-            <a href="https://uniware.site/watch/maintenance/" class="button-link">WATCH</a>
-            <a href="https://uniware.mycommerce.shop/" class="button-link">SHOP</a>
-            <a href="https://uniware.site" class="button-link">RETOUR</a>
+            <a href="https://uniware.site/watch/maintenance/" class="boton-elegante">WATCH</a>
+            <a href="https://uniware.mycommerce.shop/" class="boton-elegante">SHOP</a>
+            <a href="https://uniware.site" class="boton-elegante">RETOUR</a>
         </div>
         
         <a href="https://github.com/Zetsukae/uniware.site" class="info-card">
