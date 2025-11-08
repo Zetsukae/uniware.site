@@ -293,7 +293,7 @@
           background: #292929;
         }
 
-        /* Chat Button Styles */
+        /* Chat Button Styles - now with proper styling */
         .chat {
             position: fixed;
             bottom: 24px;
@@ -372,22 +372,178 @@
             transform: scale(0);
         }
 
-        @media (max-width: 768px) {
-            .welcome-text {…}
-            
-            .brand-text {…}
-            
-            .buttons-container {…}
-            
-            .button-link {…}
+        /* Chatbot Modal Styles */
+        .chatbot-modal {
+            position: fixed;
+            bottom: 100px;
+            left: 24px;
+            width: 350px;
+            height: 500px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            border: 2px solid #444;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            display: none;
+            flex-direction: column;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+        }
 
-            .settings-container {…}
+        .chatbot-modal.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .chatbot-header {
+            padding: 16px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        /* Hiding the close button */
+        .chatbot-close {
+            display: none;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            padding: 10px 12px;
+            border-radius: 8px;
+            max-width: 85%;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background-color: #3a3a3a;
+            color: #e0e0e0;
+        }
+
+        .message.loading {
+            align-self: flex-start;
+            background-color: #3a3a3a;
+            color: #999;
+            font-style: italic;
+        }
+
+        .chatbot-input-container {
+            padding: 12px;
+            border-top: 1px solid #444;
+            display: flex;
+            gap: 8px;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chatbot-input:focus {
+            border-color: #007bff;
+        }
+
+        .chatbot-send {
+            padding: 10px 16px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .chatbot-send:hover {
+            background-color: #0056b3;
+        }
+
+        .chatbot-send:active {
+            transform: scale(0.95);
+        }
+
+        .chatbot-send:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 1.8rem;
+            }
+            
+            .brand-text {
+                font-size: 2.8rem;
+                letter-spacing: 4px;
+            }
+            
+            .buttons-container {
+                gap: 10px;
+            }
+            
+            .settings-container {
+                top: 16px;
+                right: 16px;
+            }
+
+            .chatbot-modal {
+                width: calc(100% - 48px);
+                height: 400px;
+                bottom: 90px;
+                left: 24px;
+            }
         }
 
         @media (max-width: 500px) {
-            .welcome-text {…}
+            .welcome-text {
+                font-size: 1.4rem;
+            }
             
-            .brand-text {…}
+            .brand-text {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
         }
     </style>
 </head>
@@ -414,8 +570,8 @@
         </div>
     </div>
 
-    <!-- Chat Button -->
-    <div class="chat" onclick="showComingSoon()">
+    <!-- Chat Button - now opens chatbot instead of alert -->
+    <div class="chat" onclick="toggleChatbot()">
         <div class="background"></div>
         <svg viewBox="0 0 100 100" height="60" width="60" class="chat-bubble">
             <g class="bubble">
@@ -432,6 +588,26 @@
             <circle cx="57.3" cy="50.7" r="1.9" class="circle circle3"></circle>
         </svg>
     </div>
+
+    <!-- Chatbot Modal -->
+    <div class="chatbot-modal" id="chatbotModal">
+        <div class="chatbot-header">
+            <span class="chatbot-title">Assistant Uniware</span>
+            <!-- Hiding the close button -->
+            <!-- <button class="chatbot-close" onclick="toggleChatbot()">×</button> -->
+        </div>
+        <div class="chatbot-messages" id="chatMessages"></div>
+        <div class="chatbot-input-container">
+            <input 
+                type="text" 
+                class="chatbot-input" 
+                id="chatInput" 
+                placeholder="Écrivez votre message..."
+                onkeypress="handleKeyPress(event)"
+            >
+            <button class="chatbot-send" id="chatSendBtn" onclick="sendMessage()">Envoyer</button>
+        </div>
+    </div>
     
     <div class="title-container">
         <h2 class="welcome-text">Bienvenu chez</h2>
@@ -445,15 +621,102 @@
     </div>
 
     <script>
+        const GROQ_API_KEY = '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';
+        const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+        let chatHistory = [];
+        let isLoading = false;
+
+        function toggleChatbot() {
+            const modal = document.getElementById('chatbotModal');
+            modal.classList.toggle('active');
+            
+            if (modal.classList.contains('active')) {
+                document.getElementById('chatInput').focus();
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${sender}`;
+            messageEl.textContent = text;
+            messagesDiv.appendChild(messageEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message || isLoading) return;
+
+            isLoading = true;
+            input.disabled = true;
+            document.getElementById('chatSendBtn').disabled = true;
+
+            addMessage(message, 'user');
+            input.value = '';
+
+            addMessage('Génération de la réponse...', 'loading');
+
+            try {
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${GROQ_API_KEY}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            ...chatHistory.map(msg => ({
+                                role: msg.sender === 'user' ? 'user' : 'assistant',
+                                content: msg.text
+                            })),
+                            { role: 'user', content: message }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 500,
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error('Erreur Groq:', data);
+                    addMessage('Erreur: ' + (data.error?.message || 'Impossible de se connecter à l\'IA'), 'bot');
+                } else {
+                    const botMessage = data.choices[0].message.content;
+                    chatHistory.push({ text: message, sender: 'user' });
+                    chatHistory.push({ text: botMessage, sender: 'bot' });
+
+                    const messagesDiv = document.getElementById('chatMessages');
+                    messagesDiv.removeChild(messagesDiv.lastChild);
+
+                    addMessage(botMessage, 'bot');
+                }
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+                addMessage('Erreur: Impossible de se connecter au serveur', 'bot');
+            }
+
+            isLoading = false;
+            input.disabled = false;
+            document.getElementById('chatSendBtn').disabled = false;
+            input.focus();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !isLoading) {
+                sendMessage();
+            }
+        }
+
         function goToSettings() {
             window.location.href = 'settings/';
         }
 
-        function showComingSoon() {
-            alert('Disponible prochainement');
-        }
-
-        // Animation supplémentaire pour l'icône au clic
         document.querySelector('.settings-button').addEventListener('click', function() {
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
@@ -461,7 +724,6 @@
             }, 150);
         });
 
-        // Animation pour le bouton chat
         document.querySelector('.chat').addEventListener('click', function() {
             this.classList.toggle('active');
         });
