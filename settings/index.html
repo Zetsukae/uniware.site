@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniware SETTINGS</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: #000;
+            font-family: 'Lato', sans-serif;
+            height: 100vh;
+        }
+        #stars, #stars2, #stars3, #stars4 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        #stars {
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow:
+                300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+                600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+                500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+                350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+                150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+                250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+                1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+                1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+                1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+                1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+                850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+                1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+                50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+                400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+                900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+                100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+                450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+                550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+                1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+                1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+                320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+                520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+                620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+                370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+                170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+            animation: animStar 60s linear infinite;
+        }
+        #stars:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow:
+                300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+                600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+                500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+                350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+                150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+                250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+                1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+                1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+                1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+                1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+                850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+                1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+                50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+                400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+                900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+                100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+                450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+                550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+                1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+                1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+                320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+                520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+                620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+                370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+                170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+        }
+        #stars2 {
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            box-shadow:
+                500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+                700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+                1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+                350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+                150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+                250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+                1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+                1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+                520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+                620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+                1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+                370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+            animation: animStar 90s linear infinite;
+        }
+        #stars2:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            box-shadow:
+                500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+                700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+                1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+                350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+                150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+                250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+                1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+                1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+                520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+                620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+                1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+                370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+        }
+        #stars3 {
+            width: 3px;
+            height: 3px;
+            background: transparent;
+            box-shadow:
+                600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+                200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+                300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+                450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+                150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+                250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+                620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+                220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+                320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+            animation: animStar 140s linear infinite;
+        }
+        #stars3:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 3px;
+            height: 3px;
+            background: transparent;
+            box-shadow:
+                600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+                200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+                300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+                450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+                150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+                250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+                620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+                220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+                320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+        }
+        #stars4 {
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow:
+                160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+                660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+                360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+                1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+                860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+                180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+                680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+                380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+            animation: animStar 45s linear infinite;
+        }
+        #stars4:after {
+            content: " ";
+            position: absolute;
+            top: 2000px;
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow:
+                160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+                660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+                360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+                1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+                860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+                180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+                680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+                380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+        }
+        @keyframes animStar {
+            from {
+                transform: translateY(0px);
+            }
+            to {
+                transform: translateY(-2000px);
+            }
+        }
+        /* Interface principale */
+        .settings-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 20px;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        /* Sidebar gauche */
+        .sidebar {
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            padding: 0 30px 30px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        .sidebar-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .sidebar-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        .menu-item {
+            display: block;
+            padding: 16px 30px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.95);
+            border-left-color: rgba(255, 255, 255, 0.5);
+        }
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 1);
+            border-left-color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+        /* Zone de contenu principale */
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .content-header {
+            margin-bottom: 30px;
+        }
+        .content-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .content-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .setting-group {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .setting-group h3 {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .setting-label {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+        .setting-description {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 4px;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-switch.active {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .toggle-switch.active::after {
+            transform: translateX(26px);
+        }
+        /* Boutons d'action */
+        .action-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .action-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        .action-button.danger {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: rgba(255, 107, 107, 0.5);
+        }
+        .action-button.danger:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+        /* Statistiques */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        /* Styles spéciaux pour la section Planning */
+        .planning-info {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .anime-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .schedule-info {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+        .coming-soon {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        .access-link {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 12px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+        .access-link:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 1);
+        }
+        /* Styles pour la section Général - Message d'indisponibilité */
+        .unavailable-message {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .unavailable-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+        /* Bouton retour */
+        .back-button {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 12px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            z-index: 20;
+        }
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        /* Style pour le tip */
+        .tip-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            text-align: center;
+            padding: 12px 0;
+        }
+        /* Style pour le message d'absence de données */
+        .no-data-message {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .no-data-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .settings-container {
+                margin: 10px;
+                border-radius: 16px;
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                padding: 20px 0;
+            }
+            .sidebar-header {
+                padding: 0 20px 20px 20px;
+                margin-bottom: 20px;
+            }
+            .sidebar-title {
+                font-size: 1.5rem;
+            }
+            .menu-item {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+            .content-area {
+                padding: 20px;
+            }
+            .content-title {
+                font-size: 1.8rem;
+            }
+            .back-button {
+                top: 20px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            .planning-info, .unavailable-message {
+                padding: 24px;
+            }
+            .anime-title {
+                font-size: 1.5rem;
+            }
+            .schedule-info, .unavailable-text {
+                font-size: 1rem;
+            }
+            .access-link {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+        @media (max-width: 500px) {
+            .settings-container {
+                margin: 5px;
+                border-radius: 12px;
+            }
+            .content-area {
+                padding: 15px;
+            }
+            .content-title {
+                font-size: 1.5rem;
+            }
+            .setting-group {
+                padding: 16px;
+            }
+            .planning-info, .unavailable-message {
+                padding: 20px;
+            }
+            .anime-title {
+                font-size: 1.3rem;
+            }
+            .schedule-info, .unavailable-text {
+                font-size: 0.9rem;
+            }
+            .access-link {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div id="stars4"></div>
+    <a href="../" class="back-button">← Retour</a>
+    <div class="settings-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="sidebar-title">PARAMÈTRES</h1>
+                <p class="sidebar-subtitle">Configuration Uniware</p>
+            </div>
+                                
+            <a href="#" class="menu-item active" onclick="showSection('general')">Général</a>
+            <a href="#" class="menu-item" onclick="showSection('planning')">Planning</a>
+            <a href="#" class="menu-item" onclick="showSection('legal')">Légal</a>
+        </div>
+        <!-- Zone de contenu -->
+        <div class="content-area">
+            <!-- Section Général -->
+            <div id="general" class="content-section active">
+                <div class="content-header">
+                    <h2 class="content-title">Général</h2>
+                    <p class="content-subtitle">Paramètres généraux de l'application</p>
+                </div>
+                            
+                <div class="setting-group">
+                    <h3>Stockage des données</h3>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Utilisation du localStorage</div>
+                            <div class="setting-description">Activer/désactiver la sauvegarde automatique des préférences</div>
+                        </div>
+                        <div class="toggle-switch active" id="localStorageToggle" onclick="toggleLocalStorage(this)"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Données stockées</div>
+                            <div class="setting-description">Épisodes regardés, temps de visionnage, préférences utilisateur</div>
+                        </div>
+                        <button class="action-button danger" onclick="clearAllWatchData()">Effacer tout</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h3>Statistiques de visionnage</h3>
+                    <div id="statsContainer">
+                        <div class="stats-grid">
+                            <div class="stat-card" id="cyberpunkCard">
+                                <div class="stat-title">Cyberpunk: Edgerunners</div>
+                                <div class="stat-value" id="cyberpunkStats">0</div>
+                            </div>
+                            <div class="stat-card" id="gachiakutaCard">
+                                <div class="stat-title">Gachiakuta</div>
+                                <div class="stat-value" id="gachiakutaStats">0</div>
+                            </div>
+                            <div class="stat-card" id="infinityTrainCard">
+                                <div class="stat-title">Infinity Train</div>
+                                <div class="stat-value" id="infinityTrainStats">0</div>
+                            </div>
+                            <div class="stat-card" id="tougenAnkiCard">
+                                <div class="stat-title">Tougen Anki</div>
+                                <div class="stat-value" id="tougenAnkiStats">0</div>
+                            </div>
+                        </div>
+                        <div id="noDataMessage" class="no-data-message" style="display: none;">
+                            <div class="no-data-text">Aucune donnée ou le LocalStorage est désactivé !</div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="tip-text">TIPS: Utilisez un adblock</div>
+                    </div>
+                </div>
+            </div>
+                        
+            <!-- Section Planning -->
+            <div id="planning" class="content-section">
+                <div class="content-header">
+                    <h2 class="content-title">Planning</h2>
+                    <p class="content-subtitle">Calendrier de diffusion des animes</p>
+                </div>
+                <div class="planning-info">
+                    <h3 class="anime-title">Tougen Anki</h3>
+                    <p class="schedule-info">Tous les vendredis, jusqu'au 19 décembre 2025 !</p>
+                    <p class="coming-soon"></p>
+                    <a href="https://uniware.site/watch/tougen-anki-vostfr/" class="access-link" target="_blank">Accédez →</a>
+                </div>
+                <div class="planning-info">
+                    <h3 class="anime-title">Gachiakuta</h3>
+                    <p class="schedule-info">Tous les dimanches, jusqu'au 21 décembre 2025 !</p>
+                    <p class="coming-soon">Nouvelle série disponible.</p>
+                    <a href="https://uniware.site/watch/gachiakuta-vostfr/" class="access-link" target="_blank">Accédez →</a>
+                </div>
+            </div>
+                        
+            <!-- Section Légal -->
+            <div id="legal" class="content-section">
+                <div class="content-header">
+                    <h2 class="content-title">Légal</h2>
+                    <p class="content-subtitle">Informations légales.</p>
+                </div>
+                <div class="setting-group">
+                    <h3>Confidentialité</h3>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">Stockage local uniquement</div>
+                            <div class="setting-description">Toutes les données sont stockées localement sur votre appareil<br>Pour désactiver cette fonction aller dans : Général > localStorage</div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h3>Documents</h3>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">DMCA & DA</div>
+                            <div class="setting-description">Consulter le Digital Millennium Copyright Act & les Droits d'Auteurs.</div>
+                        </div>
+                        <a href="DMCA/" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">Voir →</a>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">© 2025 www.uniware.site - All Rights Reserved.</div>
+                            <div class="setting-description">Ce site est un espace de navigation et d'accès à du contenu vidéo hébergé ailleurs. Nous ne revendiquons aucun droit sur les séries, films ou œuvres diffusées. Tous les éléments audiovisuels restent la propriété exclusive de leurs créateurs, maisons de production et diffuseurs officiels. Nous respectons le travail des auteurs et des studios, et nous encourageons les visiteurs à soutenir les œuvres via les plateformes officielles lorsque cela est possible.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Configuration des clés localStorage pour chaque série
+        const SERIES_STORAGE_KEYS = {
+            cyberpunk: [
+                'cyberpunk_current_episode',
+                'cyberpunk_selected_player',
+                 'cyberpunk_last_visit',
+                'cyberpunk_watch_history'
+            ],
+            gachiakuta: [
+                'gachiakuta_current_episode',
+                'gachiakuta_selected_player',
+                'gachiakuta_last_visit',
+                 'gachiakuta_watch_history'
+            ],
+            infinitytrain: [
+                'infinitytrain_current_episode',
+                'infinitytrain_selected_player',
+                'infinitytrain_last_visit',
+                'infinitytrain_watch_history'
+            ],
+            tougenanki: [
+                'tougenanki_current_episode',
+                'tougenanki_selected_player',
+                'tougenanki_last_visit',
+                'tougenanki_watch_history'
+            ]
+        };
+        // Gestionnaire localStorage amélioré
+        class UniwareStorageManager {
+            constructor() {
+                this.localStorageEnabled = this.getLocalStorageStatus();
+            }
+            // Vérifier si localStorage est activé
+            getLocalStorageStatus() {
+                try {
+                    const status = localStorage.getItem('uniware_localStorage_enabled');
+                    return status !== 'false'; // Par défaut activé
+                } catch (error) {
+                    return true;
+                }
+            }
+            // Activer/désactiver localStorage
+            setLocalStorageStatus(enabled) {
+                try {
+                    localStorage.setItem('uniware_localStorage_enabled', enabled.toString());
+                    this.localStorageEnabled = enabled;
+                    console.log(`localStorage ${enabled ? 'activé' : 'désactivé'}`);
+                    return true;
+                } catch (error) {
+                    console.error('Erreur lors de la modification du statut localStorage:', error);
+                    return false;
+                }
+            }
+            // Obtenir les statistiques d'une série
+            getSeriesStats(seriesKey) {
+                if (!this.localStorageEnabled) return { episodes: 0, lastVisit: null };
+                            
+                try {
+                    const keys = SERIES_STORAGE_KEYS[seriesKey] || [];
+                    let episodes = 0;
+                    let lastVisit = null;
+                    keys.forEach(key => {
+                        const data = localStorage.getItem(key);
+                        if (data) {
+                            if (key.includes('current_episode')) {
+                                episodes = 1; // Au moins un épisode regardé
+                            }
+                            if (key.includes('last_visit')) {
+                                try {
+                                    const visitData = JSON.parse(data);
+                                    lastVisit = visitData;
+                                } catch (e) {
+                                    lastVisit = data;
+                                }
+                            }
+                            if (key.includes('watch_history')) {
+                                try {
+                                    const history = JSON.parse(data);
+                                    if (Array.isArray(history)) {
+                                        episodes = Math.max(episodes, history.length);
+                                    }
+                                } catch (e) {
+                                    // Ignore parsing errors
+                                }
+                            }
+                        }
+                    });
+                    return { episodes, lastVisit };
+                } catch (error) {
+                    console.error(`Erreur lors de la récupération des stats pour ${seriesKey}:`, error);
+                    return { episodes: 0, lastVisit: null };
+                }
+            }
+            // Effacer les données d'une série spécifique
+            clearSeriesData(seriesKey) {
+                if (!SERIES_STORAGE_KEYS[seriesKey]) {
+                    console.error(`Série inconnue: ${seriesKey}`);
+                    return false;
+                }
+                try {
+                    const keys = SERIES_STORAGE_KEYS[seriesKey];
+                    keys.forEach(key => {
+                        localStorage.removeItem(key);
+                    });
+                    console.log(`Données effacées pour ${seriesKey}`);
+                    return true;
+                } catch (error) {
+                    console.error(`Erreur lors de l'effacement des données pour ${seriesKey}:`, error);
+                    return false;
+                }
+            }
+            // Effacer toutes les données de toutes les séries
+            clearAllSeriesData() {
+                try {
+                    Object.keys(SERIES_STORAGE_KEYS).forEach(seriesKey => {
+                        this.clearSeriesData(seriesKey);
+                    });
+                    console.log('Toutes les données des séries ont été effacées');
+                    return true;
+                } catch (error) {
+                    console.error('Erreur lors de l\'effacement de toutes les données:', error);
+                    return false;
+                }
+            }
+            // Obtenir toutes les statistiques
+            getAllStats() {
+                const stats = {};
+                Object.keys(SERIES_STORAGE_KEYS).forEach(seriesKey => {
+                    stats[seriesKey] = this.getSeriesStats(seriesKey);
+                });
+                return stats;
+            }
+        }
+        // Initialiser le gestionnaire
+        const storageManager = new UniwareStorageManager();
+        // Fonctions pour l'interface
+        function showSection(sectionId) {
+            // Masquer toutes les sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+                                
+            // Afficher la section sélectionnée
+            document.getElementById(sectionId).classList.add('active');
+                                
+            // Mettre à jour le menu actif
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+            // Mettre à jour les statistiques si on affiche la section générale
+            if (sectionId === 'general') {
+                updateStats();
+            }
+        }
+        function toggleLocalStorage(element) {
+            const newStatus = !storageManager.localStorageEnabled;
+            const success = storageManager.setLocalStorageStatus(newStatus);
+                    
+            if (success) {
+                element.classList.toggle('active', newStatus);
+                            
+                if (newStatus) {
+                    showNotification('localStorage activé', 'success');
+                } else {
+                    showNotification('localStorage désactivé - Les données ne seront plus sauvegardées', 'warning');
+                }
+            } else {
+                showNotification('Erreur lors de la modification des paramètres', 'error');
+            }
+        }
+        function clearAllWatchData() {
+            if (confirm('⚠️ ATTENTION ⚠️\n\nCette action va effacer TOUTES les données de visionnage de TOUTES les séries.\n\nCette action est IRRÉVERSIBLE.\n\nÊtes-vous absolument sûr de vouloir continuer ?')) {
+                const success = storageManager.clearAllSeriesData();
+                if (success) {
+                    updateStats();
+                    showNotification('Toutes les données ont été effacées avec succès', 'success');
+                } else {
+                    showNotification('Erreur lors de l\'effacement des données', 'error');
+                }
+            }
+        }
+        function updateStats() {
+            const stats = storageManager.getAllStats();
+            
+            // Mettre à jour les statistiques affichées
+            document.getElementById('cyberpunkStats').textContent = stats.cyberpunk.episodes;
+            document.getElementById('gachiakutaStats').textContent = stats.gachiakuta.episodes;
+            document.getElementById('infinityTrainStats').textContent = stats.infinitytrain.episodes;
+            document.getElementById('tougenAnkiStats').textContent = stats.tougenanki.episodes;
+            
+            // Vérifier si toutes les stats sont à 0
+            const allStatsZero = stats.cyberpunk.episodes === 0 && 
+                                stats.gachiakuta.episodes === 0 && 
+                                stats.infinitytrain.episodes === 0 && 
+                                stats.tougenanki.episodes === 0;
+            
+            // Références aux éléments
+            const statsGrid = document.querySelector('.stats-grid');
+            const noDataMessage = document.getElementById('noDataMessage');
+            const cyberpunkCard = document.getElementById('cyberpunkCard');
+            const gachiakutaCard = document.getElementById('gachiakutaCard');
+            const infinityTrainCard = document.getElementById('infinityTrainCard');
+            const tougenAnkiCard = document.getElementById('tougenAnkiCard');
+    
+    if (allStatsZero) {
+        // Masquer la grille des stats et afficher le message
+        statsGrid.style.display = 'none';
+        noDataMessage.style.display = 'block';
+    } else {
+        // Afficher la grille des stats et masquer le message
+        statsGrid.style.display = 'grid';
+        noDataMessage.style.display = 'none';
+        
+        // Afficher/masquer chaque carte selon sa valeur
+        cyberpunkCard.style.display = stats.cyberpunk.episodes > 0 ? 'block' : 'none';
+        gachiakutaCard.style.display = stats.gachiakuta.episodes > 0 ? 'block' : 'none';
+        infinityTrainCard.style.display = stats.infinitytrain.episodes > 0 ? 'block' : 'none';
+        tougenAnkiCard.style.display = stats.tougenanki.episodes > 0 ? 'block' : 'none';
+    }
+}
+        function showNotification(message, type = 'info') {
+            // Créer une notification temporaire
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' :
+                             type === 'warning' ? 'rgba(255, 193, 7, 0.9)' :
+                             type === 'error' ? 'rgba(244, 67, 54, 0.9)' :
+                             'rgba(33, 150, 243, 0.9)'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                font-family: 'Lato', sans-serif;
+                font-size: 14px;
+                z-index: 1000;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+                animation: slideIn 0.3s ease;
+            `;
+                    
+            notification.textContent = message;
+            document.body.appendChild(notification);
+                    
+            // Supprimer la notification après 4 secondes
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+        // Ajouter les animations CSS pour les notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        // Initialisation au chargement de la page
+        window.addEventListener('load', function() {
+            // Mettre à jour l'état du toggle localStorage
+            const toggle = document.getElementById('localStorageToggle');
+            if (toggle) {
+                toggle.classList.toggle('active', storageManager.localStorageEnabled);
+            }
+                    
+            // Mettre à jour les statistiques
+            updateStats();
+                    
+            console.log('Uniware Settings initialisé');
+            console.log('État localStorage:', storageManager.localStorageEnabled);
+            console.log('Statistiques:', storageManager.getAllStats());
+        });
+        // Exposer les fonctions utiles pour le debug
+        window.uniwareSettings = {
+            storageManager: storageManager,
+            updateStats: updateStats,
+            clearAll: clearAllWatchData,
+            toggleStorage: toggleLocalStorage
+        };
+    </script>
+</body>
+</html>

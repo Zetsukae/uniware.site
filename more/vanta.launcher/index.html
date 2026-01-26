@@ -1,0 +1,2725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanta Launcher - UNIWARE</title>
+    <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0C0C10;
+            color: white;
+            overflow: hidden;
+        }
+
+        .launcher-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 256px;
+            background-color: #0C0C10;
+            border-right: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+        }
+
+        .sidebar.minimized {
+            width: 72px;
+        }
+
+        .logo {
+            padding: 24px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(to right, #60A5FA, #A855F7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.minimized .logo h1 {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar.minimized .logo {
+            justify-content: center;
+            padding: 24px 12px;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+            color: white;
+        }
+
+        .sidebar-toggle svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.minimized .sidebar-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .nav {
+            flex: 1;
+            padding: 16px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.2));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .nav-item-text {
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar.minimized .nav-item {
+            padding: 12px;
+            justify-content: center;
+        }
+
+        .sidebar.minimized .nav-item svg {
+            margin-right: 0;
+        }
+
+        .sidebar.minimized .nav-item-text {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            left: 100%;
+        }
+
+        /* Tooltip for minimized sidebar */
+        .nav-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #374151;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+
+        .sidebar.minimized .nav-item:hover::after {
+            opacity: 1;
+        }
+
+        .user-info {
+            padding: 16px;
+            border-top: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 8px;
+        }
+
+        .user-info:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+        }
+
+        .sidebar.minimized .user-info {
+            justify-content: center;
+            padding: 16px 12px;
+            gap: 0;
+        }
+
+        .user-info-text {
+            transition: opacity 0.3s ease;
+            flex: 1;
+        }
+
+        .sidebar.minimized .user-info-text {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            overflow: hidden;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #60A5FA, #A855F7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* User info tooltip for minimized sidebar */
+        .user-info::after {
+            content: "VantaUser";
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #374151;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+
+        .sidebar.minimized .user-info:hover::after {
+            opacity: 1;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            height: 64px;
+            background-color: #0C0C10;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 384px;
+            padding: 8px 12px 8px 40px;
+            background-color: rgba(55, 65, 81, 0.5);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #9CA3AF;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563EB;
+        }
+
+        .btn-secondary {
+            background-color: #374151;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4B5563;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #374151;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background-color: #374151;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: white;
+            position: relative;
+        }
+
+        .btn-ghost:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background-color: #EF4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bell Icon Animation */
+        .bell-icon {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .bell-icon:hover {
+            animation: bellRing 0.5s ease-in-out;
+        }
+
+        @keyframes bellRing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        /* Notifications Panel */
+        .notifications-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 320px;
+            max-height: 400px;
+            background: #0C0C10;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+
+        .notifications-panel.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .notifications-header {
+            padding: 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notifications-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .mark-all-read {
+            font-size: 12px;
+            color: #60A5FA;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .mark-all-read:hover {
+            background-color: rgba(96, 165, 250, 0.1);
+        }
+
+        .notifications-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background-color: rgba(55, 65, 81, 0.3);
+        }
+
+        .notification-item.unread {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #3B82F6;
+            border-radius: 50%;
+        }
+
+        .notification-item.unread .notification-content {
+            margin-left: 16px;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 12px;
+            color: #9CA3AF;
+            margin-bottom: 4px;
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: #6B7280;
+        }
+
+        /* Page Content Styles */
+        .page-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Featured Carousel */
+        .featured-carousel {
+            height: 280px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1s;
+            opacity: 0;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4), transparent);
+        }
+
+        .carousel-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 24px;
+            color: white;
+        }
+
+        .carousel-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .carousel-description {
+            font-size: 16px;
+            margin-bottom: 16px;
+            max-width: 350px;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dot.active {
+            background-color: white;
+        }
+
+        /* Cards */
+        .card {
+            background-color: rgba(55, 65, 81, 0.3);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+            border-color: rgba(55, 65, 81, 0.7);
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-header {
+            padding: 16px 16px 0;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+            .md\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .md\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .lg\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+            .lg\\:grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+        }
+
+        @media (min-width: 1280px) {
+            .xl\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+            .xl\\:grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
+            .xl\\:grid-cols-8 { grid-template-columns: repeat(8, 1fr); }
+        }
+
+        /* Game Cards - Utilisation des bannières */
+        .game-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .game-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .game-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border-radius: 8px;
+        }
+
+        .game-card:hover .game-overlay {
+            opacity: 1;
+        }
+
+        /* Store game cards */
+        .store-game-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+        .badge-success {
+            background-color: #10B981;
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: #F59E0B;
+            color: white;
+        }
+
+        .badge-danger {
+            background-color: #EF4444;
+            color: white;
+        }
+
+        .badge-outline {
+            background: transparent;
+            border: 1px solid #374151;
+            color: #9CA3AF;
+        }
+
+        /* Progress Bar */
+        .progress {
+            width: 100%;
+            height: 6px;
+            background-color: #374151;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #3B82F6;
+            transition: width 0.3s;
+        }
+
+        /* Tabs */
+        .tabs {
+            margin-bottom: 24px;
+        }
+
+        .tab-list {
+            display: flex;
+            background-color: rgba(55, 65, 81, 0.3);
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .tab-trigger {
+            flex: 1;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .tab-trigger.active {
+            background-color: #374151;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Settings fixes */
+        .settings-input {
+            background-color: #374151;
+            border: 1px solid #4B5563;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .settings-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .settings-select {
+            background-color: #374151;
+            border: 1px solid #4B5563;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .settings-toggle {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .settings-toggle input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .settings-slider {
+            width: 44px;
+            height: 24px;
+            background-color: #4B5563;
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .settings-slider::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .settings-toggle input:checked + .settings-slider {
+            background-color: #3B82F6;
+        }
+
+        .settings-toggle input:checked + .settings-slider::before {
+            transform: translateX(20px);
+        }
+
+        /* Star rating - Plus petites étoiles */
+        .star-rating {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .star-rating svg {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        /* Utility Classes */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-4 > * + * { margin-left: 16px; }
+        .space-y-4 > * + * { margin-top: 16px; }
+        .space-y-6 > * + * { margin-top: 24px; }
+        .space-y-8 > * + * { margin-top: 32px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-6 { margin-bottom: 24px; }
+        .text-sm { font-size: 14px; }
+        .text-lg { font-size: 18px; }
+        .text-xl { font-size: 20px; }
+        .text-2xl { font-size: 24px; }
+        .text-3xl { font-size: 30px; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-gray-400 { color: #9CA3AF; }
+        .text-gray-500 { color: #6B7280; }
+        .text-blue-400 { color: #60A5FA; }
+        .text-green-400 { color: #34D399; }
+        .text-yellow-400 { color: #FBBF24; }
+        .truncate { 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .hidden { display: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .sidebar.minimized {
+                width: 72px;
+            }
+            .search-input {
+                width: 250px;
+            }
+        }
+
+        /* Friends Page Improvements */
+        .friend-card {
+            background-color: rgba(55, 65, 81, 0.3);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .friend-card:hover {
+            background-color: rgba(55, 65, 81, 0.5);
+            border-color: rgba(55, 65, 81, 0.7);
+        }
+
+        .friend-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #60A5FA, #A855F7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .friend-status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #0C0C10;
+        }
+
+        .friend-info {
+            flex: 1;
+            margin-left: 16px;
+            min-width: 0;
+        }
+
+        .friend-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .friend-status {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .friend-activity {
+            font-size: 12px;
+            color: #60A5FA;
+            font-style: italic;
+        }
+
+        .friend-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .friend-action-btn {
+            padding: 8px;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(55, 65, 81, 0.7);
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .friend-action-btn:hover {
+            background: rgba(55, 65, 81, 0.8);
+            border-color: #3B82F6;
+        }
+
+        /* Chat Modal Styles */
+        .chat-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .chat-modal.active {
+            display: flex;
+        }
+
+        .chat-window {
+            width: 400px;
+            height: 500px;
+            background: #0C0C10;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .chat-close:hover {
+            background: rgba(55, 65, 81, 0.5);
+            color: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .chat-message.sent {
+            align-self: flex-end;
+            background: #3B82F6;
+            color: white;
+        }
+
+        .chat-message.received {
+            align-self: flex-start;
+            background: rgba(55, 65, 81, 0.5);
+            color: white;
+        }
+
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid #374151;
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid #374151;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .chat-send {
+            padding: 8px 16px;
+            background: #3B82F6;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .chat-send:hover {
+            background: #2563EB;
+        }
+
+        /* Friends Icon Animation */
+        .friends-icon {
+            transition: all 0.3s ease;
+        }
+
+        .friends-icon .animated-path {
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover .friends-icon .animated-path {
+            transform: translateX(-6px);
+            animation: friendsSlide 0.6s ease;
+        }
+
+        @keyframes friendsSlide {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Light Theme Styles */
+        body.light-theme {
+            background-color: #ffffff;
+            color: #1f2937;
+        }
+
+        body.light-theme .sidebar {
+            background-color: #f9fafb;
+            border-right-color: #e5e7eb;
+        }
+
+        body.light-theme .header {
+            background-color: #ffffff;
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .card {
+            background-color: rgba(249, 250, 251, 0.8);
+            border-color: rgba(229, 231, 235, 0.8);
+        }
+
+        body.light-theme .card:hover {
+            background-color: rgba(243, 244, 246, 0.9);
+            border-color: rgba(209, 213, 219, 0.9);
+        }
+
+        body.light-theme .search-input {
+            background-color: rgba(243, 244, 246, 0.8);
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .nav-item {
+            color: #374151;
+        }
+
+        body.light-theme .nav-item:hover {
+            background-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .nav-item.active {
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        body.light-theme .friend-card {
+            background-color: rgba(249, 250, 251, 0.8);
+            border-color: rgba(229, 231, 235, 0.8);
+        }
+
+        body.light-theme .friend-card:hover {
+            background-color: rgba(243, 244, 246, 0.9);
+            border-color: rgba(209, 213, 219, 0.9);
+        }
+
+        body.light-theme .friend-action-btn {
+            background: rgba(243, 244, 246, 0.8);
+            border-color: rgba(209, 213, 219, 0.8);
+            color: #374151;
+        }
+
+        body.light-theme .friend-action-btn:hover {
+            background: rgba(229, 231, 235, 0.9);
+            border-color: #3B82F6;
+        }
+
+        body.light-theme .chat-window {
+            background: #ffffff;
+            border-color: #e5e7eb;
+        }
+
+        body.light-theme .chat-header {
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .chat-input-container {
+            border-top-color: #e5e7eb;
+        }
+
+        body.light-theme .chat-input {
+            background: rgba(243, 244, 246, 0.8);
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .settings-input {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .settings-select {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        body.light-theme .text-gray-400 {
+            color: #6b7280 !important;
+        }
+
+        body.light-theme .text-gray-500 {
+            color: #9ca3af !important;
+        }
+
+        body.light-theme .tab-list {
+            background-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .tab-trigger {
+            color: #6b7280;
+        }
+
+        body.light-theme .tab-trigger.active {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        body.light-theme .progress {
+            background-color: #e5e7eb;
+        }
+
+        body.light-theme .badge-outline {
+            border-color: #d1d5db;
+            color: #6b7280;
+        }
+
+        body.light-theme .friend-name {
+            color: #1f2937;
+        }
+
+        body.light-theme .friend-status-dot {
+            border-color: #ffffff;
+        }
+
+        body.light-theme .sidebar-toggle {
+            color: #6b7280;
+        }
+
+        body.light-theme .sidebar-toggle:hover {
+            background-color: rgba(229, 231, 235, 0.5);
+            color: #1f2937;
+        }
+
+        body.light-theme .user-info:hover {
+            background-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .logo {
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .user-info {
+            border-top-color: #e5e7eb;
+        }
+
+        body.light-theme .nav-item::after {
+            background-color: #374151;
+            color: white;
+        }
+
+        body.light-theme .user-info::after {
+            background-color: #374151;
+            color: white;
+        }
+
+        body.light-theme .notifications-panel {
+            background: #ffffff;
+            border-color: #e5e7eb;
+        }
+
+        body.light-theme .notifications-header {
+            border-bottom-color: #e5e7eb;
+        }
+
+        body.light-theme .notification-item {
+            border-bottom-color: rgba(229, 231, 235, 0.5);
+        }
+
+        body.light-theme .notification-item:hover {
+            background-color: rgba(243, 244, 246, 0.5);
+        }
+
+        body.light-theme .notification-item.unread {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="launcher-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <nav class="nav">
+                <button class="nav-item active" data-page="home" data-tooltip="Home">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.home">Home</span>
+                </button>
+                
+                <button class="nav-item" data-page="store" data-tooltip="Store">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.store">Store</span>
+                </button>
+                
+                <button class="nav-item" data-page="library" data-tooltip="Library">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.library">Library</span>
+                </button>
+                
+                <button class="nav-item" data-page="downloads" data-tooltip="Downloads">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.downloads">Downloads</span>
+                </button>
+                
+                <button class="nav-item" data-page="friends" data-tooltip="Friends">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="friends-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 21v-2a4 4 0 0 0-3-3.87" class="animated-path"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3.13a4 4 0 0 1 0 7.75" class="animated-path"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.friends">Friends</span>
+                </button>
+                
+                <button class="nav-item" data-page="settings" data-tooltip="Settings">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span class="nav-item-text" data-translate="nav.settings">Settings</span>
+                </button>
+            </nav>
+            
+            <div class="user-info" id="userProfile">
+                <div class="avatar">VU</div>
+                <div class="user-info-text">
+                    <div class="font-semibold">VantaUser</div>
+                    <div class="text-sm text-gray-400" data-translate="user.level">Level 42</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-container">
+                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" class="search-input" data-translate-placeholder="search.placeholder" placeholder="Search games, friends, or content..." id="searchInput">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="relative">
+                        <button class="btn btn-ghost" id="notificationBtn">
+                            <div class="bell-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                                </svg>
+                            </div>
+                            <span class="notification-badge" id="notificationBadge">3</span>
+                        </button>
+                        
+                        <!-- Notifications Panel -->
+                        <div class="notifications-panel" id="notificationsPanel">
+                            <div class="notifications-header">
+                                <div class="notifications-title" data-translate="notifications.title">Notifications</div>
+                                <div class="mark-all-read" onclick="markAllAsRead()" data-translate="notifications.mark_all_read">Mark all as read</div>
+                            </div>
+                            <div class="notifications-list" id="notificationsList">
+                                <div class="notification-item unread" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Game Update Available</div>
+                                        <div class="notification-message">Cyberpunk 2077 has a new update ready to install</div>
+                                        <div class="notification-time">2 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Friend Request</div>
+                                        <div class="notification-message">Alex Chen sent you a friend request</div>
+                                        <div class="notification-time">1 hour ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Achievement Unlocked</div>
+                                        <div class="notification-message">You unlocked "Speed Demon" in Omega Stars</div>
+                                        <div class="notification-time">3 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="notification-item" onclick="markAsRead(this)">
+                                    <div class="notification-content">
+                                        <div class="notification-title">Download Complete</div>
+                                        <div class="notification-message">Mystic Realms has finished downloading</div>
+                                        <div class="notification-time">Yesterday</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Home Page -->
+                <div class="page active" id="home">
+                    <div class="space-y-8">
+                        <!-- Featured Games Carousel -->
+                        <div class="featured-carousel" id="featuredCarousel">
+                            <div class="carousel-slide active" style="background-image: url('https://i.imgur.com/edO1PFB.jpeg')">
+                                <div class="carousel-overlay"></div>
+                                <div class="carousel-content">
+                                    <h2 class="carousel-title">Cyberpunk 2077</h2>
+                                    <p class="carousel-description" data-translate="games.cyberpunk.description">Experience the ultimate cyberpunk adventure in a neon-lit metropolis where technology and humanity collide.</p>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary">
+                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.play_now">Play Now</span>
+                                        </button>
+                                        <button class="btn btn-outline" data-translate="buttons.learn_more">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide" style="background-image: url('https://i.imgur.com/1ZpK8dt.jpeg')">
+                                <div class="carousel-overlay"></div>
+                                <div class="carousel-content">
+                                    <h2 class="carousel-title">Omega Stars</h2>
+                                    <p class="carousel-description" data-translate="games.omega.description">Our modded game, If you like MOBA-lite, that's for you !</p>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary">
+                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.get_game">Get Game</span>
+                                        </button>
+                                        <button class="btn btn-outline" data-translate="buttons.learn_more">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=400&fit=crop')">
+                                <div class="carousel-overlay"></div>
+                                <div class="carousel-content">
+                                    <h2 class="carousel-title">Mystic Realms</h2>
+                                    <p class="carousel-description" data-translate="games.mystic.description">Master the arcane arts in this enchanting fantasy RPG filled with magic, mystery, and adventure.</p>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary">
+                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.get_game">Get Game</span>
+                                        </button>
+                                        <button class="btn btn-outline" data-translate="buttons.learn_more">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-indicators">
+                                <div class="carousel-dot active" data-slide="0"></div>
+                                <div class="carousel-dot" data-slide="1"></div>
+                                <div class="carousel-dot" data-slide="2"></div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4" data-translate="sections.recent_activity">Recent Activity</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="game-icon">
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold">Cyberpunk 2077</h4>
+                                                <p class="text-sm text-gray-400" data-translate="activity.last_played">Last played: 2024-01-20</p>
+                                                <button class="btn btn-primary mt-2" style="background-color: #10B981; padding: 4px 12px; font-size: 12px;">
+                                                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"/>
+                                                    </svg>
+                                                    <span data-translate="buttons.play">Play</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://i.imgur.com/Sra3Ksx.jpeg" alt="Omega Stars" class="game-icon">
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold">Omega Stars</h4>
+                                                <p class="text-sm text-gray-400" data-translate="activity.last_played">Last played: 2024-01-18</p>
+                                                <button class="btn btn-primary mt-2" style="background-color: #10B981; padding: 4px 12px; font-size: 12px;">
+                                                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"/>
+                                                    </svg>
+                                                    <span data-translate="buttons.play">Play</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Game Library Preview -->
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold" data-translate="sections.your_library">Your Library</h3>
+                                <button class="btn btn-outline" onclick="showPage('library')" data-translate="buttons.view_all">View All</button>
+                            </div>
+                            <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+                                <div class="game-card relative">
+                                    <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="game-image">
+                                    <div class="game-overlay">
+                                        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.play">Play</span>
+                                        </button>
+                                    </div>
+                                    <p class="text-sm font-semibold mt-2 truncate">Cyberpunk 2077</p>
+                                </div>
+                                <div class="game-card relative">
+                                    <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="game-image">
+                                    <div class="game-overlay">
+                                        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                            <span data-translate="buttons.play">Play</span>
+                                        </button>
+                                    </div>
+                                    <p class="text-sm font-semibold mt-2 truncate">Omega Stars</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Store Page -->
+                <div class="page" id="store">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold" data-translate="pages.game_store">Game Store</h2>
+                            <div class="flex items-center space-x-4">
+                                <button class="btn btn-outline">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                                    </svg>
+                                    <span data-translate="buttons.filters">Filters</span>
+                                </button>
+                                <button class="btn btn-outline">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
+                                    </svg>
+                                    <span data-translate="buttons.sort">Sort</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tabs">
+                            <div class="tab-list">
+                                <button class="tab-trigger active" data-tab="all" data-translate="tabs.all_games">All Games</button>
+                                <button class="tab-trigger" data-tab="free" data-translate="tabs.free">Free</button>
+                                <button class="tab-trigger" data-tab="sale" data-translate="tabs.on_sale">On Sale</button>
+                                <button class="tab-trigger" data-tab="new" data-translate="tabs.new_releases">New Releases</button>
+                                <button class="tab-trigger" data-tab="popular" data-translate="tabs.popular">Popular</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                            <div class="card game-card">
+                                <div class="relative">
+                                    <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="store-game-image">
+                                    <span class="badge badge-danger absolute top-2 left-2">-25%</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="font-semibold mb-2 truncate">Cyberpunk 2077</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="star-rating text-yellow-400 mr-2">
+                                            <svg viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm">4.8</span>
+                                        <span class="badge badge-outline ml-2">RPG</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-gray-400 line-through">$79.99</span>
+                                            <span class="font-bold text-blue-400">$59.99</span>
+                                        </div>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;" data-translate="buttons.view">View</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card game-card">
+                                <div class="relative">
+                                    <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="store-game-image">
+                                    <span class="badge badge-success absolute top-2 left-2" data-translate="badges.free">Free</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="font-semibold mb-2 truncate">Omega Stars</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="star-rating text-yellow-400 mr-2">
+                                            <svg viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm">4.6</span>
+                                        <span class="badge badge-outline ml-2">MOBA-Lite</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-blue-400" data-translate="badges.free">Free</span>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;" data-translate="buttons.view">View</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card game-card">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=160&fit=crop" alt="Mystic Realms" class="store-game-image">
+                                    <span class="badge badge-danger absolute top-2 left-2">-20%</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="font-semibold mb-2 truncate">Mystic Realms</h3>
+                                    <div class="flex items-center mb-2">
+                                        <div class="star-rating text-yellow-400 mr-2">
+                                            <svg viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm">4.9</span>
+                                        <span class="badge badge-outline ml-2">Fantasy</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-gray-400 line-through">$49.99</span>
+                                            <span class="font-bold text-blue-400">$39.99</span>
+                                        </div>
+                                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;" data-translate="buttons.view">View</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Library Page -->
+                <div class="page" id="library">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold" data-translate="sections.your_library">Your Library</h2>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn btn-secondary" id="gridViewBtn">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="3" width="7" height="7"/>
+                                        <rect x="14" y="3" width="7" height="7"/>
+                                        <rect x="14" y="14" width="7" height="7"/>
+                                        <rect x="3" y="14" width="7" height="7"/>
+                                    </svg>
+                                </button>
+                                <button class="btn btn-outline" id="listViewBtn">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <line x1="8" y1="6" x2="21" y2="6"/>
+                                        <line x1="8" y1="12" x2="21" y2="12"/>
+                                        <line x1="8" y1="18" x2="21" y2="18"/>
+                                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3" id="libraryGrid">
+                            <div class="game-card relative">
+                                <img src="https://i.imgur.com/edO1PFB.jpeg" alt="Cyberpunk 2077" class="game-image">
+                                <div class="game-overlay">
+                                    <button class="btn btn-primary" style="background-color: #10B981; padding: 6px 12px; font-size: 12px;">
+                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        <span data-translate="buttons.play">Play</span>
+                                    </button>
+                                </div>
+                                <p class="text-sm font-semibold mt-2 truncate">Cyberpunk 2077</p>
+                                <p class="text-xs text-gray-400" data-translate="activity.last_played">Last played: 2025-01-20</p>
+                            </div>
+                            <div class="game-card relative">
+                                <img src="https://i.imgur.com/1ZpK8dt.jpeg" alt="Omega Stars" class="game-image">
+                                <div class="game-overlay">
+                                    <button class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">
+                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                        <span data-translate="buttons.play">Play</span>
+                                    </button>
+                                </div>
+                                <p class="text-sm font-semibold mt-2 truncate">Omega Stars</p>
+                                <p class="text-xs text-gray-400" data-translate="activity.last_played">Last played: 2025-05-14</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Downloads Page -->
+                <div class="page" id="downloads">
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-bold" data-translate="nav.downloads">Downloads</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-semibold">Cyberpunk 2077 - Update 1.5</h3>
+                                            <p class="text-sm text-gray-400">12.5 MB/s • 2.1 GB</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <rect x="6" y="4" width="4" height="16"/>
+                                                    <rect x="14" y="4" width="4" height="16"/>
+                                                </svg>
+                                            </button>
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span>75%</span>
+                                            <span class="text-blue-400" data-translate="status.downloading">Downloading</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-semibold">Mystic Realms</h3>
+                                            <p class="text-sm text-gray-400" data-translate="status.queued">Queued • 15.8 GB</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                            </button>
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span>0%</span>
+                                            <span class="text-gray-400" data-translate="status.queued">Queued</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-semibold">Omega Stars - DLC Pack</h3>
+                                            <p class="text-sm text-gray-400" data-translate="status.completed">Completed • 850 MB</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="btn btn-outline">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-sm">
+                                            <span>100%</span>
+                                            <span class="text-green-400" data-translate="status.completed">Completed</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 100%; background-color: #10B981;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friends Page -->
+                <div class="page" id="friends">
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold" data-translate="nav.friends">Friends</h2>
+                            <button class="btn btn-primary">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                </svg>
+                                <span data-translate="buttons.add_friend">Add Friend</span>
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        AC
+                                        <div class="friend-status-dot bg-green-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Alex Chen</div>
+                                        <div class="friend-status text-green-400" data-translate="status.online">Online</div>
+                                        <div class="friend-activity" data-translate="activity.playing">Playing Cyberpunk 2077</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Alex Chen', 'AC')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Join Game">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a2 2 0 100-4H4a1 1 0 01-1-1V4a1 1 0 011-1h3a1 1 0 011 1v1a2 2 0 104 0V4z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        SK
+                                        <div class="friend-status-dot bg-yellow-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Sarah Kim</div>
+                                        <div class="friend-status text-yellow-400" data-translate="status.away">Away</div>
+                                        <div class="friend-activity text-gray-400">Last seen 2 hours ago</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Sarah Kim', 'SK')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        MJ
+                                        <div class="friend-status-dot bg-gray-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Mike Johnson</div>
+                                        <div class="friend-status text-gray-400" data-translate="status.offline">Offline</div>
+                                        <div class="friend-activity text-gray-400">Last seen yesterday</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Mike Johnson', 'MJ')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="friend-card">
+                                <div class="flex items-center">
+                                    <div class="friend-avatar">
+                                        EW
+                                        <div class="friend-status-dot bg-green-500"></div>
+                                    </div>
+                                    <div class="friend-info">
+                                        <div class="friend-name">Emma Wilson</div>
+                                        <div class="friend-status text-green-400" data-translate="status.online">Online</div>
+                                        <div class="friend-activity" data-translate="activity.playing">Playing Omega Stars</div>
+                                    </div>
+                                    <div class="friend-actions">
+                                        <button class="friend-action-btn" onclick="openChat('Emma Wilson', 'EW')" title="Send Message">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Voice Call">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="friend-action-btn" title="Join Game">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a2 2 0 100-4H4a1 1 0 01-1-1V4a1 1 0 011-1h3a1 1 0 011 1v1a2 2 0 104 0V4z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Page -->
+                <div class="page" id="profile">
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-6">
+                            <div class="avatar" style="width: 96px; height: 96px; font-size: 32px;">VU</div>
+                            <div>
+                                <h2 class="text-3xl font-bold">VantaUser</h2>
+                                <p class="text-gray-400" data-translate="profile.member_since">Level 42 • Member since 2023</p>
+                                <div class="flex items-center space-x-4 mt-2">
+                                    <span class="badge badge-primary" data-translate="badges.pro_gamer">Pro Gamer</span>
+                                    <span class="badge" style="background-color: #A855F7;" data-translate="badges.achievement_hunter">Achievement Hunter</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title flex items-center">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                        <span data-translate="profile.game_library">Game Library</span>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="text-3xl font-bold text-blue-400">2</div>
+                                    <p class="text-gray-400" data-translate="profile.games_owned">Games Owned</p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title flex items-center">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                        </svg>
+                                        <span data-translate="profile.achievements">Achievements</span>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="text-3xl font-bold text-yellow-400">127</div>
+                                    <p class="text-gray-400" data-translate="profile.unlocked">Unlocked</p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title flex items-center">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="mr-2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                                        </svg>
+                                        <span data-translate="nav.friends">Friends</span>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="text-3xl font-bold text-green-400">4</div>
+                                    <p class="text-gray-400" data-translate="profile.connected">Connected</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title" data-translate="profile.recent_achievements">Recent Achievements</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="space-y-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #FBBF24, #F59E0B);">
+                                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold">First Steps</h4>
+                                            <p class="text-sm text-gray-400">Complete your first mission</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: linear-gradient(45deg, #10B981, #059669);">
+                                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-semibold">Speed Demon</h4>
+                                            <p class="text-sm text-gray-400">Complete a race in under 2 minutes</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div class="page" id="settings">
+                    <div class="space-y-6">
+                        <h2 class="text-2xl font-bold" data-translate="nav.settings">Settings</h2>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- General Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.general">General</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.language">Language</label>
+                                        <select class="settings-select" id="languageSelect">
+                                            <option>English</option>
+                                            <option>Français</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.theme">Theme</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" id="darkThemeToggle">
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.dark_mode">Dark Mode</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.startup">Launch on Startup</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.auto_launch">Auto-launch Vanta Launcher</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gaming Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.gaming">Gaming</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.install_location">Default Install Location</label>
+                                        <div class="flex space-x-2">
+                                            <input type="text" class="settings-input flex-1" value="C:\Games\Vanta" readonly>
+                                            <button class="btn btn-outline">Browse</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.auto_updates">Auto-Update Games</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.enable_auto_updates">Enable automatic game updates</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.overlay">In-Game Overlay</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.enable_overlay">Enable Vanta overlay in games</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Privacy Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.privacy">Privacy</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.profile_visibility">Profile Visibility</label>
+                                        <select class="settings-select">
+                                            <option data-translate="settings.public">Public</option>
+                                            <option data-translate="settings.friends_only">Friends Only</option>
+                                            <option data-translate="settings.private">Private</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.activity_status">Show Activity Status</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.show_activity">Let friends see what you're playing</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.data_collection">Data Collection</label>
+                                        <div class="flex items-center space-x-4">
+                                            <label class="settings-toggle">
+                                                <input type="checkbox">
+                                                <span class="settings-slider"></span>
+                                            </label>
+                                            <span data-translate="settings.analytics">Allow analytics data collection</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Account Settings -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title" data-translate="settings.account">Account</div>
+                                </div>
+                                <div class="card-content space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.username">Username</label>
+                                        <input type="text" class="settings-input" value="VantaUser" readonly>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2" data-translate="settings.email">Email</label>
+                                        <input type="email" class="settings-input" value="user@vanta.com" readonly>
+                                    </div>
+                                    <div class="flex space-x-4">
+                                        <button class="btn btn-primary" data-translate="settings.change_password">Change Password</button>
+                                        <button class="btn btn-outline" data-translate="settings.logout">Logout</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-window">
+            <div class="chat-header">
+                <div class="chat-user-info">
+                    <div class="avatar" style="width: 32px; height: 32px; font-size: 14px;" id="chatAvatar">AC</div>
+                    <div>
+                        <div class="font-semibold" id="chatUserName">Alex Chen</div>
+                        <div class="text-sm text-green-400">Online</div>
+                    </div>
+                </div>
+                <button class="chat-close" onclick="closeChat()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message received">Hey! How's it going?</div>
+                <div class="chat-message sent">Pretty good! Just finished that Cyberpunk mission.</div>
+                <div class="chat-message received">Nice! How did you like it?</div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" placeholder="Type a message..." id="chatInput">
+                <button class="chat-send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('minimized');
+        });
+
+        // Navigation functionality
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetPage = item.getAttribute('data-page');
+                showPage(targetPage);
+                
+                // Update active nav item
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // User profile click handler
+        document.getElementById('userProfile').addEventListener('click', () => {
+            showPage('profile');
+            navItems.forEach(nav => nav.classList.remove('active'));
+            // No nav item gets active class for profile page since it's accessed via user info
+        });
+
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Auto-advance carousel
+        setInterval(nextSlide, 5000);
+
+        // Dot click handlers
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+
+        // Tab functionality
+        const tabTriggers = document.querySelectorAll('.tab-trigger');
+        
+        tabTriggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                tabTriggers.forEach(t => t.classList.remove('active'));
+                trigger.classList.add('active');
+            });
+        });
+
+        // Library view toggle
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+        
+        if (gridViewBtn && listViewBtn) {
+            gridViewBtn.addEventListener('click', () => {
+                gridViewBtn.classList.remove('btn-outline');
+                gridViewBtn.classList.add('btn-secondary');
+                listViewBtn.classList.remove('btn-secondary');
+                listViewBtn.classList.add('btn-outline');
+            });
+            
+            listViewBtn.addEventListener('click', () => {
+                listViewBtn.classList.remove('btn-outline');
+                listViewBtn.classList.add('btn-secondary');
+                gridViewBtn.classList.remove('btn-secondary');
+                gridViewBtn.classList.add('btn-outline');
+            });
+        }
+
+        // Chat functionality
+        function openChat(userName, userInitials) {
+            document.getElementById('chatUserName').textContent = userName;
+            document.getElementById('chatAvatar').textContent = userInitials;
+            document.getElementById('chatModal').classList.add('active');
+            
+            // Clear previous messages and add some sample ones
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="chat-message received">Hey! How's it going?</div>
+                <div class="chat-message sent">Pretty good! Just finished that Cyberpunk mission.</div>
+                <div class="chat-message received">Nice! How did you like it?</div>
+            `;
+        }
+
+        function closeChat() {
+            document.getElementById('chatModal').classList.remove('active');
+        }
+
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const message = chatInput.value.trim();
+            
+            if (message) {
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message sent';
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate response after a delay
+                setTimeout(() => {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = 'chat-message received';
+                    responseDiv.textContent = 'Thanks for the message!';
+                    chatMessages.appendChild(responseDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // Enter key to send message
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Close chat modal when clicking outside
+        document.getElementById('chatModal').addEventListener('click', (e) => {
+            if (e.target.id === 'chatModal') {
+                closeChat();
+            }
+        });
+
+        // Dark theme toggle
+        const darkThemeToggle = document.getElementById('darkThemeToggle');
+        
+        // Set initial state (dark theme is default)
+        darkThemeToggle.checked = true;
+        
+        darkThemeToggle.addEventListener('change', () => {
+            if (darkThemeToggle.checked) {
+                document.body.classList.remove('light-theme');
+            } else {
+                document.body.classList.add('light-theme');
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Here you would implement search logic
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Notifications functionality
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationsPanel = document.getElementById('notificationsPanel');
+        const notificationBadge = document.getElementById('notificationBadge');
+
+        notificationBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationsPanel.classList.toggle('active');
+        });
+
+        // Close notifications when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!notificationsPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
+                notificationsPanel.classList.remove('active');
+            }
+        });
+
+        function markAsRead(notificationElement) {
+            notificationElement.classList.remove('unread');
+            updateNotificationBadge();
+        }
+
+        function markAllAsRead() {
+            const unreadNotifications = document.querySelectorAll('.notification-item.unread');
+            unreadNotifications.forEach(notification => {
+                notification.classList.remove('unread');
+            });
+            updateNotificationBadge();
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            if (unreadCount > 0) {
+                notificationBadge.textContent = unreadCount;
+                notificationBadge.style.display = 'flex';
+            } else {
+                notificationBadge.style.display = 'none';
+            }
+        }
+
+        // Translation system
+        const translations = {
+            en: {
+                // Navigation
+                'nav.home': 'Home',
+                'nav.store': 'Store',
+                'nav.library': 'Library',
+                'nav.downloads': 'Downloads',
+                'nav.friends': 'Friends',
+                'nav.settings': 'Settings',
+                
+                // User
+                'user.level': 'Level 42',
+                
+                // Search
+                'search.placeholder': 'Search games, friends, or content...',
+                
+                // Buttons
+                'buttons.play_now': 'Play Now',
+                'buttons.learn_more': 'Learn More',
+                'buttons.get_game': 'Get Game',
+                'buttons.play': 'Play',
+                'buttons.view_all': 'View All',
+                'buttons.view': 'View',
+                'buttons.filters': 'Filters',
+                'buttons.sort': 'Sort',
+                'buttons.add_friend': 'Add Friend',
+                
+                // Sections
+                'sections.recent_activity': 'Recent Activity',
+                'sections.your_library': 'Your Library',
+                
+                // Pages
+                'pages.game_store': 'Game Store',
+                
+                // Tabs
+                'tabs.all_games': 'All Games',
+                'tabs.free': 'Free',
+                'tabs.on_sale': 'On Sale',
+                'tabs.new_releases': 'New Releases',
+                'tabs.popular': 'Popular',
+                
+                // Badges
+                'badges.free': 'Free',
+                
+                // Activity
+                'activity.last_played': 'Last played: 2024-01-20',
+                'activity.playing': 'Playing',
+                
+                // Status
+                'status.downloading': 'Downloading',
+                'status.queued': 'Queued',
+                'status.completed': 'Completed',
+                'status.online': 'Online',
+                'status.away': 'Away',
+                'status.offline': 'Offline',
+                
+                // Games
+                'games.cyberpunk.description': 'Experience the ultimate cyberpunk adventure in a neon-lit metropolis where technology and humanity collide.',
+                'games.omega.description': 'Our modded game, If you like MOBA-lite, that\'s for you !',
+                'games.mystic.description': 'Master the arcane arts in this enchanting fantasy RPG filled with magic, mystery, and adventure.',
+                
+                // Profile
+                'profile.member_since': 'Level 42 • Member since 2023',
+                'profile.game_library': 'Game Library',
+                'profile.games_owned': 'Games Owned',
+                'profile.achievements': 'Achievements',
+                'profile.unlocked': 'Unlocked',
+                'profile.connected': 'Connected',
+                'profile.recent_achievements': 'Recent Achievements',
+                
+                // Badges
+                'badges.pro_gamer': 'Pro Gamer',
+                'badges.achievement_hunter': 'Achievement Hunter',
+                
+                // Settings
+                'settings.general': 'General',
+                'settings.language': 'Language',
+                'settings.theme': 'Theme',
+                'settings.dark_mode': 'Dark Mode',
+                'settings.startup': 'Launch on Startup',
+                'settings.auto_launch': 'Auto-launch Vanta Launcher',
+                'settings.gaming': 'Gaming',
+                'settings.install_location': 'Default Install Location',
+                'settings.auto_updates': 'Auto-Update Games',
+                'settings.enable_auto_updates': 'Enable automatic game updates',
+                'settings.overlay': 'In-Game Overlay',
+                'settings.enable_overlay': 'Enable Vanta overlay in games',
+                'settings.privacy': 'Privacy',
+                'settings.profile_visibility': 'Profile Visibility',
+                'settings.public': 'Public',
+                'settings.friends_only': 'Friends Only',
+                'settings.private': 'Private',
+                'settings.activity_status': 'Show Activity Status',
+                'settings.show_activity': 'Let friends see what you\'re playing',
+                'settings.data_collection': 'Data Collection',
+                'settings.analytics': 'Allow analytics data collection',
+                'settings.account': 'Account',
+                'settings.username': 'Username',
+                'settings.email': 'Email',
+                'settings.change_password': 'Change Password',
+                'settings.logout': 'Logout',
+                
+                // Notifications
+                'notifications.title': 'Notifications',
+                'notifications.mark_all_read': 'Mark all as read'
+            },
+            fr: {
+                // Navigation
+                'nav.home': 'Accueil',
+                'nav.store': 'Boutique',
+                'nav.library': 'Bibliothèque',
+                'nav.downloads': 'Téléchargements',
+                'nav.friends': 'Amis',
+                'nav.settings': 'Paramètres',
+                
+                // User
+                'user.level': 'Niveau 42',
+                
+                // Search
+                'search.placeholder': 'Rechercher des jeux, amis ou contenu...',
+                
+                // Buttons
+                'buttons.play_now': 'Jouer Maintenant',
+                'buttons.learn_more': 'En Savoir Plus',
+                'buttons.get_game': 'Obtenir le Jeu',
+                'buttons.play': 'Jouer',
+                'buttons.view_all': 'Voir Tout',
+                'buttons.view': 'Voir',
+                'buttons.filters': 'Filtres',
+                'buttons.sort': 'Trier',
+                'buttons.add_friend': 'Ajouter un Ami',
+                
+                // Sections
+                'sections.recent_activity': 'Activité Récente',
+                'sections.your_library': 'Votre Bibliothèque',
+                
+                // Pages
+                'pages.game_store': 'Boutique de Jeux',
+                
+                // Tabs
+                'tabs.all_games': 'Tous les Jeux',
+                'tabs.free': 'Gratuit',
+                'tabs.on_sale': 'En Promotion',
+                'tabs.new_releases': 'Nouveautés',
+                'tabs.popular': 'Populaire',
+                
+                // Badges
+                'badges.free': 'Gratuit',
+                
+                // Activity
+                'activity.last_played': 'Dernière partie : 20/01/2024',
+                'activity.playing': 'Joue à',
+                
+                // Status
+                'status.downloading': 'Téléchargement',
+                'status.queued': 'En Attente',
+                'status.completed': 'Terminé',
+                'status.online': 'En Ligne',
+                'status.away': 'Absent',
+                'status.offline': 'Hors Ligne',
+                
+                // Games
+                'games.cyberpunk.description': 'Vivez l\'aventure cyberpunk ultime dans une métropole néon où technologie et humanité s\'affrontent.',
+                'games.omega.description': 'Notre jeu moddé, si vous aimez les MOBA-lite, c\'est pour vous !',
+                'games.mystic.description': 'Maîtrisez les arts occultes dans ce RPG fantastique enchanteur rempli de magie, mystère et aventure.',
+                
+                // Profile
+                'profile.member_since': 'Niveau 42 • Membre depuis 2023',
+                'profile.game_library': 'Bibliothèque de Jeux',
+                'profile.games_owned': 'Jeux Possédés',
+                'profile.achievements': 'Succès',
+                'profile.unlocked': 'Débloqués',
+                'profile.connected': 'Connectés',
+                'profile.recent_achievements': 'Succès Récents',
+                
+                // Badges
+                'badges.pro_gamer': 'Joueur Pro',
+                'badges.achievement_hunter': 'Chasseur de Succès',
+                
+                // Settings
+                'settings.general': 'Général',
+                'settings.language': 'Langue',
+                'settings.theme': 'Thème',
+                'settings.dark_mode': 'Mode Sombre',
+                'settings.startup': 'Lancement au Démarrage',
+                'settings.auto_launch': 'Lancer automatiquement Vanta Launcher',
+                'settings.gaming': 'Jeux',
+                'settings.install_location': 'Emplacement d\'Installation par Défaut',
+                'settings.auto_updates': 'Mises à Jour Automatiques',
+                'settings.enable_auto_updates': 'Activer les mises à jour automatiques des jeux',
+                'settings.overlay': 'Overlay en Jeu',
+                'settings.enable_overlay': 'Activer l\'overlay Vanta dans les jeux',
+                'settings.privacy': 'Confidentialité',
+                'settings.profile_visibility': 'Visibilité du Profil',
+                'settings.public': 'Public',
+                'settings.friends_only': 'Amis Seulement',
+                'settings.private': 'Privé',
+                'settings.activity_status': 'Afficher le Statut d\'Activité',
+                'settings.show_activity': 'Permettre aux amis de voir à quoi vous jouez',
+                'settings.data_collection': 'Collecte de Données',
+                'settings.analytics': 'Autoriser la collecte de données analytiques',
+                'settings.account': 'Compte',
+                'settings.username': 'Nom d\'Utilisateur',
+                'settings.email': 'Email',
+                'settings.change_password': 'Changer le Mot de Passe',
+                'settings.logout': 'Déconnexion',
+                
+                // Notifications
+                'notifications.title': 'Notifications',
+                'notifications.mark_all_read': 'Tout marquer comme lu'
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function translatePage() {
+            const elements = document.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.textContent = translations[currentLanguage][key];
+                }
+            });
+
+            // Handle placeholders
+            const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
+            placeholderElements.forEach(element => {
+                const key = element.getAttribute('data-translate-placeholder');
+                if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                    element.placeholder = translations[currentLanguage][key];
+                }
+            });
+
+            // Update tooltips for minimized sidebar
+            const tooltipElements = document.querySelectorAll('[data-tooltip]');
+            tooltipElements.forEach(element => {
+                const translateKey = element.getAttribute('data-translate');
+                if (translateKey && translations[currentLanguage] && translations[currentLanguage][translateKey]) {
+                    element.setAttribute('data-tooltip', translations[currentLanguage][translateKey]);
+                }
+            });
+        }
+
+        // Language selector functionality
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.addEventListener('change', (e) => {
+                const selectedLanguage = e.target.value;
+                if (selectedLanguage === 'English') {
+                    currentLanguage = 'en';
+                } else if (selectedLanguage === 'Français') {
+                    currentLanguage = 'fr';
+                }
+                translatePage();
+            });
+        }
+
+        // Initialize translations
+        translatePage();
+    </script>
+</body>
+</html>
+
+Keep in mind that's a DEMO Version, might have some bugs.

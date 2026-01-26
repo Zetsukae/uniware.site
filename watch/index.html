@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  <meta charset="UTF-8">
+  <title>Uniware WATCH</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: #000;
+      font-family: sans-serif;
+      color: white;
+      min-height: 100vh;
+    }
+
+    /* Styles pour les étoiles */
+    #stars, #stars2, #stars3, #stars4 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    #stars {
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+        600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+        500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+        350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+        150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+        250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+        1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+        1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+        1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+        1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+        850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+        1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+        50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+        400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+        900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+        100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+        450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+        550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+        1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+        1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+        320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+        520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+        620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+        370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+        170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+      animation: animStar 60s linear infinite;
+    }
+
+    #stars:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        300px 200px #FFF, 800px 400px #FFF, 1200px 100px #FFF, 400px 600px #FFF, 1000px 300px #FFF,
+        600px 800px #FFF, 1400px 500px #FFF, 200px 700px #FFF, 900px 150px #FFF, 1100px 650px #FFF,
+        500px 350px #FFF, 1300px 250px #FFF, 700px 550px #FFF, 100px 450px #FFF, 1500px 750px #FFF,
+        350px 850px #FFF, 950px 50px #FFF, 1250px 950px #FFF, 450px 250px #FFF, 850px 750px #FFF,
+        150px 550px #FFF, 1350px 350px #FFF, 750px 150px #FFF, 550px 950px #FFF, 1050px 450px #FFF,
+        250px 650px #FFF, 1150px 850px #FFF, 650px 50px #FFF, 1450px 650px #FFF, 50px 350px #FFF,
+        1550px 550px #FFF, 800px 900px #FFF, 300px 100px #FFF, 1200px 700px #FFF, 400px 500px #FFF,
+        1000px 200px #FFF, 600px 400px #FFF, 1400px 800px #FFF, 200px 600px #FFF, 900px 300px #FFF,
+        1100px 100px #FFF, 500px 700px #FFF, 1300px 900px #FFF, 700px 200px #FFF, 100px 800px #FFF,
+        1500px 400px #FFF, 350px 600px #FFF, 950px 800px #FFF, 1250px 300px #FFF, 450px 100px #FFF,
+        850px 500px #FFF, 150px 700px #FFF, 1350px 900px #FFF, 750px 400px #FFF, 550px 200px #FFF,
+        1050px 600px #FFF, 250px 800px #FFF, 1150px 100px #FFF, 650px 300px #FFF, 1450px 500px #FFF,
+        50px 700px #FFF, 1550px 900px #FFF, 800px 250px #FFF, 300px 450px #FFF, 1200px 850px #FFF,
+        400px 150px #FFF, 1000px 750px #FFF, 600px 950px #FFF, 1400px 350px #FFF, 200px 550px #FFF,
+        900px 650px #FFF, 1100px 250px #FFF, 500px 850px #FFF, 1300px 450px #FFF, 700px 650px #FFF,
+        100px 150px #FFF, 1500px 850px #FFF, 350px 750px #FFF, 950px 950px #FFF, 1250px 550px #FFF,
+        450px 350px #FFF, 850px 150px #FFF, 150px 950px #FFF, 1350px 750px #FFF, 750px 550px #FFF,
+        550px 350px #FFF, 1050px 150px #FFF, 250px 950px #FFF, 1150px 750px #FFF, 650px 550px #FFF,
+        1450px 350px #FFF, 50px 150px #FFF, 1550px 950px #FFF, 800px 750px #FFF, 300px 550px #FFF,
+        1200px 350px #FFF, 400px 950px #FFF, 1000px 150px #FFF, 600px 750px #FFF, 1400px 550px #FFF,
+        320px 180px #FFF, 720px 380px #FFF, 1120px 80px #FFF, 420px 580px #FFF, 920px 280px #FFF,
+        520px 780px #FFF, 1320px 480px #FFF, 220px 680px #FFF, 820px 130px #FFF, 1020px 630px #FFF,
+        620px 330px #FFF, 1220px 230px #FFF, 820px 530px #FFF, 120px 430px #FFF, 1420px 730px #FFF,
+        370px 830px #FFF, 870px 30px #FFF, 1170px 930px #FFF, 470px 230px #FFF, 770px 730px #FFF,
+        170px 530px #FFF, 1270px 330px #FFF, 670px 130px #FFF, 570px 930px #FFF, 970px 430px #FFF;
+    }
+
+    #stars2 {
+      width: 2px;
+      height: 2px;
+      background: transparent;
+      box-shadow:
+        500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+        700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+        1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+        350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+        150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+        250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+        1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+        1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+        520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+        620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+        1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+        370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+      animation: animStar 90s linear infinite;
+    }
+
+    #stars2:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 2px;
+      height: 2px;
+      background: transparent;
+      box-shadow:
+        500px 300px #FFF, 1100px 600px #FFF, 300px 800px #FFF, 900px 200px #FFF, 1300px 700px #FFF,
+        700px 100px #FFF, 100px 500px #FFF, 1500px 400px #FFF, 800px 900px #FFF, 400px 300px #FFF,
+        1200px 600px #FFF, 600px 800px #FFF, 200px 200px #FFF, 1400px 700px #FFF, 1000px 100px #FFF,
+        350px 500px #FFF, 950px 400px #FFF, 1250px 900px #FFF, 450px 300px #FFF, 850px 600px #FFF,
+        150px 800px #FFF, 1350px 200px #FFF, 750px 700px #FFF, 550px 100px #FFF, 1050px 500px #FFF,
+        250px 400px #FFF, 1150px 900px #FFF, 650px 300px #FFF, 1450px 600px #FFF, 50px 800px #FFF,
+        1550px 200px #FFF, 800px 700px #FFF, 300px 100px #FFF, 1200px 500px #FFF, 400px 400px #FFF,
+        1000px 900px #FFF, 600px 300px #FFF, 1400px 600px #FFF, 200px 800px #FFF, 900px 200px #FFF,
+        520px 280px #FFF, 1020px 580px #FFF, 320px 780px #FFF, 820px 180px #FFF, 1220px 680px #FFF,
+        620px 80px #FFF, 120px 480px #FFF, 1420px 380px #FFF, 720px 880px #FFF, 420px 280px #FFF,
+        1120px 580px #FFF, 520px 780px #FFF, 220px 180px #FFF, 1320px 680px #FFF, 920px 80px #FFF,
+        370px 480px #FFF, 870px 380px #FFF, 1170px 880px #FFF, 470px 280px #FFF, 770px 580px #FFF;
+    }
+
+    #stars3 {
+      width: 3px;
+      height: 3px;
+      background: transparent;
+      box-shadow:
+        600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+        200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+        300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+        450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+        150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+        250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+        620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+        220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+        320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+      animation: animStar 140s linear infinite;
+    }
+
+    #stars3:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 3px;
+      height: 3px;
+      background: transparent;
+      box-shadow:
+        600px 400px #FFF, 1000px 700px #FFF, 400px 200px #FFF, 1200px 500px #FFF, 800px 800px #FFF,
+        200px 300px #FFF, 1400px 600px #FFF, 1100px 100px #FFF, 500px 900px #FFF, 900px 400px #FFF,
+        300px 700px #FFF, 1300px 200px #FFF, 700px 500px #FFF, 100px 800px #FFF, 1500px 300px #FFF,
+        450px 600px #FFF, 850px 100px #FFF, 1250px 900px #FFF, 350px 400px #FFF, 950px 700px #FFF,
+        150px 200px #FFF, 1350px 500px #FFF, 750px 800px #FFF, 550px 300px #FFF, 1050px 600px #FFF,
+        250px 100px #FFF, 1150px 900px #FFF, 650px 400px #FFF, 1450px 700px #FFF, 50px 200px #FFF,
+        620px 380px #FFF, 920px 680px #FFF, 420px 180px #FFF, 1120px 480px #FFF, 720px 780px #FFF,
+        220px 280px #FFF, 1320px 580px #FFF, 1020px 80px #FFF, 520px 880px #FFF, 820px 380px #FFF,
+        320px 680px #FFF, 1220px 180px #FFF, 620px 480px #FFF, 120px 780px #FFF, 1420px 280px #FFF;
+    }
+
+    #stars4 {
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+        660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+        360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+        1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+        860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+        180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+        680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+        380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+      animation: animStar 45s linear infinite;
+    }
+
+    #stars4:after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 1px;
+      height: 1px;
+      background: transparent;
+      box-shadow:
+        160px 340px #FFF, 560px 640px #FFF, 960px 140px #FFF, 1360px 440px #FFF, 260px 740px #FFF,
+        660px 240px #FFF, 1060px 540px #FFF, 460px 840px #FFF, 860px 340px #FFF, 1260px 640px #FFF,
+        360px 140px #FFF, 760px 440px #FFF, 1160px 740px #FFF, 560px 240px #FFF, 960px 540px #FFF,
+        1360px 840px #FFF, 260px 340px #FFF, 660px 640px #FFF, 1060px 140px #FFF, 460px 440px #FFF,
+        860px 740px #FFF, 1260px 240px #FFF, 360px 540px #FFF, 760px 840px #FFF, 1160px 340px #FFF,
+        180px 460px #FFF, 580px 760px #FFF, 980px 260px #FFF, 1380px 560px #FFF, 280px 860px #FFF,
+        680px 360px #FFF, 1080px 660px #FFF, 480px 160px #FFF, 880px 460px #FFF, 1280px 760px #FFF,
+        380px 260px #FFF, 780px 560px #FFF, 1180px 860px #FFF, 580px 360px #FFF, 980px 660px #FFF;
+    }
+
+    @keyframes animStar {
+      from {
+        transform: translateY(0px);
+      }
+      to {
+        transform: translateY(-2000px);
+      }
+    }
+
+    /* Lignes de séparation */
+    .separator-line {
+      width: calc(100% - 40px);
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+      margin: 30px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .separator-line {
+        width: calc(100% - 20px);
+        margin: 20px 10px;
+      }
+    }
+
+    /* Container principal */
+    .main-container {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      min-height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      padding-left: 20px;
+    }
+
+    /* Conteneur des bannières avec défilement horizontal */
+    .banners-container {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 0 20px 20px 20px;
+      scroll-behavior: smooth;
+    }
+
+    /* Masquer la scrollbar sur webkit */
+    .banners-container::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .banners-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .banners-container::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    .banners-container::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Bannières */
+    .banner {
+      flex: 0 0 200px;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .banner:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    }
+
+    .banner h1,
+    .banner h2 {
+      margin: 0;
+      color: white;
+      padding: 5px 10px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .banner h1 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .banner h2 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      font-weight: normal;
+    }
+
+    /* Badges */
+    .en-cours-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+      z-index: 10;
+      animation: pulse 2s infinite;
+    }
+
+    .bientot-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      z-index: 10;
+      animation: glow 2s infinite;
+    }
+
+    /* Nouveau badge rouge pour Cyberpunk */
+    .mature-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #dc2626, #ef4444);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+      z-index: 10;
+      animation: redPulse 2s infinite;
+    }
+
+    /* Nouveau badge pour les sorties récentes */
+    .recent-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #10b981, #059669);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+      z-index: 10;
+      animation: greenGlow 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+      }
+      50% {
+        box-shadow: 0 2px 15px rgba(255, 107, 53, 0.8);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);
+      }
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      }
+      50% {
+        box-shadow: 0 2px 15px rgba(99, 102, 241, 0.8);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      }
+    }
+
+    @keyframes redPulse {
+      0% {
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+      }
+      50% {
+        box-shadow: 0 2px 15px rgba(220, 38, 38, 0.8);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+      }
+    }
+
+    @keyframes greenGlow {
+      0% {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+      }
+      50% {
+        box-shadow: 0 2px 15px rgba(16, 185, 129, 0.8);
+      }
+      100% {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+      }
+    }
+
+    /* Modal d'avertissement */
+    .warning-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+    }
+
+    .warning-content {
+      background: linear-gradient(135deg, #1f1f1f, #2d2d2d);
+      margin: 10% auto;
+      padding: 30px;
+      border: 2px solid #dc2626;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+      position: relative;
+    }
+
+    .warning-icon {
+      font-size: 48px;
+      color: #dc2626;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .warning-title {
+      color: #dc2626;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .warning-text {
+      color: white;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .warning-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .warning-btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-continue {
+      background: linear-gradient(45deg, #dc2626, #ef4444);
+      color: white;
+    }
+
+    .btn-continue:hover {
+      background: linear-gradient(45deg, #b91c1c, #dc2626);
+      transform: scale(1.05);
+    }
+
+    .btn-cancel {
+      background: linear-gradient(45deg, #6b7280, #9ca3af);
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background: linear-gradient(45deg, #4b5563, #6b7280);
+      transform: scale(1.05);
+    }
+
+    /* Bouton retour */
+    .goback {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+      z-index: 100;
+    }
+
+    .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05) translateX(-50%);
+    }
+
+    /* Responsive pour mobile */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 10px;
+      }
+
+      .section-title {
+        font-size: 24px;
+        padding-left: 10px;
+        margin-bottom: 15px;
+      }
+
+      .banners-container {
+        padding: 0 10px 15px 10px;
+        gap: 15px;
+      }
+
+      .banner {
+        flex: 0 0 160px;
+        height: 240px;
+      }
+
+      .banner h1 {
+        font-size: 16px;
+      }
+
+      .banner h2 {
+        font-size: 12px;
+      }
+
+      .en-cours-badge,
+      .bientot-badge,
+      .mature-badge,
+      .recent-badge {
+        top: 8px;
+        right: 8px;
+        padding: 4px 8px;
+        font-size: 10px;
+      }
+
+      .goback {
+        font-size: 14px;
+        padding: 10px 20px;
+        bottom: 20px;
+      }
+
+      .warning-content {
+        margin: 20% auto;
+        padding: 20px;
+        width: 95%;
+      }
+
+      .warning-title {
+        font-size: 20px;
+      }
+
+      .warning-text {
+        font-size: 14px;
+      }
+
+      .warning-buttons {
+        flex-direction: column;
+      }
+
+      .warning-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+
+    /* Très petits écrans */
+    @media (max-width: 480px) {
+      .section-title {
+        font-size: 20px;
+      }
+
+      .banner {
+        flex: 0 0 140px;
+        height: 210px;
+      }
+
+      .banner h1 {
+        font-size: 14px;
+      }
+
+      .banner h2 {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fond d'étoiles -->
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+  <div id="stars4"></div>
+
+  <!-- Modal d'avertissement pour Cyberpunk -->
+  <div id="warningModal" class="warning-modal">
+    <div class="warning-content">
+      <span class="warning-icon">⚠️</span>
+      <div class="warning-title">Avertissement - Contenu Mature</div>
+      <div class="warning-text">
+        Cet animé contient des scènes de violence explicite, de nudité, de pornographie et du contenu pour adultes.<br><br>
+        Il n'est pas destiné à un jeune public et est réservé aux personnes majeures.<br><br>
+        Voulez-vous continuer ?
+      </div>
+      <div class="warning-buttons">
+        <button class="warning-btn btn-continue" onclick="proceedToCyberpunk()">Continuer</button>
+        <button class="warning-btn btn-cancel" onclick="closeWarning()">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenu principal -->
+  <div class="main-container">
+    <!-- Section Films -->
+    <div class="section">
+      <div class="section-title">Films</div>
+      <div class="banners-container">
+        <a href="a-silent-voice-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/1Rs6zmV.jpeg');">
+          <h1>A Silent Voice</h1>
+          <h2>2h / VOSTFR</h2>
+        </a>
+        
+        <a href="5cm-par-seconde-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/oXh8GrL.jpeg');">
+          <h1>5cm par seconde</h1>
+          <h2>1h / VOSTFR + VF</h2>
+        </a>
+        
+        <a href="chateau-ambulant-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/zcTCtxk.jpeg');">
+          <h1>Le Château ambulant</h1>
+          <h2>1h59 / VOSTFR + VF</h2>
+        </a>
+      </div>
+    </div>
+
+    <!-- Séparateur entre Films et Séries -->
+    <div class="separator-line"></div>
+
+    <!-- Section Séries -->
+    <div class="section">
+      <div class="section-title">Séries</div>
+      <div class="banners-container">
+        <a href="infinitytrain-VF/" class="banner" style="background-image: url('https://i.imgur.com/4k0gOI1.jpeg');">
+          <h1>Infinity Train</h1>
+          <h2>1 Saison / VF</h2>
+        </a>
+        
+        <a href="tougen-anki-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/Z7t1KfA.jpeg');">
+          <div class="en-cours-badge">EN COURS</div>
+          <h1>Tougen Anki</h1>
+          <h2>1 Saison / VOSTFR</h2>
+        </a>
+        
+        <a href="#" class="banner" style="background-image: url('https://i.imgur.com/uYNNSsp.jpeg');" onclick="showCyberpunkWarning(event)">
+          <div class="mature-badge">MATURE</div>
+          <h1>CyberPunk Edgerunners</h1>
+          <h2>1 Saison / VOSTFR</h2>
+        </a>
+
+        <a href="gachiakuta-vostfr/" class="banner" style="background-image: url('https://i.imgur.com/WacvFRv.jpeg');">
+          <div class="recent-badge">SORTIE RÉCENTE</div>
+          <h1>Gachiakuta</h1>
+          <h2>1 Saison / VOSTFR</h2>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Le bouton "Retour" -->
+  <a href="https://uniware.site" class="goback">Retour</a>
+
+  <script>
+    function showCyberpunkWarning(event) {
+      event.preventDefault();
+      document.getElementById('warningModal').style.display = 'block';
+    }
+
+    function closeWarning() {
+      document.getElementById('warningModal').style.display = 'none';
+    }
+
+    function proceedToCyberpunk() {
+      document.getElementById('warningModal').style.display = 'none';
+      // Rediriger vers la page Cyberpunk
+      window.location.href = 'cyberpunk-edgerunners-vostfr/';
+    }
+
+    // Fermer la modal en cliquant à l'extérieur
+    window.onclick = function(event) {
+      const modal = document.getElementById('warningModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    // Fermer la modal avec la touche Échap
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        document.getElementById('warningModal').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

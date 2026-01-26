@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="https://i.imgur.com/VYCh8bA.jpeg" type="image/jpeg">
+  <meta charset="UTF-8">
+  <title>Uniware - By Zetsukae</title>
+  <style>
+    body { 
+      margin: 0; 
+      overflow: hidden; 
+      background: #000; 
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      z-index: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-width: 250px;
+      text-align: center;
+    }
+    .box h2 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+    }
+    .box p {
+      margin: 0;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+    .more, .goback {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.2s;
+      backdrop-filter: blur(5px);
+      z-index: 1;
+    }
+    .more:hover, .goback:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+<canvas id="boidsCanvas"></canvas>
+
+<div class="container">
+<div class="box">
+  <h2>Comparatifs des Abonnements Console+</h2>
+  <p style="text-align: center; margin-top: -10px;">
+    pour la console Neo 4 Quantum disponible sur notre site 
+    <a href="https://uniware.mycommerce.shop/" target="_blank" style="color: #2980b9; font-weight: bold;">
+      Uniware Shop
+    </a>
+  </p>
+
+  <style>
+    .sub-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+
+    .sub-table th, .sub-table td {
+      padding: 12px 15px;
+      text-align: center;
+      border: 1px solid #444;
+    }
+
+    .sub-table th {
+      background: #111;
+      color: #fff;
+    }
+
+    .sub-header {
+      background: #333;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .sub-essential {
+      background: #8e44ad;
+      color: #fff;
+    }
+
+    .sub-medium {
+      background: #2980b9;
+      color: #fff;
+    }
+
+    .sub-premium {
+      background: #e67e22;
+      color: #fff;
+    }
+
+    .sub-label {
+      text-align: left;
+      background: #1c1c1c; /* gris très foncé */
+      font-weight: bold;
+      color: #fff;
+    }
+
+    @media screen and (max-width: 768px) {
+      .sub-table thead {
+        display: none;
+      }
+
+      .sub-table, .sub-table tbody, .sub-table tr, .sub-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .sub-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #444;
+      }
+
+      .sub-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        color: #fff;
+      }
+
+      .sub-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        font-weight: bold;
+        text-align: left;
+        color: #aaa;
+      }
+    }
+  </style>
+
+  <table class="sub-table">
+    <thead>
+      <tr>
+        <th class="sub-header">Caractéristiques</th>
+        <th class="sub-essential">Essential<br><small>4.95 CHF / Mois</small></th>
+        <th class="sub-medium">Medium<br><small>9.95 CHF / Mois</small></th>
+        <th class="sub-premium">Premium<br><small>14.95 CHF / Mois</small></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="sub-label">🎮 Jeux gratuits annuels</td>
+        <td>50</td>
+        <td>100</td>
+        <td>500+</td>
+      </tr>
+      <tr>
+        <td class="sub-label">🗓 Jeux gratuits mensuels</td>
+        <td>3-4</td>
+        <td>4-5</td>
+        <td>4-5</td>
+      </tr>
+      <tr>
+        <td class="sub-label">☁ Sauvegardes Cloud</td>
+        <td>50 Go</td>
+        <td>100 Go (captures/vidéos)</td>
+        <td>1 To (sauv., jeux, vidéos...)</td>
+      </tr>
+      <tr>
+        <td class="sub-label">🚀 Essais anticipés</td>
+        <td>✔</td>
+        <td>✔</td>
+        <td>✔</td>
+      </tr>
+      <tr>
+        <td class="sub-label">🎁 Bonus in-game</td>
+        <td>Standard (20)</td>
+        <td>Avancé (55)</td>
+        <td>Premium (100+)</td>
+      </tr>
+      <tr>
+        <td class="sub-label">🎨 Personnalisation profil</td>
+        <td>Statique + Couleur</td>
+        <td>Animé + Néon</td>
+        <td>Animé/Néon + Son</td>
+      </tr>
+      <tr>
+        <td class="sub-label">👨‍👩 Partage multi-consoles</td>
+        <td>2</td>
+        <td>4</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td class="sub-label">🧠 IA assistée in-game</td>
+        <td style="color: #e74c3c;">❌</td>
+        <td style="color: #e74c3c;">❌</td>
+        <td>✔</td>
+      </tr>
+      <tr>
+        <td class="sub-label">💰 Cashback Store</td>
+        <td style="color: #e74c3c;">❌</td>
+        <td style="color: #e74c3c;">❌</td>
+        <td>10%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  <a href="annuel/" class="goback">Format Annuel</a>
+  <a href="https://uniware.site/" class="goback">Retour</a>
+  
+<script>
+const canvas = document.getElementById('boidsCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Boid {
+  constructor() {
+    this.position = {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height
+    };
+    this.velocity = {
+      x: Math.random() * 2 - 1,
+      y: Math.random() * 2 - 1
+    };
+    this.acceleration = {x: 0, y: 0};
+    this.maxSpeed = 4;
+    this.maxForce = 0.05;
+  }
+
+  update() {
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+    this.velocity.x += this.acceleration.x;
+    this.velocity.y += this.acceleration.y;
+
+    const speed = Math.hypot(this.velocity.x, this.velocity.y);
+    if (speed > this.maxSpeed) {
+      this.velocity.x = (this.velocity.x / speed) * this.maxSpeed;
+      this.velocity.y = (this.velocity.y / speed) * this.maxSpeed;
+    }
+
+    this.acceleration.x = 0;
+    this.acceleration.y = 0;
+
+    if (this.position.x > canvas.width) this.position.x = 0;
+    if (this.position.x < 0) this.position.x = canvas.width;
+    if (this.position.y > canvas.height) this.position.y = 0;
+    if (this.position.y < 0) this.position.y = canvas.height;
+  }
+
+  applyForce(force) {
+    this.acceleration.x += force.x;
+    this.acceleration.y += force.y;
+  }
+
+  flock(boids) {
+    const separation = this.separate(boids);
+    const alignment = this.align(boids);
+    const cohesion = this.cohesion(boids);
+
+    this.applyForce(separation);
+    this.applyForce(alignment);
+    this.applyForce(cohesion);
+  }
+
+  separate(boids) {
+    const desiredSeparation = 25;
+    let steer = {x: 0, y: 0};
+    let count = 0;
+
+    for (let other of boids) {
+      const d = distance(this.position, other.position);
+      if (d > 0 && d < desiredSeparation) {
+        let diff = {
+          x: this.position.x - other.position.x,
+          y: this.position.y - other.position.y
+        };
+        diff.x /= d;
+        diff.y /= d;
+        steer.x += diff.x;
+        steer.y += diff.y;
+        count++;
+      }
+    }
+
+    if (count > 0) {
+      steer.x /= count;
+      steer.y /= count;
+    }
+
+    if (magnitude(steer) > 0) {
+      steer = setMagnitude(steer, this.maxSpeed);
+      steer.x -= this.velocity.x;
+      steer.y -= this.velocity.y;
+      steer = limit(steer, this.maxForce);
+    }
+    return steer;
+  }
+
+  align(boids) {
+    const neighborDist = 50;
+    let sum = {x: 0, y: 0};
+    let count = 0;
+
+    for (let other of boids) {
+      const d = distance(this.position, other.position);
+      if (d > 0 && d < neighborDist) {
+        sum.x += other.velocity.x;
+        sum.y += other.velocity.y;
+        count++;
+      }
+    }
+
+    if (count > 0) {
+      sum.x /= count;
+      sum.y /= count;
+      sum = setMagnitude(sum, this.maxSpeed);
+      let steer = {
+        x: sum.x - this.velocity.x,
+        y: sum.y - this.velocity.y
+      };
+      steer = limit(steer, this.maxForce);
+      return steer;
+    } else {
+      return {x: 0, y: 0};
+    }
+  }
+
+  cohesion(boids) {
+    const neighborDist = 50;
+    let sum = {x: 0, y: 0};
+    let count = 0;
+
+    for (let other of boids) {
+      const d = distance(this.position, other.position);
+      if (d > 0 && d < neighborDist) {
+        sum.x += other.position.x;
+        sum.y += other.position.y;
+        count++;
+      }
+    }
+    
+    if (count > 0) {
+      sum.x /= count;
+      sum.y /= count;
+      return this.seek(sum);
+    } else {
+      return {x: 0, y: 0};
+    }
+  }
+
+  seek(target) {
+    let desired = {
+      x: target.x - this.position.x,
+      y: target.y - this.position.y
+    };
+    desired = setMagnitude(desired, this.maxSpeed);
+    let steer = {
+      x: desired.x - this.velocity.x,
+      y: desired.y - this.velocity.y
+    };
+    steer = limit(steer, this.maxForce);
+    return steer;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.moveTo(this.position.x, this.position.y);
+    ctx.lineTo(
+      this.position.x - this.velocity.x * 5,
+      this.position.y - this.velocity.y * 5
+    );
+    ctx.strokeStyle = 'white';
+    ctx.stroke();
+  }
+}
+
+function distance(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function magnitude(v) {
+  return Math.hypot(v.x, v.y);
+}
+
+function setMagnitude(v, mag) {
+  const m = magnitude(v);
+  if (m > 0) {
+    v.x = (v.x / m) * mag;
+    v.y = (v.y / m) * mag;
+  }
+  return v;
+}
+
+function limit(v, max) {
+  if (magnitude(v) > max) {
+    v = setMagnitude(v, max);
+  }
+  return v;
+}
+
+const boids = [];
+for (let i = 0; i < 100; i++) {
+  boids.push(new Boid());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let boid of boids) {
+    boid.flock(boids);
+    boid.update();
+    boid.draw();
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
