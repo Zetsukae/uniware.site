@@ -89,7 +89,6 @@ display: none; z-index: 15; border-radius: 4px;
 #fs-btn:hover { background: #fff; }
 #fs-btn:hover svg { fill: #000; }
 
-/* Style pour le footer du jeu et le bouton installer */
 .game-footer {
     display: flex;
     justify-content: center;
@@ -116,4 +115,10 @@ display: none; z-index: 15; border-radius: 4px;
     color: #000000;
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+    #game-section {
+        display: none !important;
+    }
 }
