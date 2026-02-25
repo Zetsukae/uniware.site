@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Uniware.site : découvrez l'univers Uniware, votre hub pour Streamix, le shopping et plus encore.">
     <title>Uniware | Excellence Digitale</title>
+
+    <script src="coi-serviceworker.js"></script>
+
     <link rel="icon" type="image/svg+xml" href="assets/uniware-logo.svg">
     <link rel="alternate icon" type="image/png" href="assets/uniware-logo.png">
     <link rel="apple-touch-icon" href="assets/uniware-logo.png">
@@ -48,6 +51,18 @@
                 <h3>EXPÉRIENCE</h3>
                 <p>Plus qu'une interface, une vision du futur.</p>
                 <a href="more/">En savoir plus →</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="game-section" class="content-section" style="display: flex; justify-content: center; align-items: center; padding-bottom: 100px;">
+        <div class="game-container" data-aos="zoom-in" style="width: 95%; max-width: 1400px; aspect-ratio: 16/9; background: #000; border: 1px solid #1a1a1a; position: relative; overflow: hidden;">
+            <div id="game-wrapper" style="width: 100%; height: 100%;">
+                <div id="game-overlay" style="position: absolute; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10; flex-direction: column; text-align: center;">
+                    <h2 style="font-size: 3rem; letter-spacing: 5px; margin-bottom: 10px;">UNDERFANG</h2>
+                    <p id="status-text" style="color: #666; margin-bottom: 20px;">DÉMO</p>
+                    <button class="play-btn-large" onclick="launchGame()">TESTER LA DÉMO</button>
+                </div>
             </div>
         </div>
     </section>
