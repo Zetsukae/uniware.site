@@ -23,7 +23,7 @@ function launchGame() {
     const status = document.getElementById('status-text');
     const fsBtn = document.getElementById('fs-btn');
 
-    status.innerText = "CONNECTING TO CORE...";
+    status.innerText = "CONNECTING TO LINUX...";
 
     setTimeout(() => {
         overlay.style.display = 'none';
