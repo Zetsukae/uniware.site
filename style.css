@@ -88,3 +88,32 @@ display: none; z-index: 15; border-radius: 4px;
 }
 #fs-btn:hover { background: #fff; }
 #fs-btn:hover svg { fill: #000; }
+
+/* Style pour le footer du jeu et le bouton installer */
+.game-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.install-btn {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.install-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
