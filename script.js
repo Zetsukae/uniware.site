@@ -1,12 +1,6 @@
-AOS.init({
-    duration: 1000,
-    once: false,
-    mirror: true
-});
+AOS.init({ duration: 1000, once: false, mirror: true });
 
-function goToSettings() {
-    window.location.href = 'settings/';
-}
+function goToSettings() { window.location.href = 'settings/'; }
 
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
@@ -17,22 +11,24 @@ window.addEventListener('scroll', () => {
     }
 });
 
-function launchGame() {
-    const wrapper = document.getElementById('game-wrapper');
-    const overlay = document.getElementById('game-overlay');
-    const status = document.getElementById('status-text');
-    const btn = document.querySelector('.play-btn-large');
-
-    btn.style.display = 'none';
-    status.innerText = "CHARGEMENT DES DONNÉES...";
-    status.style.color = "#fff";
+function startUnderfang() {
+    const wrapper = document.getElementById('godot-wrapper');
+    const loader = document.getElementById('godot-loader');
+    
+    loader.querySelector('p').innerText = "SYNCHRONISATION DU PCK...";
 
     setTimeout(() => {
-        overlay.style.display = 'none';
-        const iframe = document.createElement('iframe');
-        // Chemin vers ton fichier HTML dans le sous-dossier
-        iframe.src = './Underfang-DEMO/Underfang-DEMO-Web.html';
-        iframe.allow = "autoplay; fullscreen; focus-without-user-activation";
-        wrapper.appendChild(iframe);
-    }, 600);
+        loader.style.display = 'none';
+        const game = document.createElement('iframe');
+        
+        game.src = "./Underfang-DEMO/Underfang-DEMO-Web.html";
+        
+        // Autorisations nécessaires
+        game.allow = "autoplay; fullscreen; focus-without-user-activation";
+        game.style.width = "100%";
+        game.style.height = "100%";
+        game.style.border = "none";
+        
+        wrapper.appendChild(game);
+    }, 800);
 }
