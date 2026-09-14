@@ -42,7 +42,6 @@ body {
     text-align: center;
 }
 
-/* Typographie Professionnelle */
 .welcome-text {
     font-size: 1.1rem;
     font-weight: 400;
@@ -70,6 +69,14 @@ body {
     margin-bottom: 100px;
 }
 
+.download-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
 .boton-elegante {
     padding: 18px 36px;
     background: var(--card-glass);
@@ -86,8 +93,8 @@ body {
 .boton-elegante:hover {
     background: #fff;
     color: #000;
-    transform: scale(1.05);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255,255,255,0.14);
 }
 
 /* Cartes News */
@@ -105,7 +112,7 @@ body {
 
 .info-card:hover {
     border-color: rgba(255,255,255,0.4);
-    transform: translateY(-10px);
+    transform: translateY(-4px);
 }
 
 .info-title {
@@ -135,12 +142,17 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
-    transition: 0.3s;
+    transition: transform 320ms cubic-bezier(.2,.8,.2,1), background 320ms ease, color 320ms ease, border-color 320ms ease;
+}
+
+.mini {
+    width: 50%;
 }
 
 .download-button:hover {
     background: #fff;
     color: #000;
+    transform: translateY(-3px);
 }
 
 @media (max-width: 600px) {

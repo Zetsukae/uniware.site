@@ -1,5 +1,11 @@
-// Initialisation AOS
-AOS.init({ duration: 1000, once: true });
+AOS.init({
+    duration: 1000,
+    easing: 'ease-out-cubic',
+    once: true,
+    mirror: false,
+    anchorPlacement: 'top-bottom',
+    offset: 16
+});
 
 const searchInput = document.getElementById('searchInput');
 
@@ -21,19 +27,24 @@ function performSearch() {
     }
 }
 
-// Écouteur de touche
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        performSearch();
-    }
-});
+if (searchInput) {
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
 
-// Focus automatique au chargement
-window.onload = () => {
-    searchInput.focus();
-};
+    window.addEventListener('load', () => {
+        searchInput.focus({ preventScroll: true });
+    });
+}
 
-// Effet de feedback tactile sur le bouton
 const btn = document.querySelector('.btn-back');
-btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.95)');
-btn.addEventListener('mouseup', () => btn.style.transform = 'translateY(-3px)');
+if (btn) {
+    btn.addEventListener('pointerdown', () => {
+        btn.style.transform = 'scale(0.98)';
+    });
+    btn.addEventListener('pointerup', () => {
+        btn.style.transform = 'translateY(-3px)';
+    });
+}

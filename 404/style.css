@@ -93,7 +93,8 @@ body {
 #searchInput:focus {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.02);
+    transform: scale(1.01);
+    transition: background 320ms ease, border-color 320ms ease, transform 320ms cubic-bezier(.2,.8,.2,1);
 }
 
 .search-hint {
@@ -114,7 +115,7 @@ body {
     font-weight: 700;
     font-size: 0.85rem;
     border-radius: 12px;
-    transition: 0.3s;
+    transition: transform 280ms cubic-bezier(.2,.8,.2,1), box-shadow 280ms ease, background 280ms ease, color 280ms ease;
 }
 
 .btn-back:hover {

@@ -86,8 +86,8 @@ body {
 .boton-elegante:hover {
     background: #fff;
     color: #000;
-    transform: scale(1.05);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255,255,255,0.14);
 }
 
 /* Cartes News */
@@ -105,7 +105,7 @@ body {
 
 .info-card:hover {
     border-color: rgba(255,255,255,0.4);
-    transform: translateY(-10px);
+    transform: translateY(-4px);
 }
 
 .info-title {
@@ -135,12 +135,13 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
-    transition: 0.3s;
+    transition: transform 320ms cubic-bezier(.2,.8,.2,1), background 320ms ease, color 320ms ease, border-color 320ms ease;
 }
 
 .download-button:hover {
     background: #fff;
     color: #000;
+    transform: translateY(-3px);
 }
 
 @media (max-width: 600px) {

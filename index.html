@@ -8,11 +8,10 @@
 
     <script src="coi-serviceworker.js"></script>
 
-    <link rel="icon" type="image/svg+xml" href="assets/uniware-logo.svg">
-    <link rel="alternate icon" type="image/png" href="assets/uniware-logo.png">
-    <link rel="apple-touch-icon" href="assets/uniware-logo.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/uniware-logo.svg">
+    <link rel="alternate icon" type="image/png" href="/assets/uniware-logo.png">
+    <link rel="apple-touch-icon" href="/assets/uniware-logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,31 +22,29 @@
         <div class="nav-links">
             <a href="#solutions">Solutions</a>
             <a href="https://uniware.mycommerce.shop/">Shop</a>
-            <button class="settings-btn" onclick="goToSettings()">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1.51 1H15a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
-            </button>
         </div>
     </nav>
 
     <header class="hero-section">
-        <h1 data-aos="fade-up" data-aos-duration="1000">The future is<br><span class="gradient-text">Uniware.</span></h1>
-        <p data-aos="fade-up" data-aos-delay="200">A seamless experience. A controlled ecosystem.</p>
+        <h1>The future is<br><span class="gradient-text">Uniware.</span></h1>
+        <p>A seamless experience. A controlled ecosystem.</p>
+        <p>Uniware will close in April. Please visit our <a href="/more/uniware-close">closure</a> page for details.</p>
         <div class="scroll-indicator"></div>
     </header>
 
     <section id="solutions" class="content-section">
         <div class="grid-container">
-            <div class="card" data-aos="fade-up">
-                <h3>STREAMIX</h3>
+            <div class="card">
+                <h3>PLUBERRY</h3>
                 <p>Streaming with your sources in a single App.</p>
-                <a href="https://streamix.buzz/">Discover →</a>
+                <a href="https://pluberry.com/">Discover →</a>
             </div>
-            <div class="card" data-aos="fade-up" data-aos-delay="100">
+            <div class="card">
                 <h3>SHOP</h3>
-                <p>An exclusive selection of products.</p>
+                <p>An exclusive selection of products. <br> - (Will close at the same time as Uniware)</p>
                 <a href="https://uniware.mycommerce.shop/">Discover →</a>
             </div>
-            <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card">
                 <h3>EXPERIENCE</h3>
                 <p>More than an interface, a vision of the future.</p>
                 <a href="more/">Learn more →</a>
@@ -55,28 +52,6 @@
         </div>
     </section>
 
-    <section id="game-section" class="content-section" style="padding-top: 0;">
-        <div class="game-container" id="game-box" data-aos="zoom-in">
-            <div id="game-wrapper">
-                <div id="game-overlay">
-                    <h2 class="gradient-text">UNDERFANG - DEMO</h2>
-                    <p id="status-text">This is a DEMO version. Please install the full game for the best experience.</p>
-                    <button class="play-btn" onclick="launchGame()">POWER ON</button>
-                </div>
-            </div>
-            <button id="fs-btn" onclick="toggleFullscreen()">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-            </button>
-        </div>
-        <div class="game-footer" data-aos="fade-up">
-            <a href="https://zetsukae.itch.io/underfang" target="_blank" class="install-btn">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                DOWNLOAD THE FULL VERSION (PC)
-            </a>
-        </div>
-    </section>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
